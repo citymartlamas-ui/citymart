@@ -305,7 +305,7 @@
           if (!reviewStats[bizId]) {
             reviewStats[bizId] = { total: 0, count: 0 };
           }
-          reviewStats[bizId].total += (d.puntuacion || 0);
+          reviewStats[bizId].total += Number(d.puntuacion || 0);
           reviewStats[bizId].count += 1;
         });
         // Re-renderizar ranking cuando las reseñas cambian
@@ -323,8 +323,9 @@
         const stats = reviewStats[b.id];
         const avgScore = stats ? (stats.total / stats.count) : 0;
         const reviewCount = stats ? stats.count : 0;
-        // Score combinado: promedio × log(reseñas+1) para premiar negocios con MÁS y MEJORES reseñas
-        const combinedScore = avgScore * Math.log2(reviewCount + 1);
+        // Score combinado: (estrellas × 10) + log(reseñas)
+        // Esto garantiza que la calidad (estrellas) siempre sea el factor más importante.
+        const combinedScore = (avgScore * 10) + Math.log2(reviewCount + 1);
         return { ...b, avgScore, reviewCount, combinedScore };
       });
 
