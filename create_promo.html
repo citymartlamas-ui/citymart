@@ -110,6 +110,46 @@
         </div>
     </header>
 
+    <!-- MODAL DE ÉXITO Y PAGO -->
+    <div id="success-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);">
+        <div
+            style="background: white; border-radius: 24px; padding: 30px; width: 100%; max-width: 400px; text-align: center; position: relative; animation: slideUp 0.3s ease-out;">
+            <div
+                style="width: 80px; height: 80px; background: #dcfce7; color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i data-lucide="check-circle" style="width: 40px; height: 40px;"></i>
+            </div>
+            <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.5rem; margin-bottom: 15px; color: #111;">
+                ¡Casi listo!</h2>
+            <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Tu promoción ha sido
+                enviada. Para que sea aprobada y publicada, debes realizar el pago vía <b>Yape</b> o transferencia y
+                enviarnos el comprobante.</p>
+
+            <a id="whatsapp-admin-link" href="#" target="_blank"
+                style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 16px; border-radius: 12px; font-weight: 800; text-decoration: none; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
+                <i data-lucide="message-circle"></i> ENVIAR COMPROBANTE
+            </a>
+
+            <button onclick="window.location.href='profile.html'"
+                style="background: transparent; border: none; color: #9ca3af; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">Volver
+                al perfil</button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+
     <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
         <form id="promo-form">
             <div class="form-group">
@@ -324,8 +364,14 @@
                     fecha_registro: serverTimestamp()
                 });
 
-                alert('¡Promoción publicada con éxito! Estará visible tras su aprobación.');
-                window.location.href = 'profile.html';
+                // Preparar mensaje de WhatsApp para el administrador
+                const adminPhone = "51921385412"; // <-- ACTUALIZA ESTE NÚMERO
+                const msg = encodeURIComponent(`Hola CityMart Lamas, acabo de crear la promoción "${title}". Adjunto el comprobante de pago para su aprobación.`);
+                document.getElementById('whatsapp-admin-link').href = `https://wa.me/${adminPhone}?text=${msg}`;
+                
+                // Mostrar modal de éxito
+                document.getElementById('success-modal').style.display = 'flex';
+                lucide.createIcons();
 
             } catch (error) {
                 console.error("Error al publicar la promoción:", error);
