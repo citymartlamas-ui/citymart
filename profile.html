@@ -330,7 +330,7 @@
                         if (bizName) bizName.textContent = data.nombre || 'Mi Negocio';
                         if (bizLink) bizLink.href = 'business_detail.html?id=' + id;
 
-                        if (estado === 'activo') {
+                        if (estado === 'activo' || estado === 'aprobado') {
                             if (bizEstado) bizEstado.textContent = '✅ Negocio Activo';
                             if (bizIcon) bizIcon.style.background = '#22c55e';
                             if (bizCard) { bizCard.style.background = '#f0fdf4'; bizCard.style.borderColor = '#dcfce7'; }
@@ -338,8 +338,8 @@
                             if (bizEstado) bizEstado.textContent = '⏳ En Revisión';
                             if (bizIcon) bizIcon.style.background = '#f59e0b';
                             if (bizCard) { bizCard.style.background = '#fffbeb'; bizCard.style.borderColor = '#fef3c7'; }
-                            if (bizName) bizName.style.color = '#92400e';
-                            if (bizEstado) bizEstado.style.color = '#b45309';
+                            if (bizName) (bizName.style.color = '#92400e');
+                            if (bizEstado) (bizEstado.style.color = '#b45309');
                         }
 
                         // Ocultar "registrar negocio"
