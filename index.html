@@ -246,7 +246,7 @@
 
   <script type="module">
     import { db, auth } from './assets/js/firebase-init.js';
-    import { collection, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { collection, onSnapshot, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     lucide.createIcons();
 
@@ -259,10 +259,15 @@
     const newBizContainer = document.getElementById('new-businesses');
 
     let allBusinesses = [];
+    let reviewStats = {}; // { negocio_id: { total, count } }
 
     // Cargar datos iniciales
     function init() {
       try {
+        // 1. Cargar todas las reseñas reales para el ranking
+        loadReviewStats();
+
+        // 2. Cargar negocios
         onSnapshot(collection(db, "negocio"), (snap) => {
           allBusinesses = snap.docs.map(doc => {
             const data = doc.data();
@@ -275,7 +280,6 @@
               tipo: data.negocio_o_servicio === 'servicio' ? 'service' : 'biz',
               telefono: data.numerodecontacto || data.telefono || "",
               premium: data.promocionanuncio === true,
-              promedio_puntuacion: data.promedio_puntuacion || 0,
               visible: data.negociovisible !== false
             };
           }).filter(b => b.visible);
@@ -290,38 +294,86 @@
       }
     }
 
+    // Cargar estadísticas de reseñas REALES desde la colección 'resenas'
+    function loadReviewStats() {
+      onSnapshot(collection(db, "resenas"), (snap) => {
+        reviewStats = {};
+        snap.forEach(doc => {
+          const d = doc.data();
+          const bizId = d.negocio_id;
+          if (!bizId) return;
+          if (!reviewStats[bizId]) {
+            reviewStats[bizId] = { total: 0, count: 0 };
+          }
+          reviewStats[bizId].total += (d.puntuacion || 0);
+          reviewStats[bizId].count += 1;
+        });
+        // Re-renderizar ranking cuando las reseñas cambian
+        if (allBusinesses.length > 0) {
+          renderRanking();
+        }
+      });
+    }
+
     function renderRanking() {
       const rankingContainer = document.getElementById('ranking-container');
-      // Sort by promedio_puntuacion (calculated from reviews)
-      const ranked = [...allBusinesses]
-        .sort((a, b) => (b.promedio_puntuacion || 0) - (a.promedio_puntuacion || 0))
+
+      // Calcular score real por negocio usando datos de reseñas
+      const rankedData = allBusinesses.map(b => {
+        const stats = reviewStats[b.id];
+        const avgScore = stats ? (stats.total / stats.count) : 0;
+        const reviewCount = stats ? stats.count : 0;
+        // Score combinado: promedio × log(reseñas+1) para premiar negocios con MÁS y MEJORES reseñas
+        const combinedScore = avgScore * Math.log2(reviewCount + 1);
+        return { ...b, avgScore, reviewCount, combinedScore };
+      });
+
+      // Solo mostrar negocios que tienen al menos 1 reseña
+      const ranked = rankedData
+        .filter(b => b.reviewCount > 0)
+        .sort((a, b) => b.combinedScore - a.combinedScore)
         .slice(0, 5);
 
       if (ranked.length === 0) {
-        rankingContainer.innerHTML = '<p style="text-align: center; padding: 10px; color: #999; font-size: 0.8rem;">Pronto verás los mejores aquí.</p>';
+        rankingContainer.innerHTML = '<p style="text-align: center; padding: 10px; color: #999; font-size: 0.8rem;">Aún no hay negocios con reseñas. ¡Sé el primero en calificar!</p>';
         return;
       }
 
+      const medals = ['🥇', '🥈', '🥉', '4', '5'];
+      const colors = ['#fbbf24', '#9ca3af', '#cd7f32', '#d1d5db', '#d1d5db'];
+
       rankingContainer.innerHTML = ranked.map((b, i) => {
-        const score = (b.promedio_puntuacion || 0).toFixed(1);
-        const color = i === 0 ? '#fbbf24' : (i === 1 ? '#9ca3af' : (i === 2 ? '#cd7f32' : '#d1d5db'));
+        const score = b.avgScore.toFixed(1);
+        const starsFull = Math.round(b.avgScore);
+        let starsHTML = '';
+        for (let s = 1; s <= 5; s++) {
+          starsHTML += `<span style="color: ${s <= starsFull ? '#fbbf24' : '#e5e7eb'}; font-size: 0.75rem;">★</span>`;
+        }
+
+        const isTop3 = i < 3;
+        const borderColor = i === 0 ? '#fef3c7' : (i === 1 ? '#f3f4f6' : (i === 2 ? '#fef3c7' : '#f3f4f6'));
+        const bgColor = i === 0 ? '#fffbeb' : 'white';
+
         return `
           <div onclick="window.location.href='business_detail.html?id=${b.id}'"
-            style="display: flex; align-items: center; background: white; border: 1px solid #f3f4f6; border-radius: 12px; padding: 10px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.02); transition: background 0.2s;">
-            <div style="font-family: 'Outfit'; font-size: 1.1rem; font-weight: 900; color: ${color}; width: 28px; text-align: center;">
-              ${i + 1}
+            style="display: flex; align-items: center; background: ${bgColor}; border: 1px solid ${borderColor}; border-radius: 14px; padding: 12px; cursor: pointer; box-shadow: ${i === 0 ? '0 2px 8px rgba(251,191,36,0.15)' : '0 1px 2px rgba(0,0,0,0.02)'}; transition: transform 0.2s, box-shadow 0.2s;"
+            onmouseover="this.style.transform='translateY(-1px)'"
+            onmouseout="this.style.transform='none'">
+            <div style="font-family: 'Outfit'; font-size: ${isTop3 ? '1.3rem' : '1rem'}; font-weight: 900; width: 32px; text-align: center;">
+              ${isTop3 ? medals[i] : (i + 1)}
             </div>
-            <div style="width: 48px; height: 48px; border-radius: 10px; overflow: hidden; margin: 0 12px;">
-              <img src="${b.foto}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;" loading="lazy">
+            <div style="width: 50px; height: 50px; border-radius: 12px; overflow: hidden; margin: 0 12px; flex-shrink: 0; border: ${i === 0 ? '2px solid #fbbf24' : '1px solid #f3f4f6'};">
+              <img src="${b.foto}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
             </div>
-            <div style="flex: 1;">
-              <h3 style="font-size: 0.9rem; font-weight: 700; color: #1f2937; margin-bottom: 2px;">${b.nombre}</h3>
-              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #6b7280;">
-                <span style="color: #fbbf24; font-weight: 600;">★ ${score}</span>
-                <span>• ${b.categoria}</span>
+            <div style="flex: 1; min-width: 0;">
+              <h3 style="font-size: 0.9rem; font-weight: 700; color: #1f2937; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${b.nombre}</h3>
+              <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                ${starsHTML}
+                <span style="font-weight: 700; font-size: 0.8rem; color: #1f2937; margin-left: 2px;">${score}</span>
               </div>
+              <span style="font-size: 0.65rem; color: #9ca3af;">${b.reviewCount} reseña${b.reviewCount !== 1 ? 's' : ''} • ${b.categoria}</span>
             </div>
-            <i data-lucide="chevron-right" style="color: #d1d5db; width: 18px;"></i>
+            <i data-lucide="chevron-right" style="color: #d1d5db; width: 18px; flex-shrink: 0;"></i>
           </div>
         `;
       }).join('');
