@@ -159,6 +159,17 @@
                 <input type="text" id="promo-price" placeholder="S/ 15.00" required>
             </div>
 
+            <div class="form-group" id="phone-group" style="display: none;">
+                <label for="phone">Teléfono de contacto (WhatsApp)</label>
+                <div style="position: relative;">
+                    <span
+                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #666;">+51</span>
+                    <input type="tel" id="phone" placeholder="999 999 999" style="padding-left: 50px;">
+                </div>
+                <p style="font-size: 0.7rem; color: #666; margin-top: 4px;">Úsalo para que te contacten directamente si
+                    no tienes un negocio registrado.</p>
+            </div>
+
             <button type="submit" id="submit-btn"
                 style="width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; margin-top: 20px; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2); transition: background 0.2s; cursor: pointer;">PUBLICAR
                 OFERTA</button>
@@ -200,21 +211,21 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                // Buscar si este usuario tiene un negocio registrado
-                // Asumimos que el negocio tiene un campo 'uid' o 'ownerId'
                 try {
                     const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
                     const querySnapshot = await getDocs(q);
-                    
+
                     if (!querySnapshot.empty) {
                         userBusiness = {
                             id: querySnapshot.docs[0].id,
-                            nombre: querySnapshot.docs[0].data().nombre
+                            nombre: querySnapshot.docs[0].data().nombre,
+                            telefono: querySnapshot.docs[0].data().numerodecontacto || querySnapshot.docs[0].data().telefono || ""
                         };
                         console.log("Negocio detectado:", userBusiness.nombre);
                     } else {
-                        console.log("El usuario no tiene un negocio registrado");
-                        // Podríamos redirigir o mostrar un aviso
+                        console.log("El usuario no tiene un negocio registrado. Permitir oferta personal.");
+                        document.getElementById('phone-group').style.display = 'block';
+                        // Pre-cargar teléfono si existe en el perfil del usuario (opcional)
                     }
                 } catch (error) {
                     console.error("Error buscando negocio:", error);
@@ -267,9 +278,10 @@
                 return;
             }
 
-            if (!userBusiness) {
-                alert("No tienes un negocio registrado para publicar esta oferta. Registra tu negocio primero en tu Perfil.");
-                window.location.href = 'register_business.html';
+            // Nota: Se permite publicar aunque no tenga negocio (userBusiness can be null)
+            const contactPhone = document.getElementById('phone').value;
+            if (!userBusiness && !contactPhone) {
+                alert("Como no tienes un negocio registrado, por favor ingresa un teléfono de contacto para que los interesados puedan ubicarte.");
                 return;
             }
 
@@ -304,8 +316,10 @@
                     duracion_dias: parseInt(duration),
                     imagen: imageUrl,
                     estado: 'pendiente',
-                    negocioId: userBusiness.id,
-                    nombre_negocio: userBusiness.nombre,
+                    negocioId: userBusiness ? userBusiness.id : null,
+                    nombre_negocio: userBusiness ? userBusiness.nombre : (currentUser.displayName || "Usuario Independiente"),
+                    telefono_contacto: userBusiness ? userBusiness.telefono : contactPhone,
+                    es_oferta_personal: !userBusiness,
                     uid_propietario: currentUser.uid,
                     fecha_registro: serverTimestamp()
                 });

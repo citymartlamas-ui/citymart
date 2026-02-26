@@ -152,8 +152,15 @@
             <h1 id="promo-title"
                 style="font-family: 'Outfit'; font-size: 2.2rem; line-height: 1.1; margin-bottom: 10px;">Increíble
                 Descuento</h1>
-            <p id="promo-biz" style="font-weight: 700; color: var(--primary-color); margin-bottom: 24px;">Por
+            <p id="promo-biz" style="font-weight: 700; color: var(--primary-color); margin-bottom: 12px;">Por
                 Restaurante La Casona</p>
+
+            <div id="price-container" style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px;">
+                <span id="promo-price-val"
+                    style="font-family: 'Outfit'; font-weight: 900; font-size: 2rem; color: #111;">S/ 0.00</span>
+                <span id="promo-price-old" style="color: #9ca3af; text-decoration: line-through; font-size: 1.1rem;">S/
+                    0.00</span>
+            </div>
 
             <div class="timer-box">
                 <div style="background: var(--secondary-color); color: white; padding: 10px; border-radius: 12px;">
@@ -234,10 +241,40 @@
 
                 if (promoDoc.exists()) {
                     const data = promoDoc.data();
-                    document.getElementById('promo-title').innerText = data.titulo || data.nombre || "Oferta Especial";
-                    document.getElementById('promo-biz').innerText = `En ${data.negocio || data.nombre || 'Negocio Local'}`;
-                    document.getElementById('promo-img').src = data.imagen || data.foto || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800';
-                    document.getElementById('promo-desc').innerText = data.descripcion || "Disfruta de esta promoción exclusiva para nuestra comunidad. Solo tienes que presentar el cupón digital al llegar al local.";
+                    const titleHTML = document.getElementById('promo-title');
+                    const bizHTML = document.getElementById('promo-biz');
+                    const imgHTML = document.getElementById('promo-img');
+                    const descHTML = document.getElementById('promo-desc');
+                    const priceValHTML = document.getElementById('promo-price-val');
+                    const priceOldHTML = document.getElementById('promo-price-old');
+                    const claimBtn = document.querySelector('.claim-btn');
+
+                    titleHTML.innerText = data.titulo || data.nombre || "Oferta Especial";
+                    bizHTML.innerText = `Por ${data.nombre_negocio || data.negocio || 'Negocio Local'}`;
+                    imgHTML.src = data.imagen || data.foto || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800';
+                    descHTML.innerText = data.descripcion || "Disfruta de esta promoción exclusiva para nuestra comunidad. Solo tienes que presentar el cupón digital al llegar al local.";
+
+                    priceValHTML.innerText = data.precio_oferta || "S/ 0.00";
+                    if (data.precio_anterior) {
+                        priceOldHTML.innerText = data.precio_anterior;
+                        priceOldHTML.style.display = 'inline';
+                    } else {
+                        priceOldHTML.style.display = 'none';
+                    }
+
+                    // Configurar botón de WhatsApp
+                    const phone = data.telefono_contacto || data.telefono || data.numerodecontacto || "";
+                    if (phone) {
+                        const cleanPhone = phone.replace(/\s/g, '');
+                        const waMsg = encodeURIComponent(`¡Hola! Vi tu oferta "${data.titulo}" en CityMart Lamas y me interesa.`);
+                        claimBtn.onclick = () => {
+                            window.open(`https://wa.me/51${cleanPhone}?text=${waMsg}`, '_blank');
+                        };
+                    } else {
+                        claimBtn.innerText = "CONTACTAR POR WHATSAPP";
+                        claimBtn.onclick = () => alert("No se encontró un teléfono de contacto.");
+                    }
+
                 } else {
                     console.warn("Promo no encontrada en Firebase, usando default.");
                 }

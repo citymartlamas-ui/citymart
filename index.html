@@ -408,15 +408,16 @@
           if (!snap.empty) {
             promosTrack.innerHTML = snap.docs.map(doc => {
               const p = doc.data();
+              const subtitle = p.nombre_negocio || p.negocio || "Oferta CityMart";
               return `
                 <div class="card card-promo" onclick="window.location.href='promo_detail.html?id=${doc.id}'">
                   <img src="${p.imagen}" class="img-full" loading="lazy">
                   <div class="overlay-text" style="display: flex; justify-content: space-between; align-items: flex-end;">
-                    <div>
-                      <h3 style="font-size: 0.9rem;">${p.titulo}</h3>
-                      <p style="font-size: 0.7rem;">${p.negocio || ''}</p>
+                    <div style="min-width: 0; flex: 1; margin-right: 8px;">
+                      <h3 style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.titulo}</h3>
+                      <p style="font-size: 0.7rem; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${subtitle}</p>
                     </div>
-                    <div style="background: var(--secondary-color); color: #fff; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.65rem;">
+                    <div style="background: var(--secondary-color); color: #fff; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.65rem; flex-shrink: 0;">
                       OFERTA
                     </div>
                   </div>
