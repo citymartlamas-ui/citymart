@@ -295,66 +295,43 @@
                     }
                 }
 
-                // Buscar negocio del usuario
+                // Buscar negocio del usuario (Colección: negocio, Campo: uid)
                 try {
-                    const q = query(collection(db, "negocios"), where("uid_propietario", "==", user.uid));
+                    const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
                     const querySnapshot = await getDocs(q);
 
                     if (!querySnapshot.empty) {
                         const negocioData = querySnapshot.docs[0].data();
                         const negocioId = querySnapshot.docs[0].id;
+                        
+                        // Mostrar sección de negocio y ocultar la de registro
                         document.getElementById('business-section').style.display = 'flex';
                         document.getElementById('no-business-section').style.display = 'none';
+                        
+                        // Actualizar Badge de Estado
                         const statusBadge = document.getElementById('biz-status-badge');
-
                         if (statusBadge) {
                             const estado = negocioData.estado || 'pendiente';
                             statusBadge.textContent = estado.toUpperCase();
                             statusBadge.style.background = (estado === 'activo') ? '#10b981' : '#f59e0b';
                         }
-
-                        if (businessOptions) {
-                            if (negocioData.estado === 'pendiente') {
-                                businessOptions.innerHTML = `
-                                    <div style="padding: 20px; text-align: center; border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; background: var(--card-bg);">
-                                        <i data-lucide="clock" style="color: #f59e0b; margin-bottom: 8px;"></i>
-                                        <p style="font-weight: 700; color: #92400e; font-size: 0.9rem;">Negocio en Revisión</p>
-                                        <p style="font-size: 0.75rem; color: #b45309;">Estamos verificando tu información.</p>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
-                                        <button onclick="window.location.href='create_promo.html'" style="padding: 16px; background: #f2460d; color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                                            <i data-lucide="tag"></i> CREAR PROMO
-                                        </button>
-                                    </div>
-                                `;
-                            } else {
-                                businessOptions.innerHTML = `
-                                    <div style="padding: 12px; background: #f0fdf4; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid #dcfce7;">
-                                        <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
-                                            <i data-lucide="check-circle" style="width: 18px;"></i>
-                                        </div>
-                                        <div style="flex: 1">
-                                            <p style="font-size: 0.8rem; font-weight: 800; color: #166534; line-height:1;">${negocioData.nombre}</p>
-                                            <p style="font-size: 0.65rem; color: #15803d;">Negocio Activo</p>
-                                        </div>
-                                        <button onclick="window.location.href='business_detail.html?id=${negocioId}'" style="background:none; border:none; color:#166534; cursor:pointer;"><i data-lucide="external-link" style="width:16px;"></i></button>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                        <button onclick="window.location.href='create_promo.html'" style="padding: 14px; background: #f2460d; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                            <i data-lucide="tag" style="width:16px;"></i> PROMO
-                                        </button>
-                                        <button onclick="window.location.href='create_news.html'" style="padding: 14px; background: #004d40; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                            <i data-lucide="file-text" style="width:16px;"></i> NOTICIA
-                                        </button>
-                                    </div>
-                                    <button onclick="window.location.href='request_premium.html'" style="width: 100%; margin-top: 8px; padding: 14px; background: #fbbf24; color: black; border: none; border-radius: 12px; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <i data-lucide="award" style="width:16px;"></i> SOLICITAR PREMIUM
-                                    </button>
-                                `;
-                            }
+                        
+                        // NO sobreescribimos business-options para no borrar los botones del HTML
+                        // Pero podemos añadir un enlace de "Ver perfil" si el negocio es activo
+                        const existingLink = document.getElementById('view-profile-link');
+                        if(negocioData.estado === 'activo' && !existingLink && businessOptions) {
+                            const linkDiv = document.createElement('div');
+                            linkDiv.id = 'view-profile-link';
+                            linkDiv.style.cssText = "padding: 10px; background: #f0fdf4; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #dcfce7;";
+                            linkDiv.innerHTML = `
+                                <span style="font-size: 0.8rem; font-weight: 800; color: #166534;">${negocioData.nombre} (Activo)</span>
+                                <a href="business_detail.html?id=${negocioId}" style="color: #166534;"><i data-lucide="external-link" style="width:18px;"></i></a>
+                            `;
+                            businessOptions.prepend(linkDiv);
                             lucide.createIcons();
                         }
                     } else {
+                        // Si no tiene negocio, mostrar botón de registro
                         document.getElementById('business-section').style.display = 'none';
                         document.getElementById('no-business-section').style.display = 'block';
                     }
