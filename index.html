@@ -323,9 +323,9 @@
         const stats = reviewStats[b.id];
         const avgScore = stats ? (stats.total / stats.count) : 0;
         const reviewCount = stats ? stats.count : 0;
-        // Score combinado: (estrellas × 10) + log(reseñas)
-        // Esto garantiza que la calidad (estrellas) siempre sea el factor más importante.
-        const combinedScore = (avgScore * 10) + Math.log2(reviewCount + 1);
+        // Score combinado: (avgScore * 1000) + reviewCount
+        // Esto garantiza que CADA DÉCIMA de estrella pese más que muchísimas reseñas.
+        const combinedScore = (avgScore * 1000) + reviewCount;
         return { ...b, avgScore, reviewCount, combinedScore };
       });
 

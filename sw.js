@@ -1,4 +1,4 @@
-const CACHE_NAME = 'citymart-v9';
+const CACHE_NAME = 'citymart-v11';
 const PRE_CACHE_ASSETS = [
   '/',
   '/index.html',
