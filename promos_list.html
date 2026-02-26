@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promociones Vibrantes | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <header class="section"
+        style="padding-top: 16px; padding-bottom: 8px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; gap: 8px;"
+                onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="Logo CityMart" style="height: 60px; width: auto; margin-left: -10px;">
+                <h1 style="font-family: 'Outfit'; font-weight: 900; color: #111; font-size: 1.3rem; line-height: 1;">
+                    CityMart<span style="color: var(--secondary-color);">Lamas</span></h1>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <a href="./" style="color: var(--text-color);"><i data-lucide="chevron-left"></i></a>
+                <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.4rem; color: var(--secondary-color);">
+                    Promociones</h2>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <div id="promos-list" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Se poblará dinámicamente -->
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="flame" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { collection, getDocs, limit, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        const listContainer = document.getElementById('promos-list');
+
+        async function loadPromos() {
+            listContainer.innerHTML = `<div style="text-align:center; padding: 40px;"><div class="loader"></div><p style="margin-top:10px; color:#666;">Buscando ofertas...</p></div>`;
+
+            try {
+                const promosSnap = await getDocs(collection(db, "promociones"));
+                listContainer.innerHTML = '';
+
+                if (!promosSnap.empty) {
+                    promosSnap.forEach(doc => {
+                        const data = doc.data();
+                        listContainer.innerHTML += `
+                            <div class="card" style="position: relative; height: 180px;" onclick="window.location.href='promo_detail.html?id=${doc.id}'">
+                                <img src="${data.imagen}" class="img-full" style="filter: brightness(0.85);">
+                                <div style="position: absolute; top: 12px; right: 12px; background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem;">OFERTA</div>
+                                <div class="overlay-text" style="padding: 16px;">
+                                    <h3 style="font-size: 1.2rem; margin-bottom: 2px;">${data.titulo}</h3>
+                                    <p style="font-size: 0.85rem; opacity: 0.9;">En ${data.negocio || 'Negocio Local'}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    renderPromoListFallbacks(listContainer);
+                }
+                lucide.createIcons();
+            } catch (error) {
+                console.warn("Error cargando promos o acceso denegado:", error);
+                renderPromoListFallbacks(listContainer);
+                lucide.createIcons();
+            }
+        }
+
+        function renderPromoListFallbacks(container) {
+            const examples = [
+                { id: 'ex1', titulo: "2x1 Almuerzos Ejecutivos", negocio: "Restaurante La Casona", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=600" },
+                { id: 'ex2', titulo: "20% Descuento en Cafés", negocio: "Kawsay Coffee", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=600" },
+                { id: 'ex3', titulo: "Balde de Cerveza Gratis", negocio: "Kyra's Bar", img: "https://images.unsplash.com/photo-1514525253361-931f8a9ea2e2?auto=format&fit=crop&q=80&w=600" }
+            ];
+            container.innerHTML = '';
+            examples.forEach(ex => {
+                container.innerHTML += `
+                    <div class="card" style="position: relative; height: 180px;" onclick="window.location.href='promo_detail.html?id=${ex.id}'">
+                        <img src="${ex.img}" class="img-full" style="filter: brightness(0.85);">
+                        <div style="position: absolute; top: 12px; right: 12px; background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem;">OFERTA</div>
+                        <div class="overlay-text" style="padding: 16px;">
+                            <h3 style="font-size: 1.2rem; margin-bottom: 2px;">${ex.titulo}</h3>
+                            <p style="font-size: 0.85rem; opacity: 0.9;">En ${ex.negocio}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        loadPromos();
+    </script>
+</body>
+
+</html>

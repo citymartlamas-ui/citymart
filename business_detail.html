@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Negocio | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .hero {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: var(--text-color);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .business-info {
+            padding: 24px 16px;
+            background: white;
+            border-radius: 24px 24px 0 0;
+            margin-top: -30px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .badge-premium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 8px;
+            background: #f9fafb;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-item:hover {
+            background: #f3f4f6;
+        }
+
+        .action-item i {
+            color: var(--primary-color);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .contact-bar {
+            position: fixed;
+            bottom: 80px;
+            left: 16px;
+            right: 16px;
+            z-index: 100;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            padding: 16px;
+            background: #25d366;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container" style="padding: 0; max-width: 768px; position: relative;">
+        <!-- Hero Image -->
+        <div class="hero">
+            <a href="./" class="back-btn">
+                <i data-lucide="chevron-left"></i>
+            </a>
+            <img id="main-img"
+                src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800"
+                class="img-full">
+        </div>
+
+        <!-- Business Content -->
+        <div class="business-info">
+            <div class="badge badge-premium">Destacado Premium</div>
+            <h1 id="biz-title" style="font-family: 'Outfit'; font-size: 2rem; line-height: 1.2; margin-bottom: 4px;">
+                Cargando...</h1>
+            <p id="biz-cat" style="color: #666; font-size: 0.95rem; margin-bottom: 16px;">Categoría del Negocio</p>
+
+            <div id="biz-rating" style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px;">
+                <div style="display: flex; color: #d1d5db;">
+                    <i data-lucide="star" style="width: 16px; fill: currentColor;"></i>
+                    <i data-lucide="star" style="width: 16px; fill: currentColor;"></i>
+                    <i data-lucide="star" style="width: 16px; fill: currentColor;"></i>
+                    <i data-lucide="star" style="width: 16px; fill: currentColor;"></i>
+                    <i data-lucide="star" style="width: 16px; fill: currentColor;"></i>
+                </div>
+            </div>
+
+            <div class="action-grid">
+                <div class="action-item">
+                    <i data-lucide="phone"></i>
+                    <span style="font-size: 0.75rem; font-weight: 700;">Llamar</span>
+                </div>
+                <div class="action-item">
+                    <i data-lucide="map-pin"></i>
+                    <span style="font-size: 0.75rem; font-weight: 700;">Ruta</span>
+                </div>
+                <div class="action-item" id="share-biz-btn">
+                    <i data-lucide="share-2"></i>
+                    <span style="font-size: 0.75rem; font-weight: 700;">Compartir</span>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h3 style="font-family: 'Outfit'; margin-bottom: 12px; font-size: 1.2rem;">Sobre nosotros</h3>
+                <p id="biz-desc" style="color: #4b5563; font-size: 0.95rem; line-height: 1.6;">
+                    Ubicado en el corazón de Lamas, ofrecemos una experiencia única combinando tradición y confort.
+                    Nuestro equipo está comprometido con brindarte lo mejor de la región.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h3 style="font-family: 'Outfit'; margin-bottom: 12px; font-size: 1.2rem;">Galería</h3>
+                <div class="gallery" id="biz-gallery">
+                    <!-- Gallery images will be loaded here by JavaScript -->
+                </div>
+            </div>
+
+            <div style="margin-bottom: 100px;">
+                <h3 style="font-family: 'Outfit'; margin-bottom: 12px; font-size: 1.2rem;">Reseñas</h3>
+
+                <div id="review-form-container" style="margin-bottom: 24px;">
+                    <div id="auth-prompt"
+                        style="display: flex; align-items: center; justify-content: space-between; background: #f9fafb; padding: 12px 16px; border-radius: 12px; border: 1px solid #f3f4f6;">
+                        <span style="font-size: 0.85rem; color: #4b5563;">¿Visitaste este lugar?</span>
+                        <button onclick="window.location.href='login.html'"
+                            style="background: white; border: 1px solid #e5e7eb; padding: 6px 12px; font-size: 0.8rem; border-radius: 8px; font-weight: 600; color: #1f2937; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">Iniciar
+                            sesión</button>
+                    </div>
+
+                    <div id="review-form"
+                        style="display: none; flex-direction: column; gap: 10px; background: #f9fafb; padding: 16px; border-radius: 12px; border: 1px solid #f3f4f6;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: #374151;">Tu calificación:</span>
+                            <div class="star-rating"
+                                style="display: flex; gap: 4px; color: #d1d5db; font-size: 1.4rem; cursor: pointer; line-height: 1;">
+                                <span data-val="1">★</span>
+                                <span data-val="2">★</span>
+                                <span data-val="3">★</span>
+                                <span data-val="4">★</span>
+                                <span data-val="5">★</span>
+                            </div>
+                        </div>
+                        <textarea id="review-text" rows="2" placeholder="Escribe tu opinión (opcional)"
+                            style="width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; font-family: 'Inter'; font-size: 0.85rem; resize: none;"></textarea>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button id="submit-review-btn"
+                                style="background: var(--primary-color); color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer;">Publicar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reviews-list" style="display: flex; flex-direction: column;">
+                    <!-- Real-time reviews go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="contact-bar" id="contact-bar" style="display: none;">
+            <button class="whatsapp-btn">
+                <i data-lucide="message-circle" style="fill: white;"></i>
+                SOLICITAR INFORMACIÓN
+            </button>
+        </div>
+    </main>
+
+    <script type="module">
+        import { db, auth } from './assets/js/firebase-init.js';
+        import { doc, getDoc, collection, addDoc, onSnapshot, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        async function loadDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bizId = urlParams.get('id');
+            let urlTitle = urlParams.get('title');
+            const urlCat = urlParams.get('cat');
+            const urlImg = urlParams.get('img');
+            const urlDesc = urlParams.get('desc');
+
+            const titleEl = document.getElementById('biz-title');
+            const catEl = document.getElementById('biz-cat');
+            const mainImgEl = document.getElementById('main-img');
+            const descEl = document.getElementById('biz-desc');
+            const gallery = document.getElementById('biz-gallery');
+            const contactBar = document.getElementById('contact-bar');
+
+            if (!bizId && !urlTitle) {
+                alert('No se encontró información del negocio');
+                window.location.href = 'directory.html';
+                return;
+            }
+
+            try {
+                let data = null;
+                let finalId = bizId;
+
+                if (bizId) {
+                    const bizDoc = await getDoc(doc(db, "negocio", bizId));
+                    if (bizDoc.exists()) {
+                        data = bizDoc.data();
+                    }
+                }
+
+                // If ID didn't work or is missing, try searching by title (for ranking/mocked items)
+                if (!data && urlTitle) {
+                    const { collection, query, where, getDocs, limit } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                    const q = query(collection(db, "negocio"), where("nombre", "==", urlTitle), limit(1));
+                    const querySnapshot = await getDocs(q);
+                    if (!querySnapshot.empty) {
+                        data = querySnapshot.docs[0].data();
+                        finalId = querySnapshot.docs[0].id;
+                    }
+                }
+
+                if (data) {
+                    // Load from Firestore
+                    const title = data.nombre || urlTitle || "Negocio Local";
+                    const category = data.categoria || urlCat || "Destacado";
+                    const image = data.foto || data.imagen || urlImg || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800";
+                    const description = data.descripcion || urlDesc || "Sin descripción disponible.";
+                    const phone = data.numerodecontacto || data.telefono || "";
+
+                    titleEl.innerText = title;
+                    catEl.innerText = category;
+                    mainImgEl.src = image;
+                    descEl.innerText = description;
+
+                    // Gallery
+                    gallery.innerHTML = '';
+                    if (data.fotosnegocio && Array.isArray(data.fotosnegocio) && data.fotosnegocio.length > 0) {
+                        data.fotosnegocio.forEach(imgUrl => {
+                            gallery.innerHTML += `<div class="card" style="height: 120px;"><img src="${imgUrl}" class="img-full" style="border-radius:15px;"></div>`;
+                        });
+                    } else {
+                        gallery.innerHTML = '<p style="color:#999; font-size: 0.9rem; padding: 20px;">No hay fotos adicionales.</p>';
+                    }
+
+                    // Contact links (WhatsApp/Phone)
+                    if (phone && contactBar) {
+                        contactBar.style.display = 'block';
+                        contactBar.innerHTML = `
+                            <div style="display: flex; gap: 10px; width: 100%;">
+                                <a href="https://wa.me/51${phone}" class="whatsapp-btn" style="flex: 1; text-decoration: none;">
+                                    <i data-lucide="message-circle" style="fill: white;"></i> WHATSAPP
+                                </a>
+                                <a href="tel:${phone}" class="whatsapp-btn" style="flex: 1; background: var(--primary-color); text-decoration: none; box-shadow: 0 10px 20px rgba(11, 89, 242, 0.2);">
+                                    <i data-lucide="phone" style="fill: white;"></i> LLAMAR
+                                </a>
+                            </div>
+                        `;
+                    }
+                    loadReviews(finalId);
+                } else if (urlTitle) {
+                    // Static Fallback if not even found by name (purely mocked items)
+                    titleEl.innerText = urlTitle;
+                    catEl.innerText = urlCat || "Premium";
+                    mainImgEl.src = urlImg || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800";
+                    descEl.innerText = urlDesc || "Este es un negocio premium destacado de la ciudad de Lamas.";
+                    gallery.innerHTML = '<p style="color:#999; font-size: 0.9rem; padding:20px;">Galería no disponible para ejemplos.</p>';
+                    if (contactBar) {
+                        contactBar.style.display = 'block';
+                        contactBar.innerHTML = `<p style="text-align:center; color:#666; width:100%; background:white; padding:10px; border-radius:10px;">Contacto no disponible para este ejemplo.</p>`;
+                    }
+                    document.getElementById('reviews-list').innerHTML = '<p style="color:#999; text-align:center; font-size: 0.9rem;">Esta función es solo para negocios registrados.</p>';
+                    document.getElementById('review-form-container').style.display = 'none';
+                } else {
+                    alert('Negocio no encontrado');
+                    window.location.href = 'directory.html';
+                }
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Error loading detail:", error);
+                alert('Ocurrió un error al cargar los datos');
+            }
+        }
+
+        let currentBizIdForReview = null;
+
+        let selectedRating = 0;
+        const stars = document.querySelectorAll('.star-rating span');
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.getAttribute('data-val'));
+                stars.forEach(s => {
+                    s.style.color = parseInt(s.getAttribute('data-val')) <= selectedRating ? '#fbbf24' : '#d1d5db';
+                });
+            });
+        });
+
+        auth.onAuthStateChanged(user => {
+            const authPrompt = document.getElementById('auth-prompt');
+            const reviewForm = document.getElementById('review-form');
+            if (authPrompt && reviewForm) {
+                if (user) {
+                    authPrompt.style.display = 'none';
+                    reviewForm.style.display = 'flex';
+                } else {
+                    authPrompt.style.display = 'block';
+                    reviewForm.style.display = 'none';
+                }
+            }
+        });
+
+        const submitBtn = document.getElementById('submit-review-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', async () => {
+                if (selectedRating === 0) {
+                    alert('Por favor, selecciona una estrella.');
+                    return;
+                }
+                if (!currentBizIdForReview) {
+                    alert('No se puede identificar el negocio.');
+                    return;
+                }
+                const text = document.getElementById('review-text').value.trim();
+                const user = auth.currentUser;
+                if (!user) return;
+
+                const btnOrigin = submitBtn.innerText;
+                submitBtn.innerText = 'Enviando...';
+                submitBtn.disabled = true;
+
+                try {
+                    await addDoc(collection(db, "resenas"), {
+                        negocio_id: currentBizIdForReview,
+                        usuario_id: user.uid,
+                        usuario_nombre: user.displayName || 'Usuario de CityMart',
+                        usuario_foto: user.photoURL || '',
+                        puntuacion: selectedRating,
+                        comentario: text,
+                        fecha: serverTimestamp()
+                    });
+
+                    // Update business average rating (calculating it locally for faster update, 
+                    // though onSnapshot will catch it if we had a cloud function, 
+                    // but here we do it to keep data in 'negocio' synced)
+                    updateBusinessStats(currentBizIdForReview);
+
+                    document.getElementById('review-text').value = '';
+                    selectedRating = 0;
+                    stars.forEach(s => s.style.color = '#d1d5db');
+                    alert('¡Gracias por tu reseña!');
+                } catch (e) {
+                    console.error("Error reseña:", e);
+                    alert("Error al enviar tu reseña: " + (e.message || e));
+                } finally {
+                    submitBtn.innerText = btnOrigin;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        async function updateBusinessStats(bizId) {
+            const { getDocs, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+            const q = query(collection(db, "resenas"), where("negocio_id", "==", bizId));
+            const snap = await getDocs(q);
+
+            let total = 0;
+            snap.forEach(d => total += d.data().puntuacion || 0);
+            const average = snap.empty ? 0 : (total / snap.size);
+            const count = snap.size;
+
+            try {
+                await updateDoc(doc(db, "negocio", bizId), {
+                    promedio_puntuacion: average,
+                    total_resenas: count
+                });
+            } catch (err) {
+                console.error("Error updating business stats:", err);
+            }
+        }
+
+        function loadReviews(bizId) {
+            currentBizIdForReview = bizId;
+            const q = query(collection(db, "resenas"), where("negocio_id", "==", bizId));
+            onSnapshot(q, (snapshot) => {
+                const listEl = document.getElementById('reviews-list');
+                const ratingEl = document.getElementById('biz-rating');
+
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p style="color:#999; font-size:0.9rem; text-align:center;">Aún no hay reseñas. ¡Sé el primero en opinar!</p>';
+                    ratingEl.innerHTML = '<div style="display: flex; color: #d1d5db;">' +
+                        '<i data-lucide="star" style="width: 16px; fill: currentColor;"></i>' +
+                        '<i data-lucide="star" style="width: 16px; fill: currentColor;"></i>' +
+                        '<i data-lucide="star" style="width: 16px; fill: currentColor;"></i>' +
+                        '<i data-lucide="star" style="width: 16px; fill: currentColor;"></i>' +
+                        '<i data-lucide="star" style="width: 16px; fill: currentColor;"></i>' +
+                        '</div>' +
+                        '<span style="font-weight: 700; font-size: 0.9rem;">0.0</span>' +
+                        '<span style="color: #9ca3af; font-size: 0.85rem;">(0 reseñas)</span>';
+                    lucide.createIcons();
+                    return;
+                }
+
+                let totalScore = 0;
+                let docs = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    totalScore += data.puntuacion || 0;
+                    docs.push({ id: doc.id, ...data });
+                });
+
+                const average = (totalScore / docs.length).toFixed(1);
+                let starsHTML = '';
+                const numStars = Math.round(average);
+                for (let i = 1; i <= 5; i++) {
+                    const color = i <= numStars ? '#fbbf24' : '#d1d5db';
+                    starsHTML += '<i data-lucide="star" style="width: 16px; fill: ' + color + '; color: ' + color + ';"></i>';
+                }
+
+                ratingEl.innerHTML = '<div style="display: flex;">' + starsHTML + '</div>' +
+                    '<span style="font-weight: 700; font-size: 0.9rem; margin-top:2px;">' + average + '</span>' +
+                    '<span style="color: #9ca3af; font-size: 0.85rem; margin-top:2px;">(' + docs.length + ' reseñas)</span>';
+                lucide.createIcons();
+
+                docs.sort((a, b) => (b.fecha?.seconds || 0) - (a.fecha?.seconds || 0));
+
+                listEl.innerHTML = docs.map(d => {
+                    let dStars = '';
+                    for (let i = 1; i <= 5; i++) {
+                        dStars += '<span style="color: ' + (i <= d.puntuacion ? '#fbbf24' : '#d1d5db') + '; font-size: 1.1rem; line-height: 1;">★</span>';
+                    }
+                    const dateStr = d.fecha ? new Date(d.fecha.seconds * 1000).toLocaleDateString() : 'Reciente';
+                    const userPhoto = d.usuario_foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(d.usuario_nombre) + '&background=random';
+
+                    return '<div style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">' +
+                        '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">' +
+                        '<div style="display: flex; align-items: center; gap: 10px;">' +
+                        '<img src="' + userPhoto + '" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: #eee;">' +
+                        '<div>' +
+                        '<div style="display: flex; align-items: center; gap: 6px;">' +
+                        '<span style="font-weight: 600; font-size: 0.85rem; color:#1f2937;">' + d.usuario_nombre + '</span>' +
+                        '<div style="display:flex; gap:1px;">' + dStars + '</div>' +
+                        '</div>' +
+                        '<p style="color: #9ca3af; font-size: 0.7rem; margin-top: 1px;">' + dateStr + '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        (d.comentario ? '<p style="font-size: 0.85rem; color: #4b5563; line-height: 1.4; margin-top: 6px; padding-left: 42px;">' + d.comentario + '</p>' : '') +
+                        '</div>';
+                }).join('');
+            });
+        }
+
+        // Función de compartir robusta
+        const shareContent = async () => {
+            const title = document.getElementById('biz-title').innerText;
+            const text = "Mira este negocio en CityMart Lamas: " + title;
+            const url = window.location.href;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title, text, url });
+                } catch (err) { console.log("Error al compartir:", err); }
+            } else {
+                try {
+                    await navigator.clipboard.writeText(url);
+                    alert("¡Enlace del negocio copiado al portapapeles!");
+                } catch (err) {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
+                }
+            }
+        };
+
+        // Asignar evento al botón
+        const shareBtn = document.getElementById('share-biz-btn');
+        if (shareBtn) shareBtn.addEventListener('click', shareContent);
+
+        loadDetail();
+    </script>
+</body>
+
+</html>

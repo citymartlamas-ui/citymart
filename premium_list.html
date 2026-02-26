@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negocios Premium | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <header class="section"
+        style="padding-top: 16px; padding-bottom: 8px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; gap: 8px;"
+                onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="Logo CityMart" style="height: 60px; width: auto; margin-left: -10px;">
+                <h1 style="font-family: 'Outfit'; font-weight: 900; color: #111; font-size: 1.3rem; line-height: 1;">
+                    CityMart<span style="color: var(--secondary-color);">Lamas</span></h1>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <a href="./" style="color: var(--text-color);"><i data-lucide="chevron-left"></i></a>
+                <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.4rem;">Negocios Premium</h2>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <div id="premium-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Se poblará dinámicamente -->
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="flame" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { collection, getDocs, limit, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        const listContainer = document.getElementById('premium-list');
+
+        async function loadPremium() {
+            listContainer.innerHTML = `<div style="text-align:center; padding: 40px;"><div class="loader"></div><p style="margin-top:10px; color:#666;">Cargando negocios premium...</p></div>`;
+
+            try {
+                const negociosSnap = await getDocs(collection(db, "negocio"));
+                listContainer.innerHTML = '';
+
+                negociosSnap.forEach(doc => {
+                    const data = doc.data();
+
+                    // Filter: must be premium and visible
+                    if (data.promocionanuncio !== true || data.negociovisible === false) return;
+
+                    const biz = {
+                        id: doc.id,
+                        title: data.nombre || "Negocio Premium",
+                        cat: data.categoria || "Destacado",
+                        img: data.foto || data.imagen || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=400",
+                        phone: data.numerodecontacto || data.telefono || ""
+                    };
+
+                    const rating = data.promedio_puntuacion || 0;
+                    const starsHtml = Array.from({ length: 5 }, (_, i) => {
+                        const isFull = i < Math.floor(rating);
+                        return `<i data-lucide="star" style="width: 12px; height: 12px; ${isFull ? 'fill: #fbbf24; color: #fbbf24;' : 'color: #d1d5db;'}"></i>`;
+                    }).join('');
+
+                    listContainer.innerHTML += `
+                        <div class="card" style="display: flex; height: 100px; background: #f9fafb; margin-bottom: 8px; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onclick="window.location.href='business_detail.html?id=${biz.id}'">
+                            <img src="${biz.img}" style="width: 100px; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=400'">
+                            <div style="padding: 12px; display: flex; flex-direction: column; justify-content: center; flex: 1;">
+                                <h3 style="font-size: 1rem; margin-bottom: 2px; color: #111;">${biz.title}</h3>
+                                <p style="font-size: 0.8rem; color: #666; margin-bottom: 4px;">${biz.cat}</p>
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <div style="display: flex; gap: 1px;">
+                                        ${starsHtml}
+                                    </div>
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: #374151;">${rating > 0 ? rating.toFixed(1) : 'S/R'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Error cargando premium:", error);
+                listContainer.innerHTML = `<p style="text-align:center; padding:40px; color:#ef4444;">Error de conexión.</p>`;
+            }
+        }
+
+        loadPremium();
+    </script>
+</body>
+
+</html>

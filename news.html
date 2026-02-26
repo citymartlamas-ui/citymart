@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 8px;">
+        <div class="container">
+            <div style="display: flex; align-items: center; cursor: pointer; gap: 8px;"
+                onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="Logo CityMart" style="height: 70px; width: auto; margin-left: -12px;">
+                <h1 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.6rem;">Noticias<span
+                        style="color: var(--secondary-color);">Lamas</span></h1>
+            </div>
+            <p style="color: #666; font-size: 0.9rem; margin-top: 4px;">Entérate de lo último en la ciudad</p>
+        </div>
+    </header>
+
+    <main class="container" style="padding-bottom: 100px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+            <!-- Se poblará dinámicamente con Firebase -->
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="news.html" class="nav-item active">
+            <i data-lucide="flame" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        const newsContainer = document.querySelector('main.container > div');
+
+        function loadNews() {
+            newsContainer.innerHTML = `<div style="text-align:center; padding: 40px;"><div class="loader"></div><p style="margin-top:10px; color:#666;">Cargando noticias...</p></div>`;
+
+            try {
+                onSnapshot(collection(db, "noticias"), (querySnapshot) => {
+                    newsContainer.innerHTML = '';
+
+                    if (querySnapshot.empty) {
+                        newsContainer.innerHTML = `<p style="text-align:center; padding:40px; color:#666;">No hay noticias recientes.</p>`;
+                        return;
+                    }
+
+                    const docs = [];
+                    querySnapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }));
+
+                    // Ordenar por fecha_creacion descending
+                    docs.sort((a, b) => {
+                        const dateA = a.fecha_creacion?.seconds || 0;
+                        const dateB = b.fecha_creacion?.seconds || 0;
+                        return dateB - dateA;
+                    });
+
+                    docs.forEach((data) => {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.style.height = '300px';
+                        card.style.marginBottom = '12px'; // Un poco de espacio extra
+                        card.onclick = () => {
+                            window.location.href = `news_detail.html?id=${data.id}`;
+                        };
+
+                        const tagText = (data.categoria || 'NOTICIA').toUpperCase();
+                        const tagColor = data.categoria === 'eventos' ? 'var(--secondary-color)' : 'var(--primary-color)';
+
+                        // Usar 'contenido' que es el campo correcto
+                        const summary = data.contenido || data.texto || "";
+
+                        card.innerHTML = `
+                            <img src="${data.imagen || 'https://images.unsplash.com/photo-1533903345306-15d1c30952de?auto=format&fit=crop&q=80&w=800'}" class="img-full">
+                            <div class="overlay-text">
+                                <span style="background: ${tagColor}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">${tagText}</span>
+                                <h3 style="font-size: 1.4rem; margin-top: 8px;">${data.titulo || 'Sin título'}</h3>
+                                <p style="font-size: 0.85rem; opacity: 0.9;">${summary.substring(0, 100)}${summary.length > 100 ? '...' : ''}</p>
+                            </div>
+                        `;
+                        newsContainer.appendChild(card);
+                    });
+                    lucide.createIcons();
+                });
+            } catch (error) {
+                console.error("Error iniciando onSnapshot de noticias:", error);
+                newsContainer.innerHTML = `<p style="text-align:center; padding:40px; color:#ef4444;">Error al configurar la carga de noticias.</p>`;
+            }
+        }
+
+        loadNews();
+    </script>
+</body>
+
+</html>

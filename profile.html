@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #f9fafb;
+            --text-main: #111827;
+            --text-muted: #666666;
+            --border-color: #f2f2f2;
+        }
+
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        body.dark-mode header,
+        body.dark-mode .bottom-nav {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3,
+        body.dark-mode span {
+            color: var(--text-main);
+        }
+
+        body.dark-mode p {
+            color: var(--text-muted);
+        }
+
+        body.dark-mode .section-title {
+            color: var(--secondary-color);
+        }
+
+        /* Switch Toggle Style */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--jungle-green);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 16px; border-bottom: 1px solid #eee;">
+        <div class="container">
+            <div style="display: flex; align-items: center; margin-bottom: 24px; cursor: pointer; gap: 8px;"
+                onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="Logo CityMart" style="height: 60px; width: auto; margin-left: -10px;">
+                <h1 style="font-family: 'Outfit'; font-weight: 900; color: #111; font-size: 1.4rem; line-height: 1;">
+                    CityMart<span style="color: var(--secondary-color);">Lamas</span> <small
+                        style="font-size: 0.5rem; opacity: 0.3;">v1.2</small></h1>
+            </div>
+            <div id="profile-header-info" style="text-align: center; position: relative; margin-bottom: 20px;">
+                <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 12px;">
+                    <div id="profile-img-container"
+                        style="width: 100px; height: 100px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <i data-lucide="user" id="default-user-icon"
+                            style="width: 50px; height: 50px; color: #9ca3af;"></i>
+                        <img id="user-photo" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <label for="profile-upload"
+                        style="position: absolute; bottom: 0; right: 0; background: var(--primary-color); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                        <i data-lucide="camera" style="width: 16px; height: 16px;"></i>
+                    </label>
+                    <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                </div>
+                <h2 id="profile-name" style="font-family: 'Outfit'; font-weight: 900; font-size: 1.5rem;">Invitado</h2>
+                <p id="profile-email" style="color: #666; font-size: 0.9rem;">Registrado en Lamas</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <div id="auth-section"
+            style="display: none; flex-direction: column; gap: 20px; text-align: center; padding: 20px 0;">
+            <p style="color: #666; font-size: 1rem;">Inicia sesión para gestionar tus negocios y promociones.</p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button onclick="window.location.href='login.html'" class="btn-primary"
+                    style="width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem;">INICIAR
+                    SESIÓN</button>
+                <button onclick="window.location.href='signup.html'"
+                    style="width: 100%; padding: 16px; background: white; border: 1px solid #e5e7eb; border-radius: 12px; font-weight: 800; font-size: 1rem; color: var(--text-color);">CREAR
+                    CUENTA</button>
+            </div>
+        </div>
+
+        <div id="profile-content" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Gestión de Negocio -->
+            <div class="section-title"
+                style="color: var(--secondary-color); display: flex; align-items: center; justify-content: space-between;">
+                GESTIÓN DE NEGOCIO
+                <span
+                    style="background: var(--secondary-color); color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px;">ESTADISTICAS</span>
+            </div>
+
+            <div id="business-options"
+                style="display: flex; flex-direction: column; gap: 10px; background: #fff; padding: 12px; border-radius: 16px; border: 1px solid #f2f2f2; margin-bottom: 8px;">
+                <!-- Cargando dinámicamente -->
+            </div>
+
+            <div class="section-title" style="margin-top: 10px;">Ajustes de Cuenta</div>
+
+            <!-- Notificaciones -->
+            <div
+                style="background: #f9fafb; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i data-lucide="bell" style="color: var(--jungle-green);"></i>
+                    <span style="font-weight: 600;">Notificaciones Push</span>
+                </div>
+                <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                    <input type="checkbox" id="notif-toggle" style="opacity: 0; width: 0; height: 0;" checked>
+                    <span class="slider"
+                        style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px;"></span>
+                </label>
+            </div>
+
+            <!-- Configuración / Dark Mode -->
+            <div onclick="toggleDarkMode()"
+                style="background: #f9fafb; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i data-lucide="moon" style="color: var(--jungle-green);"></i>
+                    <span style="font-weight: 600;">Tema Oscuro (Beta)</span>
+                </div>
+                <div id="dark-mode-status" style="font-size: 0.8rem; font-weight: 700; color: #9ca3af;">OFF</div>
+            </div>
+
+            <!-- Ayuda -->
+            <div onclick="window.open('https://wa.me/51900000000?text=Hola CityMart, necesito ayuda con mi cuenta', '_blank')"
+                style="background: #f9fafb; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i data-lucide="help-circle" style="color: var(--jungle-green);"></i>
+                    <span style="font-weight: 600;">Ayuda y Soporte</span>
+                </div>
+                <i data-lucide="chevron-right" style="color: #9ca3af;"></i>
+            </div>
+
+            <button onclick="logout()"
+                style="width: 100%; padding: 16px; background: #fee2e2; color: #ef4444; border: none; border-radius: 12px; font-weight: 800; margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i data-lucide="log-out"></i> CERRAR SESIÓN
+            </button>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="flame" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { auth, db, storage } from './assets/js/firebase-init.js';
+        import { signOut, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+        lucide.createIcons();
+
+        const authSection = document.getElementById('auth-section');
+        const profileContent = document.getElementById('profile-content');
+        const userDisplayName = document.getElementById('profile-name');
+        const userDisplayEmail = document.getElementById('profile-email');
+        const businessOptions = document.getElementById('business-options');
+        const userPhotoImg = document.getElementById('user-photo');
+        const defaultUserIcon = document.getElementById('default-user-icon');
+        const profileUpload = document.getElementById('profile-upload');
+
+        // Modo Oscuro Inicial
+        if (localStorage.getItem('dark-mode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            const statusEl = document.getElementById('dark-mode-status');
+            if (statusEl) statusEl.innerText = 'ON';
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (authSection) authSection.style.display = 'none';
+                if (profileContent) profileContent.style.display = 'flex';
+                if (userDisplayName) userDisplayName.innerText = user.displayName || 'Usuario';
+                if (userDisplayEmail) userDisplayEmail.innerText = user.email;
+
+                // Foto de Perfil
+                if (user.photoURL) {
+                    userPhotoImg.src = user.photoURL;
+                    userPhotoImg.style.display = 'block';
+                    defaultUserIcon.style.display = 'none';
+                }
+
+                // Buscar negocio
+                try {
+                    const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        const bizData = querySnapshot.docs[0].data();
+                        const status = bizData.estado || 'pendiente';
+
+                        if (status === 'pendiente') {
+                            businessOptions.innerHTML = `
+                                <div style="padding: 20px; text-align: center; border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; background: var(--card-bg);">
+                                    <i data-lucide="clock" style="color: #f59e0b; margin-bottom: 8px;"></i>
+                                    <p style="font-weight: 700; color: #92400e; font-size: 0.9rem;">Negocio en Revisión</p>
+                                    <p style="font-size: 0.75rem; color: #b45309;">Estamos verificando tu información.</p>
+                                </div>
+                            `;
+                        } else {
+                            businessOptions.innerHTML = `
+                                <div style="padding: 12px; background: #f0fdf4; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid #dcfce7;">
+                                    <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                                        <i data-lucide="check-circle" style="width: 18px;"></i>
+                                    </div>
+                                    <div style="flex: 1">
+                                        <p style="font-size: 0.8rem; font-weight: 800; color: #166534; line-height:1;">${bizData.nombre}</p>
+                                        <p style="font-size: 0.65rem; color: #15803d;">Negocio Activo</p>
+                                    </div>
+                                    <button onclick="window.location.href='business_detail.html?id=${querySnapshot.docs[0].id}'" style="background:none; border:none; color:#166534; cursor:pointer;"><i data-lucide="external-link" style="width:16px;"></i></button>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <button onclick="window.location.href='create_promo.html'" style="padding: 12px; background: #f2460d; color: white; border: none; border-radius: 10px; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i data-lucide="tag" style="width:14px;"></i> PROMO
+                                    </button>
+                                    <button onclick="window.location.href='create_news.html'" style="padding: 12px; background: #004d40; color: white; border: none; border-radius: 10px; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i data-lucide="file-text" style="width:14px;"></i> NOTICIA
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    } else {
+                        businessOptions.innerHTML = `
+                            <button onclick="window.location.href='register_business.html'"
+                                style="width: 100%; padding: 16px; background: var(--jungle-green); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                                <i data-lucide="store"></i> REGISTRAR MI NEGOCIO
+                            </button>
+                        `;
+                    }
+                } catch (e) { console.error(e); }
+
+                // Botón Admin
+                if (user.email === 'admin@gmail.com') {
+                    if (!document.getElementById('admin-btn-container')) {
+                        const adminBtn = document.createElement('div');
+                        adminBtn.id = 'admin-btn-container';
+                        adminBtn.innerHTML = `
+                            <div class="section-title" style="margin-top: 20px;">Administración</div>
+                            <div onclick="window.location.href='admin.html'"
+                                style="background: #1e293b; color: white; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 20px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <i data-lucide="shield-check" style="color: #fbbf24;"></i>
+                                    <span style="font-weight: 600;">Panel de Administrador</span>
+                                </div>
+                                <i data-lucide="chevron-right" style="color: #94a3b8;"></i>
+                            </div>
+                        `;
+                        profileContent.insertBefore(adminBtn, profileContent.querySelector('button[onclick="logout()"]'));
+                    }
+                }
+                lucide.createIcons();
+            } else {
+                if (authSection) authSection.style.display = 'flex';
+                if (profileContent) profileContent.style.display = 'none';
+            }
+        });
+
+        // Cambio de Foto
+        profileUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file || !auth.currentUser) return;
+
+            try {
+                userDisplayName.innerText = "Subiendo...";
+                const storageRef = ref(storage, `perfiles/${auth.currentUser.uid}`);
+                await uploadBytes(storageRef, file);
+                const url = await getDownloadURL(storageRef);
+
+                await updateProfile(auth.currentUser, { photoURL: url });
+                userPhotoImg.src = url;
+                userPhotoImg.style.display = 'block';
+                defaultUserIcon.style.display = 'none';
+                userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
+                alert("¡Foto de perfil actualizada!");
+            } catch (err) {
+                console.error("Error subiendo foto:", err);
+                alert("Error al actualizar la foto.");
+            }
+        });
+
+        window.toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
+            document.getElementById('dark-mode-status').innerText = isDark ? 'ON' : 'OFF';
+        };
+
+        window.logout = async () => {
+            try {
+                await signOut(auth);
+                window.location.href = './';
+            } catch (e) { console.error(e); }
+        };
+    </script>
+    </script>
+</body>
+
+</html>

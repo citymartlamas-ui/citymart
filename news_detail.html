@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Noticia | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .news-hero {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: var(--text-color);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-content {
+            background: white;
+            border-radius: 30px 30px 0 0;
+            margin-top: -30px;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 5;
+            min-height: 100vh;
+        }
+
+        .category-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        .article-body {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+        }
+
+        .share-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #f3f4f6;
+            text-align: center;
+        }
+
+        .share-btns {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .share-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .share-icon:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container" style="padding: 0; max-width: 768px;">
+        <div class="news-hero">
+            <a href="news.html" class="back-btn">
+                <i data-lucide="chevron-left"></i>
+            </a>
+            <img id="news-img"
+                src="https://images.unsplash.com/photo-1533903345306-15d1c30952de?auto=format&fit=crop&q=80&w=1200"
+                class="img-full">
+        </div>
+
+        <div class="news-content">
+            <div id="news-tag" class="category-tag" style="background: var(--secondary-color);">EVENTO</div>
+            <h1 id="news-title"
+                style="font-family: 'Outfit'; font-size: 2.2rem; line-height: 1.1; margin-bottom: 16px;">Cargando
+                noticia...</h1>
+
+            <div class="news-meta">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <i data-lucide="calendar" style="width: 14px;"></i>
+                    <span>24 de Febrero, 2026</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <i data-lucide="eye" style="width: 14px;"></i>
+                    <span>1.2k vistas</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+                <p id="news-desc">
+                    Explora los detalles de lo que está sucediendo en nuestra querida ciudad de Lamas. Mantente
+                    conectado con la cultura, el arte y las noticias oficiales.
+                </p>
+                <p>
+                    Lamas, conocida como la Ciudad de los Tres Pisos, sigue sorprendiendo a locales y visitantes con su
+                    vibrante vida cultural. En este artículo profundizamos en los eventos más importantes de la semana y
+                    cómo están impactando en la comunidad.
+                </p>
+                <p>
+                    Desde festivales gastronómicos hasta nuevas aperturas comerciales, nuestra plataforma te mantiene al
+                    día con todo lo que necesitas saber para disfrutar de la ciudad al máximo.
+                </p>
+            </div>
+
+            <div class="share-section">
+                <p style="font-weight: 700; color: #6b7280; font-size: 0.9rem;">Compartir noticia</p>
+                <div class="share-btns">
+                    <div class="share-icon" onclick="window.shareContent('facebook')"><i data-lucide="facebook"></i>
+                    </div>
+                    <div class="share-icon" onclick="window.shareContent('whatsapp')"><i
+                            data-lucide="message-circle"></i></div>
+                    <div class="share-icon" onclick="window.shareContent('native')"><i data-lucide="share-2"></i></div>
+                </div>
+            </div>
+
+            <div style="height: 100px;"></div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const newsId = urlParams.get('id');
+
+        async function loadNewsDetail() {
+            if (!newsId) {
+                alert('No se encontró el ID de la noticia');
+                window.location.href = 'news.html';
+                return;
+            }
+
+            try {
+                // Probamos con 'noticias' (minúscula) que es lo que usa el creador
+                const newsDoc = await getDoc(doc(db, "noticias", newsId));
+                if (newsDoc.exists()) {
+                    const data = newsDoc.data();
+                    const category = data.categoria || "Noticia";
+
+                    document.getElementById('news-title').innerText = data.titulo || "Sin título";
+                    document.getElementById('news-tag').innerText = category.toUpperCase();
+                    document.getElementById('news-img').src = data.imagen || "https://images.unsplash.com/photo-1533903345306-15d1c30952de?auto=format&fit=crop&q=80&w=1200";
+
+                    // Usar 'contenido' que es el campo que guarda create_news.html
+                    const content = data.contenido || data.texto || "Sin contenido disponible.";
+                    document.getElementById('news-desc').innerHTML = content.replace(/\n/g, '<br>');
+
+                    // Formatear Fecha
+                    if (data.fecha_creacion) {
+                        const date = data.fecha_creacion.toDate();
+                        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                        document.querySelector('.news-meta span').innerText = date.toLocaleDateString('es-ES', options);
+                    }
+
+                    // Style tag
+                    const catColors = {
+                        'eventos': 'var(--secondary-color)',
+                        'turismo': '#0ea5e9',
+                        'comunidad': '#8b5cf6',
+                        'negocios': 'var(--primary-color)'
+                    };
+                    document.getElementById('news-tag').style.background = catColors[category.toLowerCase()] || 'var(--jungle-green)';
+
+                } else {
+                    alert('Noticia no encontrada');
+                    window.location.href = 'news.html';
+                }
+            } catch (error) {
+                console.error("Error cargando noticia:", error);
+            }
+        }
+
+        window.shareContent = async (platform) => {
+            const title = document.getElementById('news-title').innerText;
+            const text = "Mira esta noticia en CityMart Lamas: " + title;
+            const url = window.location.href;
+
+            if (platform === 'native' && navigator.share) {
+                try {
+                    await navigator.share({ title, text, url });
+                } catch (err) { console.log("Error sharing:", err); }
+            } else if (platform === 'whatsapp') {
+                window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
+            } else if (platform === 'facebook') {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+            } else {
+                // Fallback: Copy to clipboard
+                try {
+                    await navigator.clipboard.writeText(url);
+                    alert("¡Enlace copiado al portapapeles!");
+                } catch (err) {
+                    alert("No se pudo copiar el enlace.");
+                }
+            }
+        };
+
+        loadNewsDetail();
+    </script>
+</body>
+
+</html>

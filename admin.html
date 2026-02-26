@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .admin-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .admin-info {
+            flex: 1;
+        }
+
+        .admin-info h3 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .admin-info p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .toggle-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .active-toggle {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .inactive-toggle {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .premium-tag {
+            background: #fef9c3;
+            color: #854d0e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 16px; border-bottom: 1px solid #eee;">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;"
+                    onclick="window.location.href='profile.html'">
+                    <i data-lucide="chevron-left"></i>
+                    <h1 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.4rem;">Panel <span
+                            style="color: var(--secondary-color);">Admin</span></h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <div id="admin-login-check" style="display: none; text-align: center; padding: 40px 0;">
+            <p>Verificando acceso de administrador...</p>
+        </div>
+
+        <section id="admin-content" style="display: none;">
+            <div class="section-title">Aprobar Negocios / Premium</div>
+            <div id="businesses-list">
+                <!-- Se poblará dinámicamente -->
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { auth, db } from './assets/js/firebase-init.js';
+        import { collection, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        const adminContent = document.getElementById('admin-content');
+        const loginCheck = document.getElementById('admin-login-check');
+        const listContainer = document.getElementById('businesses-list');
+
+        const ADMIN_EMAIL = "admin@gmail.com";
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user && (user.email === ADMIN_EMAIL)) {
+                loginCheck.style.display = 'none';
+                adminContent.style.display = 'block';
+                loadBusinesses();
+            } else {
+                alert("Acceso denegado. Solo administradores.");
+                window.location.href = 'profile.html';
+            }
+        });
+
+        async function loadBusinesses() {
+            listContainer.innerHTML = '<p>Cargando negocios...</p>';
+            try {
+                const q = query(collection(db, "negocio"), orderBy("fechacreado", "desc"));
+                const querySnapshot = await getDocs(q);
+                listContainer.innerHTML = '';
+
+                querySnapshot.forEach((businessDoc) => {
+                    const data = businessDoc.data();
+                    const id = businessDoc.id;
+
+                    const card = document.createElement('div');
+                    card.className = 'admin-card';
+
+                    const isVisible = data.negociovisible !== false; // default true
+                    const isPremium = data.promocionanuncio === true;
+
+                    card.innerHTML = `
+                        <img src="${data.foto || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=200'}">
+                        <div class="admin-info">
+                            <h3>${data.nombre || 'Sin nombre'}</h3>
+                            <p>${data.categoria || 'Sin categoría'}</p>
+                            ${isPremium ? '<span class="premium-tag">PREMIUM</span>' : ''}
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <button class="toggle-btn ${isVisible ? 'active-toggle' : 'inactive-toggle'}" 
+                                onclick="window.toggleVisibility('${id}', ${isVisible})">
+                                ${isVisible ? 'VISIBLE' : 'OCULTO'}
+                            </button>
+                            <button class="toggle-btn ${isPremium ? 'active-toggle' : 'inactive-toggle'}"
+                                onclick="window.togglePremium('${id}', ${isPremium})">
+                                ${isPremium ? 'PREMIUM ON' : 'PREMIUM OFF'}
+                            </button>
+                        </div>
+                    `;
+                    listContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error al cargar negocios:", error);
+                listContainer.innerHTML = '<p>Error al cargar datos.</p>';
+            }
+        }
+
+        window.toggleVisibility = async (id, currentStatus) => {
+            try {
+                await updateDoc(doc(db, "negocio", id), {
+                    negociovisible: !currentStatus
+                });
+                loadBusinesses();
+            } catch (error) {
+                alert("Error al actualizar visibilidad");
+            }
+        };
+
+        window.togglePremium = async (id, currentStatus) => {
+            try {
+                await updateDoc(doc(db, "negocio", id), {
+                    promocionanuncio: !currentStatus
+                });
+                loadBusinesses();
+            } catch (error) {
+                alert("Error al actualizar estado premium");
+            }
+        };
+
+    </script>
+</body>
+
+</html>

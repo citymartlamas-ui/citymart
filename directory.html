@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+            scroll-snap-align: start;
+        }
+
+        .cat-icon {
+            width: 50px;
+            height: 50px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            transition: var(--transition);
+        }
+
+        .cat-item.active .cat-icon {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .cat-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #4b5563;
+        }
+
+        .business-mosaic {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            padding-top: 10px;
+        }
+
+        .sub-chip {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .sub-chip.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .loader {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="section"
+        style="padding-top: 16px; padding-bottom: 8px; position: sticky; top: 0; background: white; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; gap: 8px;"
+                onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="Logo CityMart" style="height: 60px; width: auto; margin-left: -10px;">
+                <h1 style="font-family: 'Outfit'; font-weight: 900; color: #111; font-size: 1.3rem; line-height: 1;">
+                    CityMart<span style="color: var(--secondary-color);">Lamas</span></h1>
+            </div>
+            <div style="position: relative;">
+                <i data-lucide="search"
+                    style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #9ca3af; width: 16px;"></i>
+                <input type="text" placeholder="¿Qué negocio buscas hoy?"
+                    style="width: 100%; padding: 10px 10px 10px 40px; border-radius: 8px; border: 1px solid #eee; background: #f9fafb; outline: none; font-size: 0.9rem;">
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-bottom: 100px;">
+        <!-- Carrusel de Categorías (Rotativo) -->
+        <section class="section" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 16px;">
+            <div id="category-carousel" class="carousel-track" style="padding-left: 0; gap: 16px;">
+                <div class="cat-item active" onclick="filterBy('Todos')">
+                    <div class="cat-icon"><i data-lucide="layout-grid"></i></div>
+                    <span class="cat-label">Todos</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Comida')">
+                    <div class="cat-icon"><i data-lucide="utensils"></i></div>
+                    <span class="cat-label">Comida</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Hoteles')">
+                    <div class="cat-icon"><i data-lucide="bed"></i></div>
+                    <span class="cat-label">Hoteles</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Servicios')">
+                    <div class="cat-icon"><i data-lucide="wrench"></i></div>
+                    <span class="cat-label">Servicios</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Artesanías')">
+                    <div class="cat-icon"><i data-lucide="shopping-bag"></i></div>
+                    <span class="cat-label">Artesanías</span>
+                </div>
+                <!-- Ver todas las categorías -->
+                <div class="cat-item" onclick="window.location.href='all_categories.html'">
+                    <div class="cat-icon" style="background: #eef2ff; color: var(--primary-color);">
+                        <i data-lucide="plus"></i>
+                    </div>
+                    <span class="cat-label" style="color: var(--primary-color);">Ver más</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sub-Categorías para Servicios -->
+        <div id="sub-filter"
+            style="display: none; padding: 0 16px 16px; gap: 8px; overflow-x: auto; white-space: nowrap;">
+            <span onclick="subFilter('Todos')" class="sub-chip active">Todo</span>
+            <span onclick="subFilter('Transporte')" class="sub-chip">Transporte</span>
+            <span onclick="subFilter('Trabajadores')" class="sub-chip">Trabajadores/Técnicos</span>
+            <span onclick="subFilter('Hogar')" class="sub-chip">Hogar</span>
+            <span onclick="subFilter('Profesionales')" class="sub-chip">Profesionales</span>
+        </div>
+
+        <!-- Mosaico Inmersivo de Negocios -->
+        <div class="business-mosaic">
+            <!-- Cargando... -->
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item active">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="flame" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        let allBusinesses = [];
+        const mosaic = document.querySelector('.business-mosaic');
+        const subFilterDiv = document.getElementById('sub-filter');
+        let currentMainCat = 'Todos';
+        let currentSubCat = 'Todos';
+        let searchTerm = '';
+
+        function loadData() {
+            mosaic.innerHTML = `<div style="text-align:center; padding: 40px; grid-column: 1/-1;"><div class="loader"></div><p style="margin-top:10px; color:#666;">Cargando directorio...</p></div>`;
+
+            try {
+                onSnapshot(collection(db, "negocio"), (negociosSnap) => {
+                    allBusinesses = negociosSnap.docs
+                        .map(doc => {
+                            const data = doc.data();
+                            return {
+                                id: doc.id,
+                                title: data.nombre || "Sin nombre",
+                                cat: data.categoria || "Otros",
+                                subCat: data.subcategoria || "General",
+                                sub: data.descripcion || "",
+                                img: data.foto || data.imagen || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600",
+                                type: data.negocio_o_servicio === 'servicio' ? 'service' : 'biz',
+                                phone: data.numerodecontacto || data.telefono || "",
+                                rating: data.promedio_puntuacion || 0,
+                                isVisible: data.negociovisible !== false
+                            };
+                        })
+                        .filter(b => b.isVisible);
+
+                    renderBusinesses();
+                }, (error) => {
+                    console.error("Error cargando Firestore en tiempo real:", error);
+                    mosaic.innerHTML = `<p style="text-align: center; grid-column: 1/-1; padding: 40px; color: #ef4444;">Error al conectar con la base de datos.</p>`;
+                });
+            } catch (error) {
+                console.error("Error iniciando onSnapshot:", error);
+                mosaic.innerHTML = `<p style="text-align: center; grid-column: 1/-1; padding: 40px; color: #ef4444;">Error al configurar la carga de datos.</p>`;
+            }
+        }
+
+        function renderBusinesses() {
+            mosaic.innerHTML = '';
+
+            // Mapeo detallado de categorías de la base de datos a las de la UI
+            const categoryMapping = {
+                'Comida': ['Alimentación y restaurantes', 'Bienes de consumo', 'Turismo', 'comida', 'restaurante', 'bar', 'cafetería', 'restaurantes'],
+                'Hoteles': ['Turismo', 'Alquileres', 'hoteles', 'hospedaje', 'alojamiento', 'inmobiliaria', 'inmobiliario'],
+                'Servicios': ['Transporte', 'Reparación', 'Salud', 'Educación', 'Tecnología', 'Seguridad', 'Telecomunicaciones', 'Marketing', 'Consultoría', 'Servicios legales', 'Limpieza y mantenimiento', 'Deportes y recreación', 'Agricultura', 'Finanzas', 'Construcción', 'Bienes raíces', 'servicios', 'comercio', 'tienda', 'tiendas', 'moda'],
+                'Artesanías': ['Artes y cultura', 'Moda', 'Decoración', 'diseño y creativos', 'Manufactura', 'artesanía', 'souvenirs', 'artesanías']
+            };
+
+            const filtered = allBusinesses.filter(b => {
+                const searchLower = searchTerm.toLowerCase().trim();
+                const titleLower = b.title.toLowerCase();
+                const descLower = b.sub.toLowerCase();
+                const catLower = b.cat.toLowerCase().trim();
+
+                const matchesSearch = titleLower.includes(searchLower) || descLower.includes(searchLower);
+
+                let matchesCat = true;
+                if (currentMainCat !== 'Todos') {
+                    const mappedCats = categoryMapping[currentMainCat];
+                    if (mappedCats) {
+                        matchesCat = mappedCats.some(mc => catLower.includes(mc.toLowerCase().trim()) || mc.toLowerCase().trim().includes(catLower));
+                    } else {
+                        matchesCat = catLower === currentMainCat.toLowerCase();
+                    }
+
+                    // Búsqueda inteligente por palabras clave si no hay coincidencia directa de categoría
+                    if (!matchesCat) {
+                        const fallbacks = {
+                            'Comida': ['restauran', 'comida', 'bar', 'chifa', 'café', 'almuerzo', 'snack', 'piqueo', 'karaoke', 'cevicheria', 'pollos', 'alimenta'],
+                            'Hoteles': ['hotel', 'hospedaje', 'albergue', 'bungalow', 'inmobiliaria', 'cuarto', 'alquiler', 'stay'],
+                            'Artesanías': ['artesanía', 'tejido', 'cerámica', 'recuerdo', 'ropa', 'joyas', 'souvenir'],
+                            'Servicios': ['clínica', 'médico', 'farmacia', 'taxi', 'transporte', 'repara', 'técnico', 'radio', 'tv', 'construc', 'ingenier']
+                        };
+                        const keywords = fallbacks[currentMainCat] || [];
+                        matchesCat = keywords.some(kw => titleLower.includes(kw) || descLower.includes(kw) || catLower.includes(kw));
+                    }
+                }
+
+                // Sub-categorías para 'Servicios'
+                const matchesSub = (currentMainCat === 'Servicios' && currentSubCat !== 'Todos')
+                    ? b.subCat === currentSubCat
+                    : true;
+
+                return matchesCat && matchesSearch && matchesSub;
+            });
+
+            if (filtered.length === 0) {
+                mosaic.innerHTML = '<p style="text-align: center; grid-column: 1/-1; padding: 40px; color: #666;">No se encontraron resultados en esta categoría.</p>';
+                return;
+            }
+
+            filtered.forEach(biz => {
+                const actionBtn = biz.type === 'service'
+                    ? `<button onclick="event.stopPropagation(); window.location.href='tel:${biz.phone}'"
+                        style="background: var(--primary-color); color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="phone" style="width: 14px;"></i> Llamar
+                    </button>`
+                    : `<button onclick="event.stopPropagation(); window.location.href='https://wa.me/51${biz.phone}'"
+                        style="background: #25d366; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="message-circle" style="width: 14px;"></i> WhatsApp
+                    </button>`;
+
+                mosaic.innerHTML += `
+                    <div class="card" style="height: 240px; margin-bottom: 4px;" onclick="window.location.href='business_detail.html?id=${biz.id}'">
+                        <img src="${biz.img}" class="img-full">
+                        <div class="overlay-text" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <h3 style="font-size: 1.1rem;">${biz.title}</h3>
+                                <div style="display: flex; align-items: center; gap: 4px; font-size: 0.8rem; margin-bottom: 4px; color: #fbbf24; font-weight: 700;">
+                                    <span>★ ${biz.rating.toFixed(1)}</span>
+                                    <span style="color: rgba(255,255,255,0.8); font-weight: 400; font-size: 0.75rem;">• ${biz.cat}</span>
+                                </div>
+                                <p style="font-size: 0.8rem; opacity: 0.9;">${biz.sub}</p>
+                            </div>
+                            ${actionBtn}
+                        </div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        window.filterBy = (cat) => {
+            currentMainCat = cat;
+            currentSubCat = 'Todos';
+            document.querySelectorAll('.cat-item').forEach(item => {
+                if (item.innerText.includes(cat)) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+            if (cat === 'Servicios') subFilterDiv.style.display = 'flex';
+            else subFilterDiv.style.display = 'none';
+            renderBusinesses();
+        };
+
+        window.subFilter = (sub) => {
+            currentSubCat = sub;
+            document.querySelectorAll('.sub-chip').forEach(chip => {
+                if (chip.innerText.includes(sub)) chip.classList.add('active');
+                else chip.classList.remove('active');
+            });
+            renderBusinesses();
+        };
+
+        document.querySelector('input').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderBusinesses();
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const catParam = urlParams.get('cat');
+        const searchParam = urlParams.get('search');
+
+        // Mapeo de parámetros de URL a etiquetas de la UI
+        const paramToName = {
+            'restaurantes': 'Comida',
+            'hospedaje': 'Hoteles',
+            'artesania': 'Artesanías',
+            'artesanías': 'Artesanías',
+            'servicios': 'Servicios',
+            'transporte': 'Servicios',
+            'salud': 'Servicios',
+            'tiendas': 'Servicios'
+        };
+
+        const searchOnlyParams = ['transporte', 'salud', 'tiendas']; // Parámetros que también activan búsqueda
+
+        loadData().then(() => {
+            if (catParam) {
+                const lowerParam = catParam.toLowerCase();
+                const uiCat = paramToName[lowerParam] || catParam;
+                filterBy(uiCat);
+
+                // Si la categoría específica es una subcategoría de Servicios, buscarla también
+                if (searchOnlyParams.includes(lowerParam)) {
+                    searchTerm = lowerParam;
+                    document.querySelector('header input').value = lowerParam;
+                    renderBusinesses();
+                }
+            }
+            if (searchParam) {
+                searchTerm = searchParam;
+                document.querySelector('header input').value = searchParam;
+                renderBusinesses();
+            }
+        });
+
+        // Add Enter key support for search in directory too
+        document.querySelector('header input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchTerm = e.target.value;
+                renderBusinesses();
+            }
+        });
+    </script>
+</body>
+
+</html>

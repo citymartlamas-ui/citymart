@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todas las Categorías | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 20px 0;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-card:hover {
+            background: #f3f4f6;
+            transform: translateY(-4px);
+        }
+
+        .cat-icon-large {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .cat-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 8px; border-bottom: 1px solid #eee;">
+        <div class="container">
+            <div style="display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; gap: 8px;"
+                onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="Logo CityMart" style="height: 60px; width: auto; margin-left: -10px;">
+                <h1 style="font-family: 'Outfit'; font-weight: 900; color: #111; font-size: 1.3rem; line-height: 1;">
+                    CityMart<span style="color: var(--secondary-color);">Lamas</span></h1>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <a href="directory.html" style="color: var(--text-color);"><i data-lucide="chevron-left"></i></a>
+                <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.4rem;">Categorías</h2>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-bottom: 100px;">
+        <div class="category-grid" id="all-cats">
+            <!-- PWA Style Grid -->
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item active">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="flame" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script>
+        const categories = [
+            { name: "Comida", icon: "utensils" },
+            { name: "Hoteles", icon: "bed" },
+            { name: "Artesanías", icon: "shopping-bag" },
+            { name: "Salud", icon: "heart-pulse" },
+            { name: "Transporte", icon: "car" },
+            { name: "Construcción", icon: "hammer" },
+            { name: "Carpintería", icon: "wrench" },
+            { name: "Gasfitería", icon: "droplets" },
+            { name: "Peluquería", icon: "scissors" },
+            { name: "Sastrería", icon: "needle" },
+            { name: "Lavandería", icon: "waves" },
+            { name: "Contabilidad", icon: "calculator" }
+        ];
+
+        const grid = document.getElementById('all-cats');
+
+        categories.forEach(cat => {
+            grid.innerHTML += `
+                <div class="category-card" onclick="window.location.href='directory.html?cat=${encodeURIComponent(cat.name)}'">
+                    <div class="cat-icon-large">
+                        <i data-lucide="${cat.icon}"></i>
+                    </div>
+                    <span class="cat-name">${cat.name}</span>
+                </div>
+            `;
+        });
+
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

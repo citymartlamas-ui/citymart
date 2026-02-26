@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Promoción | CityMart Lamas</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--jungle-green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            background: #fdfdfd;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            background: #fff;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .duration-btn {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .duration-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .upload-area {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #e5e7eb;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 10px;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f0f7ff;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 8px; border-bottom: 1px solid #eee;">
+        <div class="container">
+            <div style="display: flex; align-items: center; margin-bottom: 20px; cursor: pointer; gap: 8px;"
+                onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="Logo CityMart" style="height: 60px; width: auto; margin-left: -10px;">
+                <h1 style="font-family: 'Outfit'; font-weight: 900; color: #111; font-size: 1.3rem; line-height: 1;">
+                    CityMart<span style="color: var(--secondary-color);">Lamas</span></h1>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <a href="profile.html" style="color: var(--text-color);"><i data-lucide="chevron-left"
+                        style="width: 28px; height: 28px;"></i></a>
+                <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.3rem;">Crear Promoción</h2>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <form id="promo-form">
+            <div class="form-group">
+                <label>Imagen de la Promoción</label>
+                <div class="upload-area" style="position: relative; overflow: hidden; cursor: pointer;">
+                    <div id="default-upload-content"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none;">
+                        <i data-lucide="image" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
+                        <p style="font-weight: 600; font-size: 0.9rem;">Subir imagen del producto</p>
+                        <p style="font-size: 0.7rem;">(Formatos recomendados: JPG o PNG)</p>
+                    </div>
+                    <img id="image-preview"
+                        style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;" />
+                    <input type="file" id="promo-image" accept="image/*"
+                        style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Título de la Oferta</label>
+                <input type="text" id="title" placeholder="Ej. 2x1 en Hamburguesas" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción Corta</label>
+                <textarea id="description" rows="2" placeholder="Describe brevemente la oferta..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Duración de la Promoción</label>
+                <div class="duration-options">
+                    <div class="duration-btn active" data-days="1">1 Día</div>
+                    <div class="duration-btn" data-days="2">2 Días</div>
+                    <div class="duration-btn" data-days="3">3 Días</div>
+                </div>
+                <input type="hidden" id="duration" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="price">Precio Anterior (Opcional)</label>
+                <input type="text" id="price" placeholder="S/ 25.00">
+            </div>
+
+            <div class="form-group">
+                <label for="promo-price">Precio de Oferta</label>
+                <input type="text" id="promo-price" placeholder="S/ 15.00" required>
+            </div>
+
+            <button type="submit" id="submit-btn"
+                style="width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; margin-top: 20px; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2); transition: background 0.2s; cursor: pointer;">PUBLICAR
+                OFERTA</button>
+        </form>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="flame" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { auth, db, storage } from './assets/js/firebase-init.js';
+        import { collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        lucide.createIcons();
+
+        // Variables de estado
+        let currentUser = null;
+        let userBusiness = null;
+
+        // Verificar autenticación y buscar negocio del usuario
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                // Buscar si este usuario tiene un negocio registrado
+                // Asumimos que el negocio tiene un campo 'uid' o 'ownerId'
+                try {
+                    const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+                    
+                    if (!querySnapshot.empty) {
+                        userBusiness = {
+                            id: querySnapshot.docs[0].id,
+                            nombre: querySnapshot.docs[0].data().nombre
+                        };
+                        console.log("Negocio detectado:", userBusiness.nombre);
+                    } else {
+                        console.log("El usuario no tiene un negocio registrado");
+                        // Podríamos redirigir o mostrar un aviso
+                    }
+                } catch (error) {
+                    console.error("Error buscando negocio:", error);
+                }
+            } else {
+                alert("Debes iniciar sesión para publicar promociones.");
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Image Preview Logic
+        const fileInput = document.getElementById('promo-image');
+        const previewEl = document.getElementById('image-preview');
+        const defaultContent = document.getElementById('default-upload-content');
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewEl.src = e.target.result;
+                    previewEl.style.display = 'block';
+                    defaultContent.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewEl.src = '';
+                previewEl.style.display = 'none';
+                defaultContent.style.display = 'flex';
+            }
+        });
+
+        // Manejo de botones de duración
+        const durationBtns = document.querySelectorAll('.duration-btn');
+        const durationInput = document.getElementById('duration');
+
+        durationBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                durationBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                durationInput.value = btn.dataset.days;
+            });
+        });
+
+        document.getElementById('promo-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!currentUser) {
+                alert("Debes iniciar sesión.");
+                return;
+            }
+
+            if (!userBusiness) {
+                alert("No tienes un negocio registrado para publicar esta oferta. Registra tu negocio primero en tu Perfil.");
+                window.location.href = 'register_business.html';
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loader-small" style="display:inline-block; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite;"></div> Publicando...';
+
+            try {
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+                const price = document.getElementById('price').value;
+                const promoPrice = document.getElementById('promo-price').value;
+                const duration = durationInput.value;
+
+                let imageUrl = "";
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
+                    const filePath = `promociones/${Date.now()}_${sanitizeName}`;
+                    const storageRef = ref(storage, filePath);
+
+                    await uploadBytes(storageRef, file);
+                    imageUrl = await getDownloadURL(storageRef);
+                }
+
+                await addDoc(collection(db, "promociones"), {
+                    titulo: title,
+                    descripcion: description,
+                    precio_anterior: price,
+                    precio_oferta: promoPrice,
+                    duracion_dias: parseInt(duration),
+                    imagen: imageUrl,
+                    estado: 'pendiente',
+                    negocioId: userBusiness.id,
+                    nombre_negocio: userBusiness.nombre,
+                    uid_propietario: currentUser.uid,
+                    fecha_registro: serverTimestamp()
+                });
+
+                alert('¡Promoción publicada con éxito! Estará visible tras su aprobación.');
+                window.location.href = 'profile.html';
+
+            } catch (error) {
+                console.error("Error al publicar la promoción:", error);
+                alert("Hubo un error al publicar la promoción. Por favor intenta nuevamente.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'PUBLICAR OFERTA';
+            }
+        });
+    </script>
+</body>
+
+</html>
