@@ -101,25 +101,55 @@
 
     <script>
         const categories = [
-            { name: "Comida", icon: "utensils" },
-            { name: "Hoteles", icon: "bed" },
-            { name: "Artesanías", icon: "shopping-bag" },
-            { name: "Salud", icon: "heart-pulse" },
-            { name: "Transporte", icon: "car" },
-            { name: "Construcción", icon: "hammer" },
-            { name: "Carpintería", icon: "wrench" },
-            { name: "Gasfitería", icon: "droplets" },
-            { name: "Peluquería", icon: "scissors" },
-            { name: "Sastrería", icon: "needle" },
-            { name: "Lavandería", icon: "waves" },
-            { name: "Contabilidad", icon: "calculator" }
+            // Comida y Bebidas
+            { name: "Restaurantes", icon: "utensils", value: "restaurantes", group: "Comida" },
+            { name: "Cafeterías", icon: "coffee", value: "cafeteria", group: "Comida" },
+            { name: "Bares / Karaokes", icon: "beer", value: "bar", group: "Comida" },
+            { name: "Panaderías", icon: "cake", value: "panaderia", group: "Comida" },
+            { name: "Comida Rápida", icon: "pizza", value: "comida_rapida", group: "Comida" },
+            // Hospedaje
+            { name: "Hoteles", icon: "bed", value: "hospedaje", group: "Hoteles" },
+            { name: "Alquileres", icon: "home", value: "alquiler", group: "Hoteles" },
+            // Arte
+            { name: "Artesanías", icon: "shopping-bag", value: "artesania", group: "Artesanías" },
+            { name: "Arte y Cultura", icon: "palette", value: "arte_cultura", group: "Artesanías" },
+            // Comercio
+            { name: "Tiendas", icon: "shopping-cart", value: "tiendas", group: "Comercio" },
+            { name: "Moda y Ropa", icon: "shirt", value: "moda", group: "Comercio" },
+            { name: "Tecnología", icon: "smartphone", value: "tecnologia", group: "Comercio" },
+            { name: "Ferreterías", icon: "hammer", value: "ferreteria", group: "Comercio" },
+            { name: "Librerías", icon: "book-open", value: "libreria", group: "Comercio" },
+            // Salud
+            { name: "Farmacias", icon: "pill", value: "salud", group: "Salud" },
+            { name: "Clínicas", icon: "stethoscope", value: "clinica", group: "Salud" },
+            { name: "Spa y Bienestar", icon: "heart-pulse", value: "spa", group: "Salud" },
+            { name: "Gimnasios", icon: "dumbbell", value: "gimnasio", group: "Salud" },
+            // Servicios
+            { name: "Servicios Generales", icon: "wrench", value: "servicios", group: "Servicios" },
+            { name: "Construcción", icon: "hard-hat", value: "construccion", group: "Servicios" },
+            { name: "Carpintería", icon: "axe", value: "carpinteria", group: "Servicios" },
+            { name: "Gasfitería", icon: "droplets", value: "gasfiteria", group: "Servicios" },
+            { name: "Electricistas", icon: "zap", value: "electricista", group: "Servicios" },
+            { name: "Peluquerías", icon: "scissors", value: "peluqueria", group: "Servicios" },
+            { name: "Sastrería", icon: "ruler", value: "sastreria", group: "Servicios" },
+            { name: "Lavanderías", icon: "waves", value: "lavanderia", group: "Servicios" },
+            { name: "Contabilidad", icon: "calculator", value: "contabilidad", group: "Servicios" },
+            { name: "Mecánica", icon: "settings", value: "mecanica", group: "Servicios" },
+            // Transporte
+            { name: "Transporte", icon: "car", value: "transporte", group: "Transporte" },
+            { name: "Turismo", icon: "map", value: "turismo", group: "Transporte" },
+            // Educación
+            { name: "Educación", icon: "graduation-cap", value: "educacion", group: "Educación" },
+            // Agro
+            { name: "Agricultura", icon: "tree-pine", value: "agro", group: "Agro" },
+            { name: "Veterinarias", icon: "dog", value: "veterinaria", group: "Agro" },
         ];
 
         const grid = document.getElementById('all-cats');
 
         categories.forEach(cat => {
             grid.innerHTML += `
-                <div class="category-card" onclick="window.location.href='directory.html?cat=${encodeURIComponent(cat.name)}'">
+                <div class="category-card" onclick="window.location.href='directory.html?cat=${encodeURIComponent(cat.value)}'">
                     <div class="cat-icon-large">
                         <i data-lucide="${cat.icon}"></i>
                     </div>
