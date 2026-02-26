@@ -145,42 +145,55 @@
         </div>
 
         <div id="profile-content" style="display: none; flex-direction: column; gap: 12px;">
-            <!-- Gestión de Negocio (Siempre visible para propietarios) -->
-            <div id="business-section" style="display: none; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-                <div class="section-title"
-                    style="color: var(--secondary-color); display: flex; align-items: center; justify-content: space-between;">
-                    PANEL DE NEGOCIO
-                    <span id="biz-status-badge"
-                        style="background: var(--secondary-color); color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px;">CARGANDO...</span>
-                </div>
 
-                <div id="business-options" style="display: flex; flex-direction: column; gap: 10px;">
-                    <!-- Botones principales siempre accesibles -->
-                    <button onclick="window.location.href='create_promo.html'"
-                        style="width: 100%; padding: 16px; background: linear-gradient(90deg, #f2460d 0%, #ff6b3d 100%); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(242, 70, 13, 0.1);">
-                        <i data-lucide="tag"></i> Crear Promoción u Oferta
-                    </button>
-                    <button onclick="window.location.href='create_news.html'"
-                        style="width: 100%; padding: 16px; background: linear-gradient(90deg, #004d40 0%, #00796b 100%); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0, 77, 64, 0.1);">
-                        <i data-lucide="file-text"></i> Publicar Noticia
-                    </button>
-                    <button onclick="window.location.href='request_premium.html'"
-                        style="width: 100%; padding: 16px; background: linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%); color: #000; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.1);">
-                        <i data-lucide="award"></i> Solicitar Estatus Premium
-                    </button>
+            <!-- ACCIONES RÁPIDAS - SIEMPRE VISIBLES para usuario logueado -->
+            <div class="section-title"
+                style="color: var(--secondary-color); display: flex; align-items: center; justify-content: space-between;">
+                MIS ACCIONES
+            </div>
+
+            <button onclick="window.location.href='create_promo.html'"
+                style="width: 100%; padding: 16px; background: linear-gradient(90deg, #f2460d 0%, #ff6b3d 100%); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(242, 70, 13, 0.1); cursor: pointer;">
+                <i data-lucide="tag"></i> Crear Promoción u Oferta
+            </button>
+            <button onclick="window.location.href='create_news.html'"
+                style="width: 100%; padding: 16px; background: linear-gradient(90deg, #004d40 0%, #00796b 100%); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0, 77, 64, 0.1); cursor: pointer;">
+                <i data-lucide="file-text"></i> Publicar Noticia
+            </button>
+            <button onclick="window.location.href='request_premium.html'"
+                style="width: 100%; padding: 16px; background: linear-gradient(90deg, #fbbf24 0%, #fcd34d 100%); color: #000; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.1); cursor: pointer;">
+                <i data-lucide="award"></i> Solicitar Estatus Premium
+            </button>
+
+            <!-- ESTADO DEL NEGOCIO - Solo aparece si tiene negocio registrado -->
+            <div id="business-status-info" style="display: none; margin-top: 10px;">
+                <div id="biz-status-card"
+                    style="padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid #dcfce7; background: #f0fdf4;">
+                    <div id="biz-status-icon"
+                        style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                        <i data-lucide="check-circle" style="width: 18px;"></i>
+                    </div>
+                    <div style="flex: 1">
+                        <p id="biz-name" style="font-size: 0.8rem; font-weight: 800; color: #166534; line-height:1;">Mi
+                            Negocio</p>
+                        <p id="biz-estado-text" style="font-size: 0.65rem; color: #15803d;">Estado</p>
+                    </div>
+                    <a id="biz-detail-link" href="#" style="color: #166534;"><i data-lucide="external-link"
+                            style="width:16px;"></i></a>
                 </div>
             </div>
 
+            <!-- REGISTRAR NEGOCIO - Solo aparece si NO tiene negocio -->
             <div id="no-business-section"
-                style="display: none; text-align: center; padding: 20px; background: #f9fafb; border: 1px dashed #d1d5db; border-radius: 16px; margin-bottom: 20px;">
+                style="display: none; text-align: center; padding: 20px; background: #f9fafb; border: 1px dashed #d1d5db; border-radius: 16px; margin-top: 10px;">
                 <p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">¿Tienes un negocio en Lamas?</p>
                 <button onclick="window.location.href='register_business.html'"
-                    style="width: 100%; padding: 14px; background: var(--jungle-green); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    style="width: 100%; padding: 14px; background: var(--jungle-green); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
                     <i data-lucide="plus-circle"></i> REGISTRAR MI NEGOCIO
                 </button>
             </div>
 
-            <div class="section-title">Ajustes de Cuenta</div>
+            <div class="section-title" style="margin-top: 20px;">Ajustes de Cuenta</div>
 
             <div onclick="alert('Funcionalidad de notificaciones próximamente')"
                 style="background: #f9fafb; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
@@ -210,7 +223,7 @@
             </div>
 
             <button onclick="logout()"
-                style="width: 100%; padding: 16px; background: #fee2e2; color: #ef4444; border: none; border-radius: 12px; font-weight: 800; margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                style="width: 100%; padding: 16px; background: #fee2e2; color: #ef4444; border: none; border-radius: 12px; font-weight: 800; margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
                 <i data-lucide="log-out"></i> CERRAR SESIÓN
             </button>
         </div>
@@ -247,7 +260,6 @@
         const profileContent = document.getElementById('profile-content');
         const userDisplayName = document.getElementById('profile-name');
         const userDisplayEmail = document.getElementById('profile-email');
-        const businessOptions = document.getElementById('business-options');
         const userPhotoImg = document.getElementById('user-photo');
         const defaultUserIcon = document.getElementById('default-user-icon');
         const profileUpload = document.getElementById('profile-upload');
@@ -261,20 +273,21 @@
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
+                // Mostrar perfil
                 if (profileContent) profileContent.style.display = 'flex';
                 if (userDisplayName) userDisplayName.innerText = user.displayName || 'Usuario de CityMart';
                 if (userDisplayEmail) userDisplayEmail.innerText = user.email;
 
+                // Foto de perfil
                 if (user.photoURL) {
-                    if (userPhotoImg) userPhotoImg.src = user.photoURL;
-                    if (userPhotoImg) userPhotoImg.style.display = 'block';
+                    if (userPhotoImg) { userPhotoImg.src = user.photoURL; userPhotoImg.style.display = 'block'; }
                     if (defaultUserIcon) defaultUserIcon.style.display = 'none';
                 } else {
                     if (userPhotoImg) userPhotoImg.style.display = 'none';
                     if (defaultUserIcon) defaultUserIcon.style.display = 'block';
                 }
 
-                // Panel de Administrador
+                // Panel de Administrador (solo admin@gmail.com)
                 if (user.email === 'admin@gmail.com') {
                     if (!document.getElementById('admin-btn-container')) {
                         const adminBtn = document.createElement('div');
@@ -282,7 +295,7 @@
                         adminBtn.innerHTML = `
                             <div class="section-title" style="margin-top: 20px;">Administración</div>
                             <div onclick="window.location.href='admin.html'"
-                                style="background: #1e293b; color: white; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 20px;">
+                                style="background: #1e293b; color: white; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 10px;">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <i data-lucide="shield-check" style="color: #fbbf24;"></i>
                                     <span style="font-weight: 600;">Panel de Administrador</span>
@@ -295,51 +308,55 @@
                     }
                 }
 
-                // Buscar negocio del usuario (Colección: negocio, Campo: uid)
+                // Buscar negocio del usuario
                 try {
                     const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
-                    const querySnapshot = await getDocs(q);
+                    const snap = await getDocs(q);
 
-                    if (!querySnapshot.empty) {
-                        const negocioData = querySnapshot.docs[0].data();
-                        const negocioId = querySnapshot.docs[0].id;
-                        
-                        // Mostrar sección de negocio y ocultar la de registro
-                        document.getElementById('business-section').style.display = 'flex';
+                    if (!snap.empty) {
+                        const data = snap.docs[0].data();
+                        const id = snap.docs[0].id;
+                        const estado = data.estado || 'pendiente';
+
+                        // Mostrar tarjeta de estado del negocio
+                        const statusInfo = document.getElementById('business-status-info');
+                        const bizName = document.getElementById('biz-name');
+                        const bizEstado = document.getElementById('biz-estado-text');
+                        const bizIcon = document.getElementById('biz-status-icon');
+                        const bizLink = document.getElementById('biz-detail-link');
+                        const bizCard = document.getElementById('biz-status-card');
+
+                        if (statusInfo) statusInfo.style.display = 'block';
+                        if (bizName) bizName.textContent = data.nombre || 'Mi Negocio';
+                        if (bizLink) bizLink.href = 'business_detail.html?id=' + id;
+
+                        if (estado === 'activo') {
+                            if (bizEstado) bizEstado.textContent = '✅ Negocio Activo';
+                            if (bizIcon) bizIcon.style.background = '#22c55e';
+                            if (bizCard) { bizCard.style.background = '#f0fdf4'; bizCard.style.borderColor = '#dcfce7'; }
+                        } else {
+                            if (bizEstado) bizEstado.textContent = '⏳ En Revisión';
+                            if (bizIcon) bizIcon.style.background = '#f59e0b';
+                            if (bizCard) { bizCard.style.background = '#fffbeb'; bizCard.style.borderColor = '#fef3c7'; }
+                            if (bizName) bizName.style.color = '#92400e';
+                            if (bizEstado) bizEstado.style.color = '#b45309';
+                        }
+
+                        // Ocultar "registrar negocio"
                         document.getElementById('no-business-section').style.display = 'none';
-                        
-                        // Actualizar Badge de Estado
-                        const statusBadge = document.getElementById('biz-status-badge');
-                        if (statusBadge) {
-                            const estado = negocioData.estado || 'pendiente';
-                            statusBadge.textContent = estado.toUpperCase();
-                            statusBadge.style.background = (estado === 'activo') ? '#10b981' : '#f59e0b';
-                        }
-                        
-                        // NO sobreescribimos business-options para no borrar los botones del HTML
-                        // Pero podemos añadir un enlace de "Ver perfil" si el negocio es activo
-                        const existingLink = document.getElementById('view-profile-link');
-                        if(negocioData.estado === 'activo' && !existingLink && businessOptions) {
-                            const linkDiv = document.createElement('div');
-                            linkDiv.id = 'view-profile-link';
-                            linkDiv.style.cssText = "padding: 10px; background: #f0fdf4; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #dcfce7;";
-                            linkDiv.innerHTML = `
-                                <span style="font-size: 0.8rem; font-weight: 800; color: #166534;">${negocioData.nombre} (Activo)</span>
-                                <a href="business_detail.html?id=${negocioId}" style="color: #166534;"><i data-lucide="external-link" style="width:18px;"></i></a>
-                            `;
-                            businessOptions.prepend(linkDiv);
-                            lucide.createIcons();
-                        }
                     } else {
-                        // Si no tiene negocio, mostrar botón de registro
-                        document.getElementById('business-section').style.display = 'none';
+                        // No tiene negocio: mostrar registrar
                         document.getElementById('no-business-section').style.display = 'block';
                     }
                 } catch (e) {
                     console.error("Error cargando negocio:", e);
+                    // Si hay error, igual mostrar la opción de registrar
+                    document.getElementById('no-business-section').style.display = 'block';
                 }
+
                 lucide.createIcons();
             } else {
+                // No logueado
                 if (authSection) authSection.style.display = 'flex';
                 if (profileContent) profileContent.style.display = 'none';
             }
@@ -358,14 +375,14 @@
                 const url = await getDownloadURL(storageRef);
 
                 await updateProfile(auth.currentUser, { photoURL: url });
-                if (userPhotoImg) userPhotoImg.src = url;
-                if (userPhotoImg) userPhotoImg.style.display = 'block';
+                if (userPhotoImg) { userPhotoImg.src = url; userPhotoImg.style.display = 'block'; }
                 if (defaultUserIcon) defaultUserIcon.style.display = 'none';
                 userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
                 alert("¡Foto de perfil actualizada!");
             } catch (err) {
                 console.error("Error subiendo foto:", err);
-                alert("Error al actualizar la foto.");
+                alert("Error al actualizar la foto. Verifica tu conexión.");
+                userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
             }
         });
 
@@ -383,7 +400,6 @@
                 window.location.href = './';
             } catch (e) { console.error(e); }
         };
-    </script>
     </script>
 </body>
 
