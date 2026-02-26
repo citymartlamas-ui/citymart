@@ -261,114 +261,20 @@
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                if (loadingScreen) loadingScreen.style.display = 'none';
                 if (profileContent) profileContent.style.display = 'flex';
-                if (userName) userName.textContent = user.displayName || 'Usuario de CityMart';
-                if (userEmail) userEmail.textContent = user.email;
+                if (userDisplayName) userDisplayName.innerText = user.displayName || 'Usuario de CityMart';
+                if (userDisplayEmail) userDisplayEmail.innerText = user.email;
+
                 if (user.photoURL) {
-                    if (profileImage) profileImage.src = user.photoURL;
-                    if (profileImage) profileImage.style.display = 'block';
+                    if (userPhotoImg) userPhotoImg.src = user.photoURL;
+                    if (userPhotoImg) userPhotoImg.style.display = 'block';
                     if (defaultUserIcon) defaultUserIcon.style.display = 'none';
                 } else {
-                    if (profileImage) profileImage.style.display = 'none';
+                    if (userPhotoImg) userPhotoImg.style.display = 'none';
                     if (defaultUserIcon) defaultUserIcon.style.display = 'block';
                 }
 
-
-                // Verificar si es ADMIN
-                const adminBtnContainer = document.getElementById('admin-btn-container');
-                if (user.email === 'admin@gmail.com') {
-                    if (adminBtnContainer) adminBtnContainer.style.display = 'block'; // Assuming it's block by default
-                    else { // If not already created, create it
-                        const profileContentEl = document.getElementById('profile-content');
-                        if (profileContentEl && !document.getElementById('admin-btn-container')) {
-                            const adminBtn = document.createElement('div');
-                            adminBtn.id = 'admin-btn-container';
-                            adminBtn.innerHTML = `
-                                <div class="section-title" style="margin-top: 20px;">Administración</div>
-                                <div onclick="window.location.href='admin.html'"
-                                    style="background: #1e293b; color: white; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 20px;">
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <i data-lucide="shield-check" style="color: #fbbf24;"></i>
-                                        <span style="font-weight: 600;">Panel de Administrador</span>
-                                    </div>
-                                    <i data-lucide="chevron-right" style="color: #94a3b8;"></i>
-                                </div>
-                            `;
-                            profileContentEl.insertBefore(adminBtn, profileContentEl.querySelector('button[onclick="logout()"]'));
-                            lucide.createIcons(); // Re-render lucide icons for new element
-                        }
-                    }
-                } else {
-                    if (adminBtnContainer) adminBtnContainer.style.display = 'none';
-                }
-
-                // Buscar negocio del usuario
-                try {
-                    const q = query(collection(db, "negocios"), where("uid_propietario", "==", user.uid));
-                    const querySnapshot = await getDocs(q);
-
-                    if (!querySnapshot.empty) {
-                        const negocioData = querySnapshot.docs[0].data();
-                        document.getElementById('business-section').style.display = 'flex';
-                        document.getElementById('no-business-section').style.display = 'none';
-                        const statusBadge = document.getElementById('biz-status-badge');
-                        if (statusBadge) {
-                            statusBadge.textContent = (negocioData.estado || 'pendiente').toUpperCase();
-
-                            // Color según estado
-                            if (negocioData.estado === 'activo') statusBadge.style.background = '#10b981';
-                            else statusBadge.style.background = '#f59e0b';
-                        }
-
-                        // Update business options based on status
-                        if (negocioData.estado === 'pendiente') {
-                            if (businessOptions) {
-                                businessOptions.innerHTML = `
-                                    <div style="padding: 20px; text-align: center; border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; background: var(--card-bg);">
-                                        <i data-lucide="clock" style="color: #f59e0b; margin-bottom: 8px;"></i>
-                                        <p style="font-weight: 700; color: #92400e; font-size: 0.9rem;">Negocio en Revisión</p>
-                                        <p style="font-size: 0.75rem; color: #b45309;">Estamos verificando tu información.</p>
-                                    </div>
-                                `;
-                                lucide.createIcons();
-                            }
-                        } else {
-                            if (businessOptions) {
-                                businessOptions.innerHTML = `
-                                    <div style="padding: 12px; background: #f0fdf4; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid #dcfce7;">
-                                        <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
-                                            <i data-lucide="check-circle" style="width: 18px;"></i>
-                                        </div>
-                                        <div style="flex: 1">
-                                            <p style="font-size: 0.8rem; font-weight: 800; color: #166534; line-height:1;">${negocioData.nombre}</p>
-                                            <p style="font-size: 0.65rem; color: #15803d;">Negocio Activo</p>
-                                        </div>
-                                        <button onclick="window.location.href='business_detail.html?id=${querySnapshot.docs[0].id}'" style="background:none; border:none; color:#166534; cursor:pointer;"><i data-lucide="external-link" style="width:16px;"></i></button>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                        <button onclick="window.location.href='create_promo.html'" style="padding: 12px; background: #f2460d; color: white; border: none; border-radius: 10px; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                            <i data-lucide="tag" style="width:14px;"></i> PROMO
-                                        </button>
-                                        <button onclick="window.location.href='create_news.html'" style="padding: 12px; background: #004d40; color: white; border: none; border-radius: 10px; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                            <i data-lucide="file-text" style="width:14px;"></i> NOTICIA
-                                        </button>
-                                    </div>
-                                `;
-                                lucide.createIcons();
-                            }
-                        }
-                    } else {
-                        businessOptions.innerHTML = `
-                            <button onclick="window.location.href='register_business.html'"
-                                style="width: 100%; padding: 16px; background: var(--jungle-green); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 12px;">
-                                <i data-lucide="store"></i> REGISTRAR MI NEGOCIO
-                            </button>
-                        `;
-                    }
-                } catch (e) { console.error(e); }
-
-                // Botón Admin
+                // Panel de Administrador
                 if (user.email === 'admin@gmail.com') {
                     if (!document.getElementById('admin-btn-container')) {
                         const adminBtn = document.createElement('div');
@@ -385,7 +291,75 @@
                             </div>
                         `;
                         profileContent.insertBefore(adminBtn, profileContent.querySelector('button[onclick="logout()"]'));
+                        lucide.createIcons();
                     }
+                }
+
+                // Buscar negocio del usuario
+                try {
+                    const q = query(collection(db, "negocios"), where("uid_propietario", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        const negocioData = querySnapshot.docs[0].data();
+                        const negocioId = querySnapshot.docs[0].id;
+                        document.getElementById('business-section').style.display = 'flex';
+                        document.getElementById('no-business-section').style.display = 'none';
+                        const statusBadge = document.getElementById('biz-status-badge');
+
+                        if (statusBadge) {
+                            const estado = negocioData.estado || 'pendiente';
+                            statusBadge.textContent = estado.toUpperCase();
+                            statusBadge.style.background = (estado === 'activo') ? '#10b981' : '#f59e0b';
+                        }
+
+                        if (businessOptions) {
+                            if (negocioData.estado === 'pendiente') {
+                                businessOptions.innerHTML = `
+                                    <div style="padding: 20px; text-align: center; border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; background: var(--card-bg);">
+                                        <i data-lucide="clock" style="color: #f59e0b; margin-bottom: 8px;"></i>
+                                        <p style="font-weight: 700; color: #92400e; font-size: 0.9rem;">Negocio en Revisión</p>
+                                        <p style="font-size: 0.75rem; color: #b45309;">Estamos verificando tu información.</p>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                                        <button onclick="window.location.href='create_promo.html'" style="padding: 16px; background: #f2460d; color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                            <i data-lucide="tag"></i> CREAR PROMO
+                                        </button>
+                                    </div>
+                                `;
+                            } else {
+                                businessOptions.innerHTML = `
+                                    <div style="padding: 12px; background: #f0fdf4; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid #dcfce7;">
+                                        <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i data-lucide="check-circle" style="width: 18px;"></i>
+                                        </div>
+                                        <div style="flex: 1">
+                                            <p style="font-size: 0.8rem; font-weight: 800; color: #166534; line-height:1;">${negocioData.nombre}</p>
+                                            <p style="font-size: 0.65rem; color: #15803d;">Negocio Activo</p>
+                                        </div>
+                                        <button onclick="window.location.href='business_detail.html?id=${negocioId}'" style="background:none; border:none; color:#166534; cursor:pointer;"><i data-lucide="external-link" style="width:16px;"></i></button>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                        <button onclick="window.location.href='create_promo.html'" style="padding: 14px; background: #f2460d; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <i data-lucide="tag" style="width:16px;"></i> PROMO
+                                        </button>
+                                        <button onclick="window.location.href='create_news.html'" style="padding: 14px; background: #004d40; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <i data-lucide="file-text" style="width:16px;"></i> NOTICIA
+                                        </button>
+                                    </div>
+                                    <button onclick="window.location.href='request_premium.html'" style="width: 100%; margin-top: 8px; padding: 14px; background: #fbbf24; color: black; border: none; border-radius: 12px; font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i data-lucide="award" style="width:16px;"></i> SOLICITAR PREMIUM
+                                    </button>
+                                `;
+                            }
+                            lucide.createIcons();
+                        }
+                    } else {
+                        document.getElementById('business-section').style.display = 'none';
+                        document.getElementById('no-business-section').style.display = 'block';
+                    }
+                } catch (e) {
+                    console.error("Error cargando negocio:", e);
                 }
                 lucide.createIcons();
             } else {
@@ -400,15 +374,16 @@
             if (!file || !auth.currentUser) return;
 
             try {
+                const originalName = userDisplayName.innerText;
                 userDisplayName.innerText = "Subiendo...";
                 const storageRef = ref(storage, `perfiles/${auth.currentUser.uid}`);
                 await uploadBytes(storageRef, file);
                 const url = await getDownloadURL(storageRef);
 
                 await updateProfile(auth.currentUser, { photoURL: url });
-                userPhotoImg.src = url;
-                userPhotoImg.style.display = 'block';
-                defaultUserIcon.style.display = 'none';
+                if (userPhotoImg) userPhotoImg.src = url;
+                if (userPhotoImg) userPhotoImg.style.display = 'block';
+                if (defaultUserIcon) defaultUserIcon.style.display = 'none';
                 userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
                 alert("¡Foto de perfil actualizada!");
             } catch (err) {
@@ -421,7 +396,8 @@
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
-            document.getElementById('dark-mode-status').innerText = isDark ? 'ON' : 'OFF';
+            const statusEl = document.getElementById('dark-mode-status');
+            if (statusEl) statusEl.innerText = isDark ? 'ON' : 'OFF';
         };
 
         window.logout = async () => {
