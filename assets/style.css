@@ -21,11 +21,17 @@
   font-family: 'Inter', 'Outfit', sans-serif;
 }
 
+html {
+  background-color: var(--bg-color);
+  overscroll-behavior: none;
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 .container {
