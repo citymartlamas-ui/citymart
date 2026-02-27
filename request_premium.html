@@ -77,6 +77,12 @@
             outline: none;
         }
     </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -95,6 +101,47 @@
             </div>
         </div>
     </header>
+
+    <!-- MODAL DE ÉXITO -->
+    <div id="success-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);">
+        <div
+            style="background: white; border-radius: 24px; padding: 30px; width: 100%; max-width: 400px; text-align: center; position: relative; animation: slideUp 0.3s ease-out;">
+            <div
+                style="width: 80px; height: 80px; background: #ecfdf5; color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i data-lucide="check-circle" style="width: 40px; height: 40px;"></i>
+            </div>
+            <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.5rem; margin-bottom: 15px; color: #111;">
+                ¡Solicitud recibida!</h2>
+            <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Para activar tu plan
+                Premium, realiza el pago vía <b>Yape</b> al <b>928 403 248</b> y envía el comprobante por WhatsApp.
+            </p>
+
+            <a id="whatsapp-admin-link" href="#" target="_blank"
+                style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 16px; border-radius: 12px; font-weight: 800; text-decoration: none; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
+                <i data-lucide="message-circle"></i> ENVIAR COMPROBANTE
+            </a>
+
+            <button onclick="window.location.href='profile.html'"
+                style="background: transparent; border: none; color: #9ca3af; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">Volver
+                al perfil</button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+
 
     <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
         <div class="premium-card">
@@ -159,26 +206,65 @@
     </main>
 
     <script type="module">
-        import { auth } from './assets/js/firebase-init.js';
+        import { auth, db } from './assets/js/firebase-init.js';
+        import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         lucide.createIcons();
 
-        // En un caso real, aquí cargaríamos los negocios del usuario desde Firestore
-        auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(async (user) => {
+            const select = document.getElementById('business-select');
             if (user) {
-                const select = document.getElementById('business-select');
-                select.innerHTML = `
-                    <option value="">Selecciona un negocio</option>
-                    <option value="1">Restaurante Mi Tierra (Ejemplo)</option>
-                    <option value="other">Otro negocio...</option>
-                `;
+                try {
+                    const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+
+                    if (querySnapshot.empty) {
+                        select.innerHTML = '<option value="">No tienes negocios registrados aún</option>';
+                        const submitBtn = document.querySelector('#premium-form button[type="submit"]');
+                        if (submitBtn) submitBtn.disabled = true;
+                    } else {
+                        select.innerHTML = '<option value="">Selecciona un negocio</option>';
+                        querySnapshot.forEach((docSnap) => {
+                            const data = docSnap.data();
+                            const option = document.createElement('option');
+                            option.value = docSnap.id;
+                            option.textContent = data.nombre;
+                            select.appendChild(option);
+                        });
+                    }
+                } catch (e) {
+                    console.error("Error al cargar negocios:", e);
+                    select.innerHTML = '<option value="">Error al cargar negocios</option>';
+                }
+            } else {
+                window.location.href = 'login.html';
             }
         });
 
         document.getElementById('premium-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('¡Solicitud recibida! Un asesor de CityMart Lamas te contactará pronto.');
-            window.location.href = 'profile.html';
+
+            const businessSelect = document.getElementById('business-select');
+            const businessName = businessSelect.options[businessSelect.selectedIndex].text;
+
+            // Preparar WhatsApp para el administrador
+            const adminPhone = "51928403248";
+            const msg = encodeURIComponent(`Hola CityMart Lamas, deseo activar el Plan Premium para mi negocio "${businessName}". Adjunto el comprobante de pago (Yape a 928403248).`);
+            document.getElementById('whatsapp-admin-link').href = `https://wa.me/${adminPhone}?text=${msg}`;
+
+            // Mostrar modal
+            document.getElementById('success-modal').style.display = 'flex';
+            lucide.createIcons();
         });
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

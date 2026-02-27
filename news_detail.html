@@ -108,6 +108,12 @@
             color: white;
         }
     </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -118,7 +124,7 @@
             </a>
             <img id="news-img"
                 src="https://images.unsplash.com/photo-1533903345306-15d1c30952de?auto=format&fit=crop&q=80&w=1200"
-                class="img-full">
+                class="img-full" style="cursor: zoom-in;">
         </div>
 
         <div class="news-content">
@@ -130,28 +136,32 @@
             <div class="news-meta">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <i data-lucide="calendar" style="width: 14px;"></i>
-                    <span>24 de Febrero, 2026</span>
+                    <span id="news-date">Cargando...</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <i data-lucide="eye" style="width: 14px;"></i>
-                    <span>1.2k vistas</span>
+                    <span id="news-views">-- vistas</span>
                 </div>
             </div>
 
             <div class="article-body">
                 <p id="news-desc">
-                    Explora los detalles de lo que está sucediendo en nuestra querida ciudad de Lamas. Mantente
-                    conectado con la cultura, el arte y las noticias oficiales.
+                    Cargando descripción...
                 </p>
-                <p>
-                    Lamas, conocida como la Ciudad de los Tres Pisos, sigue sorprendiendo a locales y visitantes con su
-                    vibrante vida cultural. En este artículo profundizamos en los eventos más importantes de la semana y
-                    cómo están impactando en la comunidad.
-                </p>
-                <p>
-                    Desde festivales gastronómicos hasta nuevas aperturas comerciales, nuestra plataforma te mantiene al
-                    día con todo lo que necesitas saber para disfrutar de la ciudad al máximo.
-                </p>
+
+                <div id="author-contact-container" style="display: none; margin-top: 24px;">
+                    <!-- Se llena en JS -->
+                </div>
+
+                <div
+                    style="margin-top: 40px; padding: 20px; background: #f0fdf4; border-radius: 16px; border: 1px dashed #86efac; text-align: center;">
+                    <i data-lucide="heart" style="color: #22c55e; margin-bottom: 8px; width: 32px; height: 32px;"></i>
+                    <p
+                        style="font-weight: 900; color: #166534; font-size: 1.1rem; margin-bottom: 4px; font-family: 'Outfit';">
+                        ¡Gracias por mantenerte informado!</p>
+                    <p style="color: #15803d; font-size: 0.95rem;">Mientras más lees y compartes, más ayudas a que
+                        nuestra comunidad en Lamas siga creciendo positivamente.</p>
+                </div>
             </div>
 
             <div class="share-section">
@@ -167,13 +177,40 @@
 
             <div style="height: 100px;"></div>
         </div>
+
+        <!-- MODAL DE IMAGEN FULLSCREEN -->
+        <div id="image-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); cursor: zoom-out;">
+            <span
+                style="position: absolute; top: 20px; right: 20px; color: white; font-size: 2.5rem; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; opacity: 0.8; transition: 0.2s;">&times;</span>
+            <img id="image-modal-content"
+                style="max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        </div>
     </main>
 
     <script type="module">
         import { db } from './assets/js/firebase-init.js';
-        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         lucide.createIcons();
+
+        // Modal Logic para fullscreen image
+        const newsImg = document.getElementById('news-img');
+        const imgModal = document.getElementById('image-modal');
+        const modalImgContent = document.getElementById('image-modal-content');
+
+        newsImg.addEventListener('click', () => {
+            if (newsImg.src && !newsImg.src.includes('placeholder')) {
+                imgModal.style.display = 'flex';
+                modalImgContent.src = newsImg.src;
+            }
+        });
+
+        imgModal.addEventListener('click', (e) => {
+            if (e.target !== modalImgContent) {
+                imgModal.style.display = 'none';
+            }
+        });
 
         const urlParams = new URLSearchParams(window.location.search);
         const newsId = urlParams.get('id');
@@ -186,10 +223,18 @@
             }
 
             try {
-                // Probamos con 'noticias' (minúscula) que es lo que usa el creador
-                const newsDoc = await getDoc(doc(db, "noticias", newsId));
+                const newsRef = doc(db, "noticias", newsId);
+                const newsDoc = await getDoc(newsRef);
                 if (newsDoc.exists()) {
                     const data = newsDoc.data();
+
+                    // Incrementar Vistas Reales
+                    updateDoc(newsRef, {
+                        vistas: increment(1)
+                    }).catch(e => console.error(e));
+
+                    const viewsRender = (data.vistas || 0) + 1;
+                    document.getElementById('news-views').innerText = viewsRender + (viewsRender === 1 ? ' vista' : ' vistas');
                     const category = data.categoria || "Noticia";
 
                     document.getElementById('news-title').innerText = data.titulo || "Sin título";
@@ -204,7 +249,21 @@
                     if (data.fecha_creacion) {
                         const date = data.fecha_creacion.toDate();
                         const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                        document.querySelector('.news-meta span').innerText = date.toLocaleDateString('es-ES', options);
+                        document.getElementById('news-date').innerText = date.toLocaleDateString('es-ES', options);
+                    }
+
+                    // Contactar al autor (por WhatsApp)
+                    const contactContainer = document.getElementById('author-contact-container');
+                    if (data.whatsapp) {
+                        const titleEncoded = encodeURIComponent(data.titulo || "Noticia en CityMart Lamas");
+                        contactContainer.style.display = 'block';
+                        contactContainer.innerHTML = `
+                            <a href="https://wa.me/51${data.whatsapp}?text=Hola, te contacto sobre la noticia: ${titleEncoded}" 
+                               style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
+                                <i data-lucide="message-circle" style="width: 20px; height: 20px;"></i> CONTACTAR POR WHATSAPP
+                            </a>
+                        `;
+                        lucide.createIcons();
                     }
 
                     // Style tag
@@ -212,9 +271,15 @@
                         'eventos': 'var(--secondary-color)',
                         'turismo': '#0ea5e9',
                         'comunidad': '#8b5cf6',
-                        'negocios': 'var(--primary-color)'
+                        'negocios': 'var(--primary-color)',
+                        'deportes': '#f97316',
+                        'pro_salud': '#10b981',
+                        'gobierno': '#64748b',
+                        'entretenimiento': '#ec4899',
+                        'educacion': '#f59e0b'
                     };
-                    document.getElementById('news-tag').style.background = catColors[category.toLowerCase()] || 'var(--jungle-green)';
+                    const formattedCat = category.toLowerCase().replace(' ', '_');
+                    document.getElementById('news-tag').style.background = catColors[formattedCat] || 'var(--jungle-green)';
 
                 } else {
                     alert('Noticia no encontrada');
@@ -250,6 +315,42 @@
         };
 
         loadNewsDetail();
+    </script>
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="bell" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

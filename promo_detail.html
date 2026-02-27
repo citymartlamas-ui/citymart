@@ -131,6 +131,12 @@
             background: #0947c9;
         }
     </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -144,7 +150,7 @@
             </div>
             <img id="promo-img"
                 src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800"
-                class="img-full">
+                class="img-full" style="cursor: zoom-in;">
         </div>
 
         <div class="promo-card">
@@ -162,16 +168,7 @@
                     0.00</span>
             </div>
 
-            <div class="timer-box">
-                <div style="background: var(--secondary-color); color: white; padding: 10px; border-radius: 12px;">
-                    <i data-lucide="clock"></i>
-                </div>
-                <div>
-                    <p style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #7c2d12;">Expira
-                        en:</p>
-                    <div class="timer-val">04:22:15</div>
-                </div>
-            </div>
+
 
             <div
                 style="background: #fdfdfd; padding: 20px; border-radius: 20px; border: 1px solid #f3f4f6; margin-bottom: 30px;">
@@ -182,19 +179,25 @@
                 </p>
             </div>
 
-            <h3 style="margin-bottom: 16px;">¿Qué incluye?</h3>
-            <ul class="features-list">
-                <li><i data-lucide="check-circle-2"></i> Plato de fondo seleccionado</li>
-                <li><i data-lucide="check-circle-2"></i> Bebida regional de cortesía</li>
-                <li><i data-lucide="check-circle-2"></i> Postre artesanal</li>
-            </ul>
+
 
             <div style="margin-top: 40px; padding-bottom: 60px;">
-                <button class="claim-btn">RECLAMAR CUPÓN</button>
+                <button class="claim-btn" id="main-claim-btn"><i data-lucide="message-circle"
+                        style="width: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>CONTACTAR
+                    POR WHATSAPP</button>
                 <p style="text-align: center; font-size: 0.8rem; color: #9ca3af; margin-top: 16px;">
                     Al hacer clic, aceptas los términos de la promoción.
                 </p>
             </div>
+        </div>
+
+        <!-- MODAL DE IMAGEN FULLSCREEN -->
+        <div id="image-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); cursor: zoom-out;">
+            <span
+                style="position: absolute; top: 20px; right: 20px; color: white; font-size: 2.5rem; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; opacity: 0.8; transition: 0.2s;">&times;</span>
+            <img id="image-modal-content"
+                style="max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         </div>
     </main>
 
@@ -203,6 +206,22 @@
         import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         lucide.createIcons();
+
+        // Modal Logic para fullscreen image
+        const promoImg = document.getElementById('promo-img');
+        const imgModal = document.getElementById('image-modal');
+        const modalImgContent = document.getElementById('image-modal-content');
+
+        promoImg.addEventListener('click', () => {
+            imgModal.style.display = 'flex';
+            modalImgContent.src = promoImg.src;
+        });
+
+        imgModal.addEventListener('click', (e) => {
+            if (e.target !== modalImgContent) {
+                imgModal.style.display = 'none';
+            }
+        });
 
         const urlParams = new URLSearchParams(window.location.search);
         const bizId = urlParams.get('id');
@@ -247,16 +266,16 @@
                     const descHTML = document.getElementById('promo-desc');
                     const priceValHTML = document.getElementById('promo-price-val');
                     const priceOldHTML = document.getElementById('promo-price-old');
-                    const claimBtn = document.querySelector('.claim-btn');
+                    const claimBtn = document.getElementById('main-claim-btn');
 
                     titleHTML.innerText = data.titulo || data.nombre || "Oferta Especial";
                     bizHTML.innerText = `Por ${data.nombre_negocio || data.negocio || 'Negocio Local'}`;
                     imgHTML.src = data.imagen || data.foto || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800';
                     descHTML.innerText = data.descripcion || "Disfruta de esta promoción exclusiva para nuestra comunidad. Solo tienes que presentar el cupón digital al llegar al local.";
 
-                    priceValHTML.innerText = data.precio_oferta || "S/ 0.00";
+                    priceValHTML.innerText = data.precio_oferta ? 'S/ ' + data.precio_oferta.toString().replace(/^S\/\s*/i, '') : "S/ 0.00";
                     if (data.precio_anterior) {
-                        priceOldHTML.innerText = data.precio_anterior;
+                        priceOldHTML.innerText = 'S/ ' + data.precio_anterior.toString().replace(/^S\/\s*/i, '');
                         priceOldHTML.style.display = 'inline';
                     } else {
                         priceOldHTML.style.display = 'none';
@@ -265,13 +284,17 @@
                     // Configurar botón de WhatsApp
                     const phone = data.telefono_contacto || data.telefono || data.numerodecontacto || "";
                     if (phone) {
-                        const cleanPhone = phone.replace(/\s/g, '');
+                        let cleanPhone = phone.replace(/\s/g, '');
+                        if (cleanPhone.startsWith('+')) cleanPhone = cleanPhone.substring(1);
+                        if (cleanPhone.length === 9) cleanPhone = '51' + cleanPhone;
+
                         const waMsg = encodeURIComponent(`¡Hola! Vi tu oferta "${data.titulo}" en CityMart Lamas y me interesa.`);
                         claimBtn.onclick = () => {
-                            window.open(`https://wa.me/51${cleanPhone}?text=${waMsg}`, '_blank');
+                            window.open(`https://wa.me/${cleanPhone}?text=${waMsg}`, '_blank');
                         };
                     } else {
-                        claimBtn.innerText = "CONTACTAR POR WHATSAPP";
+                        claimBtn.innerHTML = '<i data-lucide="message-circle" style="width: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>CONTACTAR POR WHATSAPP';
+                        lucide.createIcons();
                         claimBtn.onclick = () => alert("No se encontró un teléfono de contacto.");
                     }
 
@@ -306,6 +329,42 @@
         if (shareBtn) shareBtn.addEventListener('click', sharePromo);
 
         loadPromoDetail();
+    </script>
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="bell" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

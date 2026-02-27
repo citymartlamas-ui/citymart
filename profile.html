@@ -98,6 +98,12 @@
             transform: translateX(20px);
         }
     </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -113,10 +119,13 @@
             <div id="profile-header-info" style="text-align: center; position: relative; margin-bottom: 20px;">
                 <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 12px;">
                     <div id="profile-img-container"
-                        style="width: 100px; height: 100px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        <i data-lucide="user" id="default-user-icon"
-                            style="width: 50px; height: 50px; color: #9ca3af;"></i>
-                        <img id="user-photo" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                        style="width: 100px; height: 100px; background: #f3f4f6; border-radius: 20px; position: relative; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div id="default-user-icon"
+                            style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="user" style="width: 50px; height: 50px; color: #9ca3af;"></i>
+                        </div>
+                        <img id="user-photo"
+                            style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
                     </div>
                     <label for="profile-upload"
                         style="position: absolute; bottom: 0; right: 0; background: var(--primary-color); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
@@ -124,13 +133,67 @@
                     </label>
                     <input type="file" id="profile-upload" accept="image/*" style="display: none;">
                 </div>
-                <h2 id="profile-name" style="font-family: 'Outfit'; font-weight: 900; font-size: 1.5rem;">Invitado</h2>
-                <p id="profile-email" style="color: #666; font-size: 0.9rem;">Registrado en Lamas</p>
+                <h2 id="profile-name"
+                    style="font-family: 'Outfit'; font-weight: 900; font-size: 1.5rem; margin-bottom: 2px;">Invitado
+                </h2>
+                <p id="profile-email" style="color: #666; font-size: 0.9rem; margin-bottom: 8px;">Registrado en Lamas
+                </p>
+                <div id="profile-details-pills"
+                    style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px;">
+                    <!-- Se llena con teléfono y dirección -->
+                </div>
+                <button onclick="openEditModal()"
+                    style="background: #f3f4f6; border: none; padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: #4b5563; margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;">
+                    <i data-lucide="edit-3" style="width: 14px;"></i> EDITAR PERFIL
+                </button>
             </div>
         </div>
     </header>
 
     <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <!-- Modal Editar Perfil -->
+        <div id="edit-profile-modal"
+            style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+            <div
+                style="background: white; width: 100%; max-width: 400px; border-radius: 24px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="font-family: 'Outfit'; font-weight: 800; font-size: 1.2rem; margin: 0;">Editar Perfil
+                    </h3>
+                    <button onclick="closeEditModal()"
+                        style="border: none; background: #f9fafb; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                        <i data-lucide="x" style="width: 18px; color: #6b7280;"></i>
+                    </button>
+                </div>
+                <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6b7280;">NOMBRE COMPLETO</label>
+                        <input type="text" id="edit-name" placeholder="Tu nombre"
+                            style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 0.95rem;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6b7280;">TELÉFONO / WHATSAPP</label>
+                        <input type="tel" id="edit-phone" placeholder="999 999 999"
+                            style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 0.95rem;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6b7280;">DIRECCIÓN</label>
+                        <input type="text" id="edit-address" placeholder="Ej. Jr. San Martin 123"
+                            style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 0.95rem;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6b7280;">CORREO ELECTRÓNICO
+                            (RECUPERACIÓN)</label>
+                        <input type="email" id="edit-email" readonly
+                            style="width: 100%; padding: 12px; border: 1px solid #f3f4f6; border-radius: 12px; font-size: 0.95rem; background: #f9fafb; color: #9ca3af; cursor: not-allowed;">
+                    </div>
+                    <button type="submit"
+                        style="width: 100%; padding: 14px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; margin-top: 10px; cursor: pointer; transition: all 0.2s;">
+                        GUARDAR CAMBIOS
+                    </button>
+                </form>
+            </div>
+        </div>
+
         <div id="auth-section"
             style="display: none; flex-direction: column; gap: 20px; text-align: center; padding: 20px 0;">
             <p style="color: #666; font-size: 1rem;">Inicia sesión para gestionar tus negocios y promociones.</p>
@@ -165,29 +228,18 @@
                 <i data-lucide="award"></i> Solicitar Estatus Premium
             </button>
 
-            <!-- ESTADO DEL NEGOCIO - Solo aparece si tiene negocio registrado -->
-            <div id="business-status-info" style="display: none; margin-top: 10px;">
-                <div id="biz-status-card"
-                    style="padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid #dcfce7; background: #f0fdf4;">
-                    <div id="biz-status-icon"
-                        style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
-                        <i data-lucide="check-circle" style="width: 18px;"></i>
-                    </div>
-                    <div style="flex: 1">
-                        <p id="biz-name" style="font-size: 0.8rem; font-weight: 800; color: #166534; line-height:1;">Mi
-                            Negocio</p>
-                        <p id="biz-estado-text" style="font-size: 0.65rem; color: #15803d;">Estado</p>
-                    </div>
-                    <a id="biz-detail-link" href="#" style="color: #166534;"><i data-lucide="external-link"
-                            style="width:16px;"></i></a>
-                </div>
+            <!-- ESTADO DEL NEGOCIO - Lista de negocios registrados -->
+            <div id="business-list-container"
+                style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
+                <!-- Tarjetas generadas en JS -->
             </div>
 
-            <!-- REGISTRAR NEGOCIO - Solo aparece si NO tiene negocio -->
+            <!-- REGISTRAR NEGOCIO - Aparece si tiene menos de 3 negocios -->
             <div id="no-business-section"
                 style="display: none; text-align: center; padding: 20px; background: #f9fafb; border: 1px dashed #d1d5db; border-radius: 16px; margin-top: 10px;">
-                <p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">¿Tienes un negocio en Lamas?</p>
-                <button onclick="window.location.href='register_business.html'"
+                <p id="no-business-desc" style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">¿Tienes un negocio
+                    en Lamas? (Máximo 3)</p>
+                <button id="no-business-btn" onclick="window.location.href='register_business.html'"
                     style="width: 100%; padding: 14px; background: var(--jungle-green); color: white; border: none; border-radius: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
                     <i data-lucide="plus-circle"></i> REGISTRAR MI NEGOCIO
                 </button>
@@ -195,11 +247,11 @@
 
             <div class="section-title" style="margin-top: 20px;">Ajustes de Cuenta</div>
 
-            <div onclick="alert('Funcionalidad de notificaciones próximamente')"
+            <div onclick="window.requestNotificationPermission()"
                 style="background: #f9fafb; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <i data-lucide="bell" style="color: var(--jungle-green);"></i>
-                    <span style="font-weight: 600;">Notificaciones</span>
+                    <span style="font-weight: 600;">Notificaciones (¡Actívalas!)</span>
                 </div>
                 <i data-lucide="chevron-right" style="color: #9ca3af;"></i>
             </div>
@@ -213,7 +265,7 @@
                 <div id="dark-mode-status" style="font-size: 0.8rem; font-weight: 700; color: #9ca3af;">OFF</div>
             </div>
 
-            <div onclick="window.location.href='help.html'"
+            <div onclick="window.open('https://wa.me/51928403248?text=Hola%20CityMart,%20necesito%20ayuda%20y%20soporte', '_blank')"
                 style="background: #f9fafb; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <i data-lucide="help-circle" style="color: var(--jungle-green);"></i>
@@ -238,8 +290,16 @@
             <i data-lucide="layout-grid" class="nav-icon"></i>
             <span>Directorio</span>
         </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
         <a href="news.html" class="nav-item">
-            <i data-lucide="flame" class="nav-icon"></i>
+            <i data-lucide="bell" class="nav-icon"></i>
             <span>Noticias</span>
         </a>
         <a href="profile.html" class="nav-item active">
@@ -251,10 +311,13 @@
     <script type="module">
         import { auth, db, storage } from './assets/js/firebase-init.js';
         import { signOut, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { collection, query, where, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { requestPushPermission } from './assets/js/push.js';
 
         lucide.createIcons();
+
+        window.requestNotificationPermission = requestPushPermission;
 
         const authSection = document.getElementById('auth-section');
         const profileContent = document.getElementById('profile-content');
@@ -263,6 +326,15 @@
         const userPhotoImg = document.getElementById('user-photo');
         const defaultUserIcon = document.getElementById('default-user-icon');
         const profileUpload = document.getElementById('profile-upload');
+        const profileDetailsPills = document.getElementById('profile-details-pills');
+
+        // Modal Elements
+        const editModal = document.getElementById('edit-profile-modal');
+        const editForm = document.getElementById('edit-profile-form');
+        const editNameInput = document.getElementById('edit-name');
+        const editPhoneInput = document.getElementById('edit-phone');
+        const editAddressInput = document.getElementById('edit-address');
+        const editEmailInput = document.getElementById('edit-email');
 
         // Modo Oscuro Inicial
         if (localStorage.getItem('dark-mode') === 'enabled') {
@@ -277,6 +349,24 @@
                 if (profileContent) profileContent.style.display = 'flex';
                 if (userDisplayName) userDisplayName.innerText = user.displayName || 'Usuario de CityMart';
                 if (userDisplayEmail) userDisplayEmail.innerText = user.email;
+
+                // Cargar datos adicionales de Firestore
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    if (userDoc.exists()) {
+                        const data = userDoc.data();
+                        renderDetails(data.telefono, data.direccion);
+                    } else {
+                        // Crear documento si no existe con datos básicos
+                        await setDoc(userDocRef, {
+                            nombre: user.displayName || '',
+                            email: user.email,
+                            photoURL: user.photoURL || '',
+                            fechaRegistro: new Date()
+                        });
+                    }
+                } catch (e) { console.error("Error cargando metadatos de usuario:", e); }
 
                 // Foto de perfil
                 if (user.photoURL) {
@@ -308,49 +398,66 @@
                     }
                 }
 
-                // Buscar negocio del usuario
+                // Buscar negocios del usuario
                 try {
                     const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
                     const snap = await getDocs(q);
 
+                    const bizContainer = document.getElementById('business-list-container');
+                    const noBizSection = document.getElementById('no-business-section');
+                    const noBizDesc = document.getElementById('no-business-desc');
+                    const noBizBtn = document.getElementById('no-business-btn');
+
                     if (!snap.empty) {
-                        const data = snap.docs[0].data();
-                        const id = snap.docs[0].id;
-                        const estado = data.estado || 'pendiente';
+                        bizContainer.style.display = 'flex';
+                        bizContainer.innerHTML = '<div class="section-title" style="margin-bottom: 4px; font-size: 0.9rem;">Mis Negocios</div>';
 
-                        // Mostrar tarjeta de estado del negocio
-                        const statusInfo = document.getElementById('business-status-info');
-                        const bizName = document.getElementById('biz-name');
-                        const bizEstado = document.getElementById('biz-estado-text');
-                        const bizIcon = document.getElementById('biz-status-icon');
-                        const bizLink = document.getElementById('biz-detail-link');
-                        const bizCard = document.getElementById('biz-status-card');
+                        snap.forEach(docSnap => {
+                            const data = docSnap.data();
+                            const id = docSnap.id;
 
-                        if (statusInfo) statusInfo.style.display = 'block';
-                        if (bizName) bizName.textContent = data.nombre || 'Mi Negocio';
-                        if (bizLink) bizLink.href = 'business_detail.html?id=' + id;
+                            bizContainer.innerHTML += `
+                            <div style="padding: 12px; border-radius: 12px; border: 1px solid #dcfce7; background: #f0fdf4;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                                        <i data-lucide="check-circle" style="width: 18px;"></i>
+                                    </div>
+                                    <div style="flex: 1">
+                                        <p style="font-size: 0.8rem; font-weight: 800; color: #166534; line-height:1;">${data.nombre || 'Mi Negocio'}</p>
+                                        <p style="font-size: 0.65rem; color: #15803d;">✅ Activo</p>
+                                    </div>
+                                    <a href="business_detail.html?id=${id}" style="color: #166534;"><i data-lucide="external-link" style="width:16px;"></i></a>
+                                </div>
+                                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                                    <button onclick="window.location.href='edit_business.html?id=${id}'" 
+                                        style="flex:1; padding: 8px; border-radius: 8px; border: 1px solid #166534; background: white; color: #166534; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                        <i data-lucide="pencil" style="width:14px; height:14px;"></i> Editar
+                                    </button>
+                                    <button onclick="deleteBusiness('${id}', '${(data.nombre || 'Mi Negocio').replace(/'/g, "\\'")}')"
+                                        style="flex:1; padding: 8px; border-radius: 8px; border: 1px solid #ef4444; background: white; color: #ef4444; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                        <i data-lucide="trash-2" style="width:14px; height:14px;"></i> Eliminar
+                                    </button>
+                                </div>
+                            </div>`;
+                        });
 
-                        if (estado === 'activo' || estado === 'aprobado') {
-                            if (bizEstado) bizEstado.textContent = '✅ Negocio Activo';
-                            if (bizIcon) bizIcon.style.background = '#22c55e';
-                            if (bizCard) { bizCard.style.background = '#f0fdf4'; bizCard.style.borderColor = '#dcfce7'; }
+                        // Limite de 3 negocios
+                        if (snap.size >= 3) {
+                            noBizSection.style.display = 'none';
                         } else {
-                            if (bizEstado) bizEstado.textContent = '⏳ En Revisión';
-                            if (bizIcon) bizIcon.style.background = '#f59e0b';
-                            if (bizCard) { bizCard.style.background = '#fffbeb'; bizCard.style.borderColor = '#fef3c7'; }
-                            if (bizName) (bizName.style.color = '#92400e');
-                            if (bizEstado) (bizEstado.style.color = '#b45309');
+                            noBizSection.style.display = 'block';
+                            noBizDesc.innerText = `Puedes registrar hasta 3 negocios (${snap.size}/3)`;
+                            noBizBtn.innerHTML = `<i data-lucide="plus-circle"></i> REGISTRAR OTRO NEGOCIO`;
                         }
-
-                        // Ocultar "registrar negocio"
-                        document.getElementById('no-business-section').style.display = 'none';
                     } else {
-                        // No tiene negocio: mostrar registrar
-                        document.getElementById('no-business-section').style.display = 'block';
+                        // 0 negocios
+                        bizContainer.style.display = 'none';
+                        noBizSection.style.display = 'block';
+                        noBizDesc.innerText = '¿Tienes un negocio en Lamas? (Máximo 3)';
+                        noBizBtn.innerHTML = `<i data-lucide="plus-circle"></i> REGISTRAR MI NEGOCIO`;
                     }
                 } catch (e) {
-                    console.error("Error cargando negocio:", e);
-                    // Si hay error, igual mostrar la opción de registrar
+                    console.error("Error cargando negocios:", e);
                     document.getElementById('no-business-section').style.display = 'block';
                 }
 
@@ -362,6 +469,76 @@
             }
         });
 
+        function renderDetails(phone, address) {
+            profileDetailsPills.innerHTML = '';
+            if (phone) {
+                profileDetailsPills.innerHTML += `
+                    <div style="background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="phone" style="width:10px;"></i> ${phone}
+                    </div>
+                `;
+            }
+            if (address) {
+                profileDetailsPills.innerHTML += `
+                    <div style="background: #fdf2f8; color: #be185d; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="map-pin" style="width:10px;"></i> ${address}
+                    </div>
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        // Modal Logic
+        window.openEditModal = async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+            editModal.style.display = 'flex';
+            editNameInput.value = user.displayName || '';
+            editEmailInput.value = user.email || '';
+
+            // Cargar datos extra de Firestore al abrir
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                editPhoneInput.value = data.telefono || '';
+                editAddressInput.value = data.direccion || '';
+            }
+        };
+
+        window.closeEditModal = () => { editModal.style.display = 'none'; };
+
+        editForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const newName = editNameInput.value.trim();
+            const newPhone = editPhoneInput.value.trim();
+            const newAddress = editAddressInput.value.trim();
+
+            try {
+                // 1. Actualizar Firebase Auth
+                await updateProfile(user, { displayName: newName });
+
+                // 2. Actualizar Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    nombre: newName,
+                    telefono: newPhone,
+                    direccion: newAddress,
+                    email: user.email,
+                    photoURL: user.photoURL || ''
+                }, { merge: true });
+
+                userDisplayName.innerText = newName;
+                renderDetails(newPhone, newAddress);
+                closeEditModal();
+                alert("¡Perfil actualizado correctamente!");
+            } catch (error) {
+                console.error("Error actualizando perfil:", error);
+                alert("Hubo un error al guardar los cambios.");
+            }
+        };
+
         // Cambio de Foto
         profileUpload.addEventListener('change', async (e) => {
             const file = e.target.files[0];
@@ -370,18 +547,22 @@
             try {
                 const originalName = userDisplayName.innerText;
                 userDisplayName.innerText = "Subiendo...";
-                const storageRef = ref(storage, `perfiles/${auth.currentUser.uid}`);
+                // Fix storage path to follow storage.rules (match /users/{userId}/...)
+                const storageRef = ref(storage, `users/${auth.currentUser.uid}/profile.jpg`);
                 await uploadBytes(storageRef, file);
                 const url = await getDownloadURL(storageRef);
 
                 await updateProfile(auth.currentUser, { photoURL: url });
+                // Sincronizar con Firestore también
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { photoURL: url });
+
                 if (userPhotoImg) { userPhotoImg.src = url; userPhotoImg.style.display = 'block'; }
                 if (defaultUserIcon) defaultUserIcon.style.display = 'none';
                 userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
                 alert("¡Foto de perfil actualizada!");
             } catch (err) {
                 console.error("Error subiendo foto:", err);
-                alert("Error al actualizar la foto. Verifica tu conexión.");
+                alert("Error al actualizar la foto. Verifica los permisos de storage.");
                 userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
             }
         });
@@ -397,9 +578,36 @@
         window.logout = async () => {
             try {
                 await signOut(auth);
+                window.location.reload(); // Reload for clean state
+            } catch (e) {
+                console.error(e);
                 window.location.href = './';
-            } catch (e) { console.error(e); }
+            }
         };
+
+        window.deleteBusiness = async (bizId, bizName) => {
+            const confirmed = confirm(`¿Estás seguro de que deseas ELIMINAR "${bizName}" permanentemente?\n\nEsta acción no se puede deshacer.`);
+            if (!confirmed) return;
+
+            try {
+                await deleteDoc(doc(db, "negocio", bizId));
+                alert(`"${bizName}" ha sido eliminado correctamente.`);
+                window.location.reload();
+            } catch (error) {
+                console.error("Error al eliminar negocio:", error);
+                alert("Hubo un error al eliminar el negocio. Intenta de nuevo.");
+            }
+        };
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

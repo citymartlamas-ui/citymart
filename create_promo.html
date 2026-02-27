@@ -72,7 +72,8 @@
 
         .upload-area {
             width: 100%;
-            height: 150px;
+            aspect-ratio: 1 / 1;
+            height: auto;
             border: 2px dashed #e5e7eb;
             border-radius: 16px;
             display: flex;
@@ -91,6 +92,12 @@
             color: var(--primary-color);
         }
     </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -122,8 +129,8 @@
             <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.5rem; margin-bottom: 15px; color: #111;">
                 ¡Casi listo!</h2>
             <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Tu promoción ha sido
-                enviada. Para que sea aprobada y publicada, debes realizar el pago vía <b>Yape</b> o transferencia y
-                enviarnos el comprobante.</p>
+                enviada. Realiza el pago vía <b>Yape</b> al <b>928 403 248</b> y envíanos el comprobante para su
+                publicación.</p>
 
             <a id="whatsapp-admin-link" href="#" target="_blank"
                 style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 16px; border-radius: 12px; font-weight: 800; text-decoration: none; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
@@ -159,7 +166,7 @@
                         style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none;">
                         <i data-lucide="image" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
                         <p style="font-weight: 600; font-size: 0.9rem;">Subir imagen del producto</p>
-                        <p style="font-size: 0.7rem;">(Formatos recomendados: JPG o PNG)</p>
+                        <p style="font-size: 0.7rem;">Imagen cuadrada 1:1 recomendada</p>
                     </div>
                     <img id="image-preview"
                         style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;" />
@@ -181,10 +188,11 @@
 
             <div class="form-group">
                 <label>Duración de la Promoción</label>
-                <div class="duration-options">
-                    <div class="duration-btn active" data-days="1">1 Día</div>
-                    <div class="duration-btn" data-days="2">2 Días</div>
-                    <div class="duration-btn" data-days="3">3 Días</div>
+                <div class="duration-options" style="grid-template-columns: 1fr 1fr;">
+                    <div class="duration-btn active" data-days="1">1 Día<br><span
+                            style="font-size:0.75rem; font-weight:normal;">S/ 5.00</span></div>
+                    <div class="duration-btn" data-days="3">3 Días<br><span
+                            style="font-size:0.75rem; font-weight:normal;">S/ 15.00</span></div>
                 </div>
                 <input type="hidden" id="duration" value="1">
             </div>
@@ -199,15 +207,15 @@
                 <input type="text" id="promo-price" placeholder="S/ 15.00" required>
             </div>
 
-            <div class="form-group" id="phone-group" style="display: none;">
+            <div class="form-group" id="phone-group">
                 <label for="phone">Teléfono de contacto (WhatsApp)</label>
                 <div style="position: relative;">
                     <span
                         style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #666;">+51</span>
-                    <input type="tel" id="phone" placeholder="999 999 999" style="padding-left: 50px;">
+                    <input type="tel" id="phone" placeholder="999 999 999" style="padding-left: 50px;" required>
                 </div>
-                <p style="font-size: 0.7rem; color: #666; margin-top: 4px;">Úsalo para que te contacten directamente si
-                    no tienes un negocio registrado.</p>
+                <p style="font-size: 0.7rem; color: #666; margin-top: 4px;">Este número se mostrará en la oferta para
+                    que los clientes te contacten.</p>
             </div>
 
             <button type="submit" id="submit-btn"
@@ -225,8 +233,16 @@
             <i data-lucide="layout-grid" class="nav-icon"></i>
             <span>Directorio</span>
         </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
         <a href="news.html" class="nav-item">
-            <i data-lucide="flame" class="nav-icon"></i>
+            <i data-lucide="bell" class="nav-icon"></i>
             <span>Noticias</span>
         </a>
         <a href="profile.html" class="nav-item active">
@@ -262,9 +278,15 @@
                             telefono: querySnapshot.docs[0].data().numerodecontacto || querySnapshot.docs[0].data().telefono || ""
                         };
                         console.log("Negocio detectado:", userBusiness.nombre);
+                        if (userBusiness.telefono) {
+                            let phoneVal = userBusiness.telefono;
+                            if (phoneVal.startsWith("51")) {
+                                phoneVal = phoneVal.substring(2);
+                            }
+                            document.getElementById('phone').value = phoneVal.trim();
+                        }
                     } else {
                         console.log("El usuario no tiene un negocio registrado. Permitir oferta personal.");
-                        document.getElementById('phone-group').style.display = 'block';
                         // Pre-cargar teléfono si existe en el perfil del usuario (opcional)
                     }
                 } catch (error) {
@@ -320,10 +342,6 @@
 
             // Nota: Se permite publicar aunque no tenga negocio (userBusiness can be null)
             const contactPhone = document.getElementById('phone').value;
-            if (!userBusiness && !contactPhone) {
-                alert("Como no tienes un negocio registrado, por favor ingresa un teléfono de contacto para que los interesados puedan ubicarte.");
-                return;
-            }
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
@@ -358,18 +376,20 @@
                     estado: 'pendiente',
                     negocioId: userBusiness ? userBusiness.id : null,
                     nombre_negocio: userBusiness ? userBusiness.nombre : (currentUser.displayName || "Usuario Independiente"),
-                    telefono_contacto: userBusiness ? userBusiness.telefono : contactPhone,
+                    telefono_contacto: contactPhone, // Guardar el número explícito ingresado
                     es_oferta_personal: !userBusiness,
                     uid_propietario: currentUser.uid,
                     fecha_registro: serverTimestamp()
                 });
 
                 // Preparar mensaje de WhatsApp para el administrador
-                const adminPhone = "51921385412"; // <-- ACTUALIZA ESTE NÚMERO
-                const msg = encodeURIComponent(`Hola CityMart Lamas, acabo de crear la promoción "${title}". Adjunto el comprobante de pago para su aprobación.`);
+                const adminPhone = "51928403248"; // <-- ACTUALIZA ESTE NÚMERO
+                const promoCost = parseInt(duration) === 3 ? 15 : 5;
+                const msg = encodeURIComponent(`Hola CityMart Lamas, acabo de crear la promoción "${title}". Adjunto el comprobante de pago por S/ ${promoCost}.00 (Yape a 928403248) para su aprobación.`);
                 document.getElementById('whatsapp-admin-link').href = `https://wa.me/${adminPhone}?text=${msg}`;
-                
+
                 // Mostrar modal de éxito
+                document.querySelector('#success-modal p').innerHTML = `Tu promoción ha sido enviada. Realiza el pago de <b>S/ ${promoCost}.00</b> vía <b>Yape</b> al <b>928 403 248</b> y envíanos el comprobante para su publicación.`;
                 document.getElementById('success-modal').style.display = 'flex';
                 lucide.createIcons();
 
@@ -380,6 +400,16 @@
                 submitBtn.innerHTML = 'PUBLICAR OFERTA';
             }
         });
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

@@ -8,8 +8,9 @@
   --text-color: #1f2937;
   --bg-color: #ffffff;
   --card-bg: #f9fafb;
-  --gold: #c5a059;
-  --jungle-green: #004d40;
+  --gold: #fbbf24;
+  --status-red: #ef4444;
+  --status-active: #f59e0b;
   --transition: all 0.3s ease;
   --border-radius: 16px;
 }
@@ -22,21 +23,17 @@
 }
 
 html {
-  height: 100%;
-  overflow: hidden;
-  position: fixed;
+  min-height: 100%;
   width: 100%;
   background-color: #f3f4f6;
 }
 
 body {
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: none;
+  width: 100vw;
   background-color: #f3f4f6;
   color: var(--text-color);
   line-height: 1.6;
+  -webkit-overflow-scrolling: touch;
 }
 
 .container {
@@ -77,21 +74,15 @@ h3 {
 /* Auto-Rotating Carousels */
 .carousel-track {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 20px;
   scroll-behavior: auto;
-  /* Cambiado de smooth para permitir auto-scroll fluido */
   -ms-overflow-style: none;
   scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
   justify-content: flex-start;
-  /* Por defecto para móvil */
-}
-
-/* Centrar si no hay suficientes elementos para scrollear */
-.carousel-track:not(:has(> :nth-child(5))) {
-  /* Si hay pocos elementos en pantallas grandes, los centramos */
+  /* NO usar -webkit-overflow-scrolling: touch — bloquea scrollLeft en iOS */
 }
 
 .carousel-track::-webkit-scrollbar {
@@ -104,7 +95,7 @@ h3 {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 12px;
+  padding: 6px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
   color: white;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -134,19 +125,117 @@ h3 {
 }
 
 /* Tamaños de Tarjetas Responsivos */
-.card-premium {
-  width: 170px;
-  height: 230px;
+.card-premium-square {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
 }
 
-.card-promo {
-  width: 260px;
-  height: 160px;
+.card-promo-express {
+  width: 110px;
+  height: 150px;
+  border-radius: 12px;
 }
 
 .card-news {
   width: 280px;
   height: 180px;
+}
+
+/* Status Badges */
+.badge-status {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.45rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  z-index: 3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.badge-premium-star {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: var(--gold);
+  color: #000;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  z-index: 3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.badge-status.destacado {
+  background: var(--gold);
+  color: #000;
+}
+
+.badge-status.expira {
+  background: var(--status-red);
+  color: white;
+}
+
+.badge-status.activa {
+  background: var(--status-active);
+  color: white;
+}
+
+/* Ad Banner placeholder */
+.ad-banner {
+  width: 100%;
+  height: 55px;
+  background: linear-gradient(90deg, #1e3a8a, #1d4ed8);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin: 8px 0;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.ad-banner::after {
+  content: 'Ad';
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.6rem;
+}
+
+/* Dots for carousels */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.dot.active {
+  background: var(--primary-color);
+  width: 12px;
+  border-radius: 3px;
 }
 
 @media (min-width: 1024px) {

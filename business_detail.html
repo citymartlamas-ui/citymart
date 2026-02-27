@@ -119,6 +119,12 @@
             cursor: pointer;
         }
     </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -130,7 +136,8 @@
             </a>
             <img id="main-img"
                 src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800"
-                class="img-full">
+                class="img-full" onclick="window.openFullscreenImage && window.openFullscreenImage(this.src)"
+                style="cursor: zoom-in;">
         </div>
 
         <!-- Business Content -->
@@ -227,13 +234,121 @@
                 SOLICITAR INFORMACIÓN
             </button>
         </div>
+
+        <!-- MODAL DE IMAGEN FULLSCREEN -->
+        <div id="image-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); cursor: zoom-out;">
+            <span
+                style="position: absolute; top: 20px; right: 20px; color: white; font-size: 2.5rem; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; opacity: 0.8; transition: 0.2s;">&times;</span>
+            <img id="image-modal-content"
+                style="max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        </div>
     </main>
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="news.html" class="nav-item">
+            <i data-lucide="bell" class="nav-icon"></i>
+            <span>Noticias</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
 
     <script type="module">
         import { db, auth } from './assets/js/firebase-init.js';
         import { doc, getDoc, collection, addDoc, onSnapshot, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         lucide.createIcons();
+
+        // Modal Logic para fullscreen image
+        const imgModal = document.getElementById('image-modal');
+        const modalImgContent = document.getElementById('image-modal-content');
+        let currentGalleryImages = [];
+        let currentImageIndex = 0;
+
+        window.openFullscreenImage = function (src, allImages = []) {
+            if (src && !src.includes('placeholder')) {
+                imgModal.style.display = 'flex';
+                modalImgContent.src = src;
+
+                if (allImages.length > 0) {
+                    currentGalleryImages = allImages;
+                    currentImageIndex = allImages.indexOf(src);
+                    updateModalControls();
+                } else {
+                    currentGalleryImages = [src];
+                    currentImageIndex = 0;
+                    removeModalControls();
+                }
+            }
+        };
+
+        function updateModalControls() {
+            removeModalControls();
+            if (currentGalleryImages.length <= 1) return;
+
+            const nextBtn = document.createElement('div');
+            nextBtn.id = 'modal-next';
+            nextBtn.innerHTML = '&#10095;';
+            nextBtn.style.cssText = 'position:absolute; right:20px; top:50%; transform:translateY(-50%); color:white; font-size:40px; cursor:pointer; user-select:none; padding:10px; z-index:10001;';
+            nextBtn.onclick = (e) => { e.stopPropagation(); navigateModal(1); };
+
+            const prevBtn = document.createElement('div');
+            prevBtn.id = 'modal-prev';
+            prevBtn.innerHTML = '&#10094;';
+            prevBtn.style.cssText = 'position:absolute; left:20px; top:50%; transform:translateY(-50%); color:white; font-size:40px; cursor:pointer; user-select:none; padding:10px; z-index:10001;';
+            prevBtn.onclick = (e) => { e.stopPropagation(); navigateModal(-1); };
+
+            imgModal.appendChild(nextBtn);
+            imgModal.appendChild(prevBtn);
+        }
+
+        function removeModalControls() {
+            const next = document.getElementById('modal-next');
+            const prev = document.getElementById('modal-prev');
+            if (next) next.remove();
+            if (prev) prev.remove();
+        }
+
+        function navigateModal(direction) {
+            currentImageIndex = (currentImageIndex + direction + currentGalleryImages.length) % currentGalleryImages.length;
+            modalImgContent.src = currentGalleryImages[currentImageIndex];
+        }
+
+        if (imgModal) {
+            imgModal.addEventListener('click', (e) => {
+                if (e.target !== modalImgContent && e.target.id !== 'modal-next' && e.target.id !== 'modal-prev') {
+                    imgModal.style.display = 'none';
+                    removeModalControls();
+                }
+            });
+
+            // Soporte teclado
+            document.addEventListener('keydown', (e) => {
+                if (imgModal.style.display === 'flex') {
+                    if (e.key === 'ArrowRight') navigateModal(1);
+                    if (e.key === 'ArrowLeft') navigateModal(-1);
+                    if (e.key === 'Escape') { imgModal.style.display = 'none'; removeModalControls(); }
+                }
+            });
+        }
 
         async function loadDetail() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -286,16 +401,28 @@
                     const description = data.descripcion || urlDesc || "Sin descripción disponible.";
                     const phone = data.numerodecontacto || data.telefono || "";
 
+                    // Recopilar todas las fotos para la galería expandible
+                    const allPhotos = [image];
+                    if (data.fotosnegocio && Array.isArray(data.fotosnegocio)) {
+                        allPhotos.push(...data.fotosnegocio);
+                    }
+
                     titleEl.innerText = title;
                     catEl.innerText = category;
                     mainImgEl.src = image;
+                    mainImgEl.onclick = () => window.openFullscreenImage(image, allPhotos);
                     descEl.innerText = description;
 
                     // Gallery
                     gallery.innerHTML = '';
                     if (data.fotosnegocio && Array.isArray(data.fotosnegocio) && data.fotosnegocio.length > 0) {
                         data.fotosnegocio.forEach(imgUrl => {
-                            gallery.innerHTML += `<div class="card" style="height: 120px;"><img src="${imgUrl}" class="img-full" style="border-radius:15px;"></div>`;
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.style.height = '120px';
+                            card.innerHTML = `<img src="${imgUrl}" class="img-full" style="border-radius:15px; cursor:zoom-in;">`;
+                            card.onclick = () => window.openFullscreenImage(imgUrl, allPhotos);
+                            gallery.appendChild(card);
                         });
                     } else {
                         gallery.innerHTML = '<p style="color:#999; font-size: 0.9rem; padding: 20px;">No hay fotos adicionales.</p>';
@@ -534,6 +661,16 @@
         if (shareBtn) shareBtn.addEventListener('click', shareContent);
 
         loadDetail();
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

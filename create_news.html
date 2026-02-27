@@ -40,7 +40,8 @@
 
         .upload-area {
             width: 100%;
-            height: 180px;
+            aspect-ratio: 1 / 1;
+            height: auto;
             border: 2px dashed #e5e7eb;
             border-radius: 16px;
             display: flex;
@@ -52,6 +53,12 @@
             margin-bottom: 10px;
         }
     </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -83,8 +90,8 @@
             <h2 style="font-family: 'Outfit'; font-weight: 900; font-size: 1.5rem; margin-bottom: 15px; color: #111;">
                 ¡Recibido!</h2>
             <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Tu noticia ha sido
-                enviada para revisión. Para acelerar el proceso de aprobación, puedes contactar al administrador por
-                WhatsApp.</p>
+                enviada. Realiza el pago vía <b>Yape</b> al <b>928 403 248</b> y envíanos el comprobante por WhatsApp
+                para su revisión.</p>
 
             <a id="whatsapp-admin-link" href="#" target="_blank"
                 style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 16px; border-radius: 12px; font-weight: 800; text-decoration: none; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
@@ -120,7 +127,7 @@
                         style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none;">
                         <i data-lucide="camera" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
                         <p style="font-weight: 600; font-size: 0.9rem;">Toca para subir foto</p>
-                        <p style="font-size: 0.7rem;">Imagen horizontal recomendada</p>
+                        <p style="font-size: 0.7rem;">Imagen cuadrada 1:1 recomendada</p>
                     </div>
                     <img id="image-preview"
                         style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;" />
@@ -142,6 +149,11 @@
                     <option value="comunidad">Comunidad</option>
                     <option value="turismo">Turismo</option>
                     <option value="negocios">Negocios</option>
+                    <option value="deportes">Deportes</option>
+                    <option value="pro_salud">Pro Salud</option>
+                    <option value="gobierno">Gobierno</option>
+                    <option value="entretenimiento">Entretenimiento</option>
+                    <option value="educacion">Educación</option>
                 </select>
             </div>
 
@@ -151,8 +163,14 @@
                     required></textarea>
             </div>
 
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp de Contacto (Opcional)</label>
+                <input type="tel" id="whatsapp" placeholder="Ej. 987654321 - Para que los usuarios te contacten"
+                    pattern="[0-9]{9}" title="Ingrese un número de celular de 9 dígitos">
+            </div>
+
             <button type="submit" id="submit-btn"
-                style="width: 100%; padding: 16px; background: var(--jungle-green); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; margin-top: 20px; transition: background 0.2s; cursor: pointer;">PUBLICAR
+                style="width: 100%; padding: 16px; background: #111827; color: var(--accent-color); border: none; border-radius: 12px; font-weight: 900; font-size: 1.1rem; margin-top: 10px; transition: background 0.2s; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); letter-spacing: 0.05em;">PUBLICAR
                 NOTICIA</button>
         </form>
     </main>
@@ -166,8 +184,16 @@
             <i data-lucide="layout-grid" class="nav-icon"></i>
             <span>Directorio</span>
         </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
         <a href="news.html" class="nav-item">
-            <i data-lucide="flame" class="nav-icon"></i>
+            <i data-lucide="bell" class="nav-icon"></i>
             <span>Noticias</span>
         </a>
         <a href="profile.html" class="nav-item active">
@@ -207,7 +233,7 @@
 
         document.getElementById('news-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<div class="loader-small" style="display:inline-block; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite;"></div> Publicando...';
@@ -216,6 +242,10 @@
                 const title = document.getElementById('title').value;
                 const category = document.getElementById('category').value;
                 const content = document.getElementById('content').value;
+                const whatsappRaw = document.getElementById('whatsapp').value.trim();
+
+                // Limpiar número usando expresión regular (solo dejar números)
+                const whatsapp = whatsappRaw ? whatsappRaw.replace(/[^0-9]/g, '') : null;
 
                 let imageUrl = "";
 
@@ -224,7 +254,7 @@
                     const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
                     const filePath = `noticias/${Date.now()}_${sanitizeName}`;
                     const storageRef = ref(storage, filePath);
-                    
+
                     await uploadBytes(storageRef, file);
                     imageUrl = await getDownloadURL(storageRef);
                 }
@@ -234,19 +264,20 @@
                     categoria: category,
                     contenido: content,
                     imagen: imageUrl,
+                    whatsapp: whatsapp,
                     estado: 'pendiente',
                     fecha_creacion: serverTimestamp()
                 });
 
                 // Preparar mensaje de WhatsApp para el administrador
-                const adminPhone = "51921385412"; // <-- ACTUALIZA ESTE NÚMERO
-                const msg = encodeURIComponent(`Hola CityMart Lamas, acabo de enviar la noticia "${title}". Solicito su revisión para publicación.`);
+                const adminPhone = "51928403248"; // <-- ACTUALIZA ESTE NÚMERO
+                const msg = encodeURIComponent(`Hola CityMart Lamas, acabo de enviar la noticia "${title}". Adjunto el comprobante de pago (Yape a 928403248) para su revisión.`);
                 document.getElementById('whatsapp-admin-link').href = `https://wa.me/${adminPhone}?text=${msg}`;
-                
+
                 // Mostrar modal de éxito
                 document.getElementById('success-modal').style.display = 'flex';
                 lucide.createIcons();
-                
+
             } catch (error) {
                 console.error("Error al publicar la noticia:", error);
                 alert("Hubo un error al publicar la noticia. Por favor intenta nuevamente.");
@@ -254,6 +285,16 @@
                 submitBtn.innerHTML = 'PUBLICAR NOTICIA';
             }
         });
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

@@ -97,6 +97,18 @@ service cloud.firestore {
       allow delete: if true;
     }
 
+    match /fcmTokens/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if true;
+      allow delete: if true;
+    }
+
+    match /alertas/{document} {
+      allow read: if true;
+      allow write: if true;
+    }
+
     match /{document=**} {
       allow read, write: if request.auth.token.email.matches("firebase@flutterflow.io");
     }

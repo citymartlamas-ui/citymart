@@ -12,6 +12,12 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body>
@@ -47,8 +53,16 @@
             <i data-lucide="layout-grid" class="nav-icon"></i>
             <span>Directorio</span>
         </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
         <a href="news.html" class="nav-item">
-            <i data-lucide="flame" class="nav-icon"></i>
+            <i data-lucide="bell" class="nav-icon"></i>
             <span>Noticias</span>
         </a>
         <a href="profile.html" class="nav-item">
@@ -73,23 +87,28 @@
                 listContainer.innerHTML = '';
 
                 if (!promosSnap.empty) {
-                    promosSnap.forEach(doc => {
-                        const data = doc.data();
-                        const subtitle = data.nombre_negocio || data.negocio || "Negocio Local";
-                        const priceTag = data.precio_oferta ? `<div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; margin-top: 4px; display: inline-block;">${data.precio_oferta}</div>` : '';
+                    const approvedPromos = promosSnap.docs.filter(doc => doc.data().estado === 'aprobado');
 
-                        listContainer.innerHTML += `
-                                <div class="card" style="position: relative; height: 180px;" onclick="window.location.href='promo_detail.html?id=${doc.id}'">
-                                    <img src="${data.imagen}" class="img-full" style="filter: brightness(0.8);">
-                                    <div style="position: absolute; top: 12px; right: 12px; background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; z-index: 2;">OFERTA</div>
-                                    <div class="overlay-text" style="padding: 16px; display: flex; flex-direction: column; justify-content: flex-end;">
-                                        <h3 style="font-size: 1.2rem; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">${data.titulo}</h3>
-                                        <p style="font-size: 0.85rem; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">Por ${subtitle}</p>
-                                        ${priceTag}
+                    if (approvedPromos.length > 0) {
+                        approvedPromos.forEach(doc => {
+                            const data = doc.data();
+                            const subtitle = data.nombre_negocio || data.negocio || "Negocio Local";
+                            const priceTag = data.precio_oferta ? `<div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; margin-top: 4px; display: inline-block;">${data.precio_oferta}</div>` : '';
+
+                            listContainer.innerHTML += `
+                                    <div class="card" style="position: relative; height: 180px;" onclick="window.location.href='promo_detail.html?id=${doc.id}'">
+                                        <img src="${data.imagen}" class="img-full" style="filter: brightness(0.8);">
+                                        <div style="position: absolute; top: 12px; right: 12px; background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; z-index: 2;">OFERTA</div>
+                                        <div class="overlay-text" style="padding: 16px; display: flex; flex-direction: column; justify-content: flex-end;">
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">${data.precio_oferta ? 'S/ ' + data.precio_oferta.toString().replace(/^S\/\s*/i, '') + ' - ' : ''}${data.titulo}</h3>
+                                            <p style="font-size: 0.85rem; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">Por ${subtitle}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            `;
-                    });
+                                `;
+                        });
+                    } else {
+                        listContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No hay promociones activas por el momento.</p>';
+                    }
                 } else {
                     renderPromoListFallbacks(listContainer);
                 }
@@ -114,7 +133,7 @@
                         <img src="${ex.img}" class="img-full" style="filter: brightness(0.85);">
                         <div style="position: absolute; top: 12px; right: 12px; background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem;">OFERTA</div>
                         <div class="overlay-text" style="padding: 16px;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 2px;">${ex.titulo}</h3>
+                            <h3 style="font-size: 1.2rem; margin-bottom: 2px;">S/ 15.00 - ${ex.titulo}</h3>
                             <p style="font-size: 0.85rem; opacity: 0.9;">En ${ex.negocio}</p>
                         </div>
                     </div>
@@ -123,6 +142,16 @@
         }
 
         loadPromos();
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registrado', reg))
+                    .catch(e => console.error('Error SW', e));
+            });
+        }
     </script>
 </body>
 

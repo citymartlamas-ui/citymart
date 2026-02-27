@@ -12,6 +12,15 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6211692359872996"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -27,8 +36,8 @@
         </div>
     </header>
 
-    <main class="container" style="padding-bottom: 100px;">
-        <div style="display: flex; flex-direction: column; gap: 4px;">
+    <main style="padding-bottom: 100px;">
+        <div style="display: flex; flex-direction: column; gap: 0;">
             <!-- Se poblará dinámicamente con Firebase -->
         </div>
     </main>
@@ -42,8 +51,16 @@
             <i data-lucide="layout-grid" class="nav-icon"></i>
             <span>Directorio</span>
         </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
         <a href="news.html" class="nav-item active">
-            <i data-lucide="flame" class="nav-icon"></i>
+            <i data-lucide="bell" class="nav-icon"></i>
             <span>Noticias</span>
         </a>
         <a href="profile.html" class="nav-item">
@@ -58,7 +75,7 @@
 
         lucide.createIcons();
 
-        const newsContainer = document.querySelector('main.container > div');
+        const newsContainer = document.querySelector('main > div');
 
         function loadNews() {
             newsContainer.innerHTML = `<div style="text-align:center; padding: 40px;"><div class="loader"></div><p style="margin-top:10px; color:#666;">Cargando noticias...</p></div>`;
@@ -73,7 +90,13 @@
                     }
 
                     const docs = [];
-                    querySnapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }));
+                    querySnapshot.forEach(doc => {
+                        const data = doc.data();
+                        // Mostrar solo si está explícitamente aprobado o si es una noticia MUY antigua sin estado
+                        if (data.estado === 'aprobado' || !data.estado) {
+                            docs.push({ id: doc.id, ...data });
+                        }
+                    });
 
                     // Ordenar por fecha_creacion descending
                     docs.sort((a, b) => {
@@ -82,11 +105,19 @@
                         return dateB - dateA;
                     });
 
-                    docs.forEach((data) => {
+                    if (docs.length === 0) {
+                        newsContainer.innerHTML = `<p style="text-align:center; padding:40px; color:#666;">No hay noticias recientes.</p>`;
+                        return;
+                    }
+
+                    docs.forEach((data, index) => {
                         const card = document.createElement('div');
-                        card.className = 'card';
-                        card.style.height = '300px';
-                        card.style.marginBottom = '12px'; // Un poco de espacio extra
+                        card.style.position = 'relative';
+                        card.style.width = '100%';
+                        card.style.height = '400px'; // 400px de alto, compatible universalmente
+                        card.style.cursor = 'pointer';
+                        card.style.overflow = 'hidden';
+
                         card.onclick = () => {
                             window.location.href = `news_detail.html?id=${data.id}`;
                         };
@@ -94,18 +125,37 @@
                         const tagText = (data.categoria || 'NOTICIA').toUpperCase();
                         const tagColor = data.categoria === 'eventos' ? 'var(--secondary-color)' : 'var(--primary-color)';
 
-                        // Usar 'contenido' que es el campo correcto
                         const summary = data.contenido || data.texto || "";
 
                         card.innerHTML = `
-                            <img src="${data.imagen || 'https://images.unsplash.com/photo-1533903345306-15d1c30952de?auto=format&fit=crop&q=80&w=800'}" class="img-full">
-                            <div class="overlay-text">
-                                <span style="background: ${tagColor}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">${tagText}</span>
-                                <h3 style="font-size: 1.4rem; margin-top: 8px;">${data.titulo || 'Sin título'}</h3>
-                                <p style="font-size: 0.85rem; opacity: 0.9;">${summary.substring(0, 100)}${summary.length > 100 ? '...' : ''}</p>
+                            <img src="${data.imagen || 'https://images.unsplash.com/photo-1533903345306-15d1c30952de?auto=format&fit=crop&q=80&w=800'}" style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 20px 24px 20px; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%); color: white;">
+                                <span style="background: ${tagColor}; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">${tagText}</span>
+                                <h3 style="font-size: 1.8rem; margin-top: 14px; font-family: 'Outfit', sans-serif; font-weight: 900; line-height: 1.1;">${data.titulo || 'Sin título'}</h3>
+                                <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 8px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${summary}</p>
                             </div>
                         `;
                         newsContainer.appendChild(card);
+
+                        // Inyectar banner cada 3 noticias
+                        if ((index + 1) % 3 === 0) {
+                            const adCard = document.createElement('div');
+                            adCard.style.padding = '20px 16px';
+                            adCard.style.background = '#f9fafb';
+                            adCard.style.borderBottom = '1px solid #eee';
+                            adCard.innerHTML = `
+                                <ins class="adsbygoogle"
+                                     style="display:block"
+                                     data-ad-format="fluid"
+                                     data-ad-layout-key="-fb+5w+4e-db+86"
+                                     data-ad-client="ca-pub-6211692359872996"
+                                     data-ad-slot="news_slot"></ins>
+                                <script>
+                                     (adsbygoogle = window.adsbygoogle || []).push({});
+                                <\/script>
+                            `;
+                            newsContainer.appendChild(adCard);
+                        }
                     });
                     lucide.createIcons();
                 });
@@ -116,6 +166,14 @@
         }
 
         loadNews();
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => { });
+            });
+        }
     </script>
 </body>
 
