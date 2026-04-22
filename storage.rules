@@ -1,37 +1,77 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Fotos de perfil de usuarios
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isImage() {
+      return request.resource != null && request.resource.contentType.matches('image/.*');
+    }
+
+    function isImageOrVideo() {
+      return request.resource != null
+        && (request.resource.contentType.matches('image/.*')
+        || request.resource.contentType.matches('video/.*'));
+    }
+
     match /users/{userId}/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth.uid == userId;
+      allow write: if signedIn()
+        && request.auth.uid == userId
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
     }
 
-    // Fotos de negocios
     match /negocios/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if signedIn()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
     }
 
-    // Fotos de promociones
     match /promociones/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if signedIn()
+        && isImageOrVideo()
+        && request.resource.size < 10 * 1024 * 1024;
     }
 
-    // Fotos de noticias
     match /noticias/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if signedIn()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
     }
 
-    // Fotos de perfil (ruta genérica)
     match /profile_photos/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if signedIn()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
     }
 
-    // Lectura general para todo lo demás
+    match /lost_found/{allPaths=**} {
+      allow read: if true;
+      allow write: if signedIn()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
+    }
+
+    match /community_posts/{allPaths=**} {
+      allow read: if true;
+      allow write: if signedIn()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
+    }
+
+    match /foro_temas/{allPaths=**} {
+      allow read: if true;
+      allow write: if signedIn()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
+    }
+
     match /{allPaths=**} {
       allow read: if true;
       allow write: if false;

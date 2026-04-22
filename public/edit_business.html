@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Editar Negocio o Servicio | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <style>
+        body {
+            background-color: var(--bg-main);
+            background-image: radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 0%, rgba(5, 150, 105, 0.03) 0px, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .premium-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.08em;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-soft);
+            width: 18px;
+            height: 18px;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 14px 14px 44px;
+            border-radius: 16px;
+            border: 1.5px solid rgba(0, 0, 0, 0.03);
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        select { padding-left: 14px; }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-color);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+        }
+
+        input:focus + i, .input-wrapper:focus-within i {
+            color: var(--primary-color);
+        }
+
+        .upload-area {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed rgba(5, 150, 105, 0.2);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-soft);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-container {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+
+<body>
+    <div id="loading-overlay" class="loader-container">
+        <div class="loader"></div>
+        <p style="margin-top: 15px; font-weight: 700; color: var(--jungle-green);">Cargando datos del negocio o
+            servicio...</p>
+    </div>
+
+    <header class="section modern-glass" style="padding-top: 10px; padding-bottom: 12px; position: sticky; top: 0; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.location.href='./'">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 50px; width: auto; margin-left: -5px;">
+                    <span style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 2px;">CityMart</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 40px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button onclick="window.history.back()" style="background: white; border: 1px solid rgba(0,0,0,0.05); color: var(--text-main); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm);">
+                <i data-lucide="chevron-left" style="width: 24px; height: 24px;"></i>
+            </button>
+            <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.2rem; color: var(--text-main);">Editar Negocio o Servicio</h2>
+        </div>
+
+        <form id="edit-form" class="premium-card">
+            <!-- Multimedia Principal -->
+            <div class="form-group">
+                <label><i data-lucide="camera" style="width: 14px;"></i> Foto Principal (Cambiar Opcionalmente)</label>
+                <div class="upload-area" id="image-upload-container">
+                    <img id="image-preview" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;" />
+                    <div id="upload-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; backdrop-filter: blur(2px);">
+                        <i data-lucide="camera" style="width: 32px; height: 32px;"></i>
+                    </div>
+                    <input type="file" id="business-image" accept="image/*" style="opacity: 0; position: absolute; inset:0; width: 100%; height: 100%; cursor: pointer;">
+                </div>
+            </div>
+
+            <!-- Datos Generales -->
+            <!-- Datos Generales -->
+            <div class="form-group">
+                <label for="name"><i data-lucide="store" style="width: 14px;"></i> Nombre del Negocio</label>
+                <div class="input-wrapper">
+                    <i data-lucide="type"></i>
+                    <input type="text" id="name" placeholder="Ej. Restaurante La Casona" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="category"><i data-lucide="tags" style="width: 14px;"></i> Categoría</label>
+                <select id="category" required>
+                    <option value="">Selecciona una categoría</option>
+                    <optgroup label="🍽️ Comida y Bebidas">
+                        <option value="restaurantes">Restaurantes</option>
+                        <option value="cafeteria">Cafeterías</option>
+                        <option value="bar">Bares y Karaokes</option>
+                        <option value="discoteca">Discotecas</option>
+                        <option value="night_club">Night Clubs</option>
+                        <option value="panaderia">Panaderías y Pastelerías</option>
+                        <option value="comida_rapida">Comida Rápida / Snacks</option>
+                    </optgroup>
+                    <optgroup label="🏨 Hospedaje">
+                        <option value="hospedaje">Hoteles / Hospedaje</option>
+                        <option value="alquiler">Alquileres / Inmobiliaria</option>
+                    </optgroup>
+                    <optgroup label="🎨 Arte y Cultura">
+                        <option value="artesania">Artesanías y Souvenirs</option>
+                        <option value="arte_cultura">Arte y Cultura</option>
+                    </optgroup>
+                    <optgroup label="🛒 Comercio">
+                        <option value="tiendas">Tiendas / Bodegas</option>
+                        <option value="moda">Moda y Ropa</option>
+                        <option value="tecnologia">Tecnología y Celulares</option>
+                        <option value="ferreteria">Ferreterías</option>
+                        <option value="libreria">Librerías y Papelerías</option>
+                    </optgroup>
+                    <optgroup label="💆 Salud y Bienestar">
+                        <option value="salud">Farmacias y Boticas</option>
+                        <option value="clinica">Clínicas y Consultorios</option>
+                        <option value="spa">Spa y Bienestar</option>
+                        <option value="gimnasio">Gimnasios y Deportes</option>
+                    </optgroup>
+                    <optgroup label="🔧 Servicios Profesionales">
+                        <option value="servicios">Servicios Generales</option>
+                        <option value="construccion">Construcción</option>
+                        <option value="carpinteria">Carpintería</option>
+                        <option value="gasfiteria">Gasfitería / Plomería</option>
+                        <option value="electricista">Electricistas</option>
+                        <option value="peluqueria">Peluquerías y Barberías</option>
+                        <option value="sastreria">Sastrería y Costura</option>
+                        <option value="lavanderia">Lavanderías</option>
+                        <option value="contabilidad">Contabilidad y Abogados</option>
+                        <option value="mecanica">Mecánica Automotriz</option>
+                    </optgroup>
+                    <optgroup label="🚐 Transporte y Turismo">
+                        <option value="transporte">Transporte</option>
+                        <option value="turismo">Agencias de Turismo</option>
+                        <option value="recreo_turistico">Recreos Turisticos / Centros de Esparcimiento</option>
+                    </optgroup>
+                    <optgroup label="📚 Educación">
+                        <option value="educacion">Academias e Institutos</option>
+                    </optgroup>
+                    <optgroup label="🌾 Agro y Naturaleza">
+                        <option value="agro">Agricultura y Ganadería</option>
+                        <option value="veterinaria">Veterinarias</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="city"><i data-lucide="map" style="width: 14px;"></i> Ciudad</label>
+                <select id="city" required>
+                    <option value="lamas">Lamas</option>
+                    <option value="tarapoto">Tarapoto</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description"><i data-lucide="info" style="width: 14px;"></i> Descripción</label>
+                <div class="input-wrapper">
+                    <textarea id="description" rows="3" placeholder="Cuéntanos qué hace especial a tu negocio..." required style="padding-left: 14px;"></textarea>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group">
+                    <label for="open"><i data-lucide="clock" style="width: 14px;"></i> Abre:</label>
+                    <input type="time" id="open" required style="padding-left: 14px;">
+                </div>
+                <div class="form-group">
+                    <label for="close"><i data-lucide="clock" style="width: 14px;"></i> Cierra:</label>
+                    <input type="time" id="close" required style="padding-left: 14px;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="whatsapp"><i data-lucide="phone" style="width: 14px;"></i> WhatsApp de Contacto</label>
+                <div class="input-wrapper">
+                    <i data-lucide="smartphone"></i>
+                    <input type="tel" id="whatsapp" placeholder="999 999 999" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address"><i data-lucide="map-pin" style="width: 14px;"></i> Dirección</label>
+                <div class="input-wrapper">
+                    <i data-lucide="map-pinned"></i>
+                    <input type="text" id="address" placeholder="Ej. Jr. Comercio 123" required>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-submit">
+                <i data-lucide="save" style="width: 20px; height: 20px;"></i>
+                GUARDAR CAMBIOS
+            </button>
+        </form>
+    </main>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+
+
+    <script type="module">
+        import { app, auth, db, storage } from './assets/js/firebase-init.js';
+        import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { linkLegacyBusinessesByEmail } from './assets/js/legacy-business-link.js';
+
+        lucide.createIcons();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const bizId = urlParams.get('id');
+
+        if (!bizId) {
+            alert("No se especificó un negocio.");
+            window.location.href = 'profile.html';
+        }
+
+        const editForm = document.getElementById('edit-form');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const previewEl = document.getElementById('image-preview');
+        const fileInput = document.getElementById('business-image');
+
+        let currentBizData = null;
+
+        // Cargar datos del negocio
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                await linkLegacyBusinessesByEmail({ app, authUser: user });
+
+                const bizDoc = await getDoc(doc(db, "negocio", bizId));
+                if (!bizDoc.exists()) {
+                    alert("El negocio no existe.");
+                    window.location.href = 'profile.html';
+                    return;
+                }
+
+                currentBizData = bizDoc.data();
+
+                // Verificar que el usuario es el dueño
+                if (currentBizData.uid !== user.uid) {
+                    alert("No tienes permiso para editar este negocio.");
+                    window.location.href = 'profile.html';
+                    return;
+                }
+
+                // Poblar formulario
+                document.getElementById('name').value = currentBizData.nombre || "";
+                document.getElementById('category').value = currentBizData.categoria || "";
+                document.getElementById('city').value = (currentBizData.ciudad || currentBizData.provincia || 'lamas').toLowerCase();
+                document.getElementById('description').value = currentBizData.descripcion || "";
+                document.getElementById('address').value = currentBizData.direccion || "";
+                document.getElementById('whatsapp').value = currentBizData.numerodecontacto || currentBizData.telefono || "";
+
+                if (currentBizData.horario) {
+                    const times = currentBizData.horario.split(' - ');
+                    if (times.length === 2) {
+                        document.getElementById('open').value = times[0];
+                        document.getElementById('close').value = times[1];
+                    }
+                }
+
+                if (currentBizData.foto || currentBizData.imagen) {
+                    previewEl.src = currentBizData.foto || currentBizData.imagen;
+                    previewEl.style.display = 'block';
+                }
+
+                loadingOverlay.style.display = 'none';
+            } catch (err) {
+                console.error("Error cargando negocio:", err);
+                alert("Error al cargar los datos.");
+                window.location.href = 'profile.html';
+            }
+        });
+
+        // Preview de imagen al cambiar
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewEl.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Guardar cambios
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+
+            const setStatus = (text) => {
+                submitBtn.innerHTML = `<div class="loader-small" style="display:inline-block; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite;"></div> ${text}`;
+            };
+
+            try {
+                const name = document.getElementById('name').value;
+                const category = document.getElementById('category').value;
+                const city = document.getElementById('city').value;
+                const description = document.getElementById('description').value;
+                const openTime = document.getElementById('open').value;
+                const closeTime = document.getElementById('close').value;
+                const whatsapp = document.getElementById('whatsapp').value;
+                const address = document.getElementById('address').value;
+
+                let imageUrl = currentBizData.foto || currentBizData.imagen;
+                let imagePath = currentBizData.foto_path || currentBizData.imagen_path || "";
+
+                // Si seleccionó nueva imagen, subirla
+                if (fileInput.files.length > 0) {
+                    setStatus('Procesando foto...');
+                    const file = fileInput.files[0];
+                    const compressed = window.optimizeUploadImage
+                        ? await window.optimizeUploadImage(file, 'business')
+                        : (window.compressImage ? await window.compressImage(file) : file);
+                    
+                    setStatus('Subiendo foto...');
+                    const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
+                    const filePath = `negocios/${Date.now()}_${sanitizeName}`;
+                    const storageRef = ref(storage, filePath);
+                    await uploadBytes(storageRef, compressed);
+                    imageUrl = await getDownloadURL(storageRef);
+                    imagePath = filePath;
+                }
+
+                setStatus('Guardando cambios...');
+
+                await updateDoc(doc(db, "negocio", bizId), {
+                    nombre: name,
+                    categoria: category,
+                    ciudad: city,
+                    provincia: city,
+                    descripcion: description,
+                    horario: `${openTime} - ${closeTime}`,
+                    telefono: whatsapp,
+                    numerodecontacto: whatsapp,
+                    direccion: address,
+                    foto: imageUrl,
+                    imagen: imageUrl,
+                    foto_path: imagePath,
+                    imagen_path: imagePath,
+                    negocio_o_servicio: category === 'servicios' ? 'servicio' : 'negocio'
+                });
+
+                alert("¡Datos actualizados con éxito!");
+                window.location.href = 'profile.html';
+
+            } catch (err) {
+                console.error("Error guardando cambios:", err);
+                alert("Error al guardar los cambios.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'GUARDAR CAMBIOS';
+            }
+        });
+    </script>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+</body>
+
+</html>
+

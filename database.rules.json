@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "presence": {
+      ".read": true,
+      "$sessionId": {
+        ".write": "newData.exists() ? (newData.hasChildren(['lastSeen']) && newData.child('lastSeen').isNumber()) : true",
+        ".validate": "newData.hasChildren(['lastSeen']) && newData.child('lastSeen').isNumber()"
+      }
+    },
+    "stats": {
+      ".read": true,
+      ".write": false,
+      "total_visits": {
+        ".write": "newData.isNumber() && (!data.exists() || newData.val() >= data.val())"
+      },
+      "daily_visits": {
+        "$date": {
+          ".write": "newData.isNumber() && (!data.exists() || newData.val() >= data.val())"
+        }
+      }
+    }
+  }
+}

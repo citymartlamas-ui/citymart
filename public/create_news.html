@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Crear Noticia | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/cache.js"></script>
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--jungle-green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            background: #fdfdfd;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .upload-area {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            height: auto;
+            border: 2px dashed #e5e7eb;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 8px; border-bottom: 1px solid #eee;">
+        <div class="container">
+                <div style="display: flex; align-items: center; margin-bottom: 20px; cursor: pointer; gap: 8px;"
+                    onclick="window.location.href='./'">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 42px; width: auto; margin-left: -10px;">
+                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 5px;">CityMart</h1>
+                </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <a href="profile.html" style="color: var(--text-color);"><i data-lucide="chevron-left"
+                        style="width: 28px; height: 28px;"></i></a>
+                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.3rem;">Crear Noticia</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- MODAL DE ÉXITO -->
+    <div id="success-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);">
+        <div
+            style="background: white; border-radius: 24px; padding: 30px; width: 100%; max-width: 400px; text-align: center; position: relative; animation: slideUp 0.3s ease-out;">
+            <div
+                style="width: 80px; height: 80px; background: #ecfdf5; color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i data-lucide="check-circle" style="width: 40px; height: 40px;"></i>
+            </div>
+            <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.5rem; margin-bottom: 15px; color: #111;">
+                ¡Recibido!</h2>
+            <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Tu noticia ha sido
+                enviada. Realiza el pago vía <b>Yape</b> al <b>928 403 248</b> y envíanos el comprobante por WhatsApp
+                para su revisión.</p>
+
+            <a id="whatsapp-admin-link" href="#" target="_blank"
+                style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 16px; border-radius: 12px; font-weight: 700; text-decoration: none; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
+                <i data-lucide="message-circle"></i> CONTACTAR ADMIN
+            </a>
+
+            <button onclick="window.location.href='profile.html'"
+                style="background: transparent; border: none; color: #9ca3af; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">Volver
+                al perfil</button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <form id="news-form">
+            <div class="form-group">
+                <label>Imagen de Portada</label>
+                <div class="upload-area" style="position: relative; overflow: hidden; cursor: pointer;">
+                    <div id="default-upload-content"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none;">
+                        <i data-lucide="camera" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
+                        <p style="font-weight: 600; font-size: 0.9rem;">Toca para subir foto</p>
+                        <p style="font-size: 0.7rem;">Imagen cuadrada 1:1 recomendada</p>
+                    </div>
+                    <img id="image-preview"
+                        style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;" />
+                    <input type="file" id="news-image" accept="image/*"
+                        style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Titulo de la noticia</label>
+                <input type="text" id="title" placeholder="Ej. Gran inauguracion de la feria artesanal" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Categoria</label>
+                <select id="category" required>
+                    <option value="eventos">Eventos</option>
+                    <option value="comunidad">Comunidad</option>
+                    <option value="turismo">Turismo</option>
+                    <option value="negocios">Negocios</option>
+                    <option value="deportes">Deportes</option>
+                    <option value="pro_salud">Pro Salud</option>
+                    <option value="gobierno">Gobierno</option>
+                    <option value="entretenimiento">Entretenimiento</option>
+                    <option value="educacion">Educacion</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Contenido</label>
+                <textarea id="content" rows="8" placeholder="Escribe el desarrollo de la noticia aqui..."
+                    required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp de Contacto (Opcional)</label>
+                <input type="tel" id="whatsapp" placeholder="Ej. 987654321 - Para que los usuarios te contacten"
+                    pattern="[0-9]{9}" title="Ingresa un numero de celular de 9 digitos">
+            </div>
+
+            <div class="form-group">
+                <label for="news-city">En que ciudad se publica esta noticia?</label>
+                <select id="news-city" required>
+                    <option value="lamas">Lamas</option>
+                    <option value="tarapoto">Tarapoto</option>
+                </select>
+            </div>
+
+            <button type="submit" id="submit-btn"
+                style="width: 100%; padding: 16px; background: #111827; color: var(--accent-color); border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; margin-top: 10px; transition: background 0.2s; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); letter-spacing: 0.05em;">PUBLICAR
+                NOTICIA</button>
+        </form>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { auth, db, storage } from './assets/js/firebase-init.js';
+        import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        lucide.createIcons();
+
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user || null;
+            if (!user) {
+                showToast("Debes iniciar sesión para publicar noticias.", "error");
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Pre-select current city
+        const savedCity = window.getStoredCity ? window.getStoredCity() : 'lamas';
+        const newsCityEl = document.getElementById('news-city');
+        if (newsCityEl) newsCityEl.value = savedCity;
+
+        // Image Preview Logic
+        const fileInput = document.getElementById('news-image');
+        const previewEl = document.getElementById('image-preview');
+        const defaultContent = document.getElementById('default-upload-content');
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewEl.src = e.target.result;
+                    previewEl.style.display = 'block';
+                    defaultContent.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewEl.src = '';
+                previewEl.style.display = 'none';
+                defaultContent.style.display = 'flex';
+            }
+        });
+
+        document.getElementById('news-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            const setStatus = (text) => {
+                submitBtn.innerHTML = `<div class="loader-small" style="display:inline-block; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite;"></div> ${text}`;
+            };
+
+            try {
+                if (!currentUser) {
+                    throw new Error('AUTH_REQUIRED');
+                }
+
+                const title = document.getElementById('title').value;
+                const category = document.getElementById('category').value;
+                const content = document.getElementById('content').value;
+                const whatsappRaw = document.getElementById('whatsapp').value.trim();
+
+                // Limpiar número usando expresión regular (solo dejar números)
+                const whatsapp = whatsappRaw ? whatsappRaw.replace(/[^0-9]/g, '') : null;
+
+                let imageUrl = "";
+                let imagePath = "";
+
+                if (fileInput.files.length > 0) {
+                    setStatus('Procesando imagen...');
+                    const file = fileInput.files[0];
+                    const compressed = window.optimizeUploadImage
+                        ? await window.optimizeUploadImage(file, 'news')
+                        : (window.compressImage ? await window.compressImage(file) : file);
+
+                    setStatus('Subiendo imagen...');
+                    const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
+                    const filePath = `noticias/${Date.now()}_${sanitizeName}`;
+                    const storageRef = ref(storage, filePath);
+
+                    await uploadBytes(storageRef, compressed);
+                    imageUrl = await getDownloadURL(storageRef);
+                    imagePath = filePath;
+                }
+
+                setStatus('Guardando noticia...');
+
+                await addDoc(collection(db, "noticias"), {
+                    titulo: title,
+                    categoria: category,
+                    contenido: content,
+                    imagen: imageUrl,
+                    imagen_path: imagePath,
+                    whatsapp: whatsapp,
+                    uid_creador: currentUser.uid,
+                    ciudad: document.getElementById('news-city').value,
+                    estado: 'pendiente',
+                    fecha_creacion: serverTimestamp()
+                });
+
+                if (window.CityCache) CityCache.invalidate('noticias');
+
+                // Preparar mensaje de WhatsApp para el administrador
+                const adminPhone = "51928403248"; // <-- ACTUALIZA ESTE NÚMERO
+                const msg = encodeURIComponent(`Hola CityMart, acabo de enviar la noticia "${title}". Adjunto el comprobante de pago (Yape a 928403248) para su revisión.`);
+                document.getElementById('whatsapp-admin-link').href = `https://wa.me/${adminPhone}?text=${msg}`;
+
+                // Mostrar modal de éxito
+                document.getElementById('success-modal').style.display = 'flex';
+                lucide.createIcons();
+
+            } catch (error) {
+                console.error("Error al publicar la noticia:", error);
+                const errorCode = error?.code || error?.message || "";
+                if (errorCode.includes("permission-denied") || errorCode === "AUTH_REQUIRED" || errorCode.includes("storage/unauthorized")) {
+                    showToast("Tu sesión no es válida para publicar. Inicia sesión e inténtalo otra vez.", "error");
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1200);
+                } else {
+                    showToast("Hubo un error al publicar la noticia.", "error");
+                }
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'PUBLICAR NOTICIA';
+            }
+        });
+    </script>
+
+        <script src="assets/js/pwa-init.js"></script>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer></body>
+
+</html>
+
+

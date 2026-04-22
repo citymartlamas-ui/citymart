@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Administración | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="assets/js/utils.js"></script>
+    <script defer src="assets/js/cache.js"></script>
+    <style>
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+            font-family: 'Inter';
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #f3f4f6;
+        }
+
+        .admin-card img {
+            width: 70px;
+            height: 70px;
+            border-radius: 14px;
+            object-fit: cover;
+        }
+
+        .admin-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .admin-info h3 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 700;
+        }
+
+        .admin-info p {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .admin-btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-approve {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .btn-reject {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-view {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .premium-tag {
+            background: #fef9c3;
+            color: #854d0e;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-pending {
+            background: #fff7ed;
+            color: #9a3412;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .switch-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .switch-label.active-label {
+            color: #10b981;
+        }
+
+        .switch-label.inactive-label {
+            color: #9ca3af;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:checked+.slider {
+            background-color: #10b981;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        .loader-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* Buscador Admin */
+        .admin-search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .admin-search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            width: 18px;
+        }
+
+        .admin-search-input {
+            width: 100%;
+            padding: 12px 12px 12px 42px;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .admin-search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(11, 89, 242, 0.1);
+        }
+
+        .admin-citycash-panel {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+            gap: 16px;
+            padding: 18px;
+            margin-bottom: 18px;
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at top right, rgba(251, 191, 36, 0.18), transparent 28%),
+                linear-gradient(145deg, rgba(17, 24, 39, 0.96), rgba(21, 84, 61, 0.94));
+            color: white;
+            box-shadow: 0 26px 44px -32px rgba(15, 23, 42, 0.6);
+        }
+
+        .admin-citycash-panel h2 {
+            margin: 10px 0 10px;
+            font-size: 1.7rem;
+            line-height: 0.95;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .admin-citycash-panel p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.74);
+            line-height: 1.55;
+            font-size: 0.9rem;
+        }
+
+        .admin-citycash-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fcd34d;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .admin-citycash-box {
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: space-between;
+        }
+
+        .admin-citycash-box small {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.68);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .admin-citycash-balance {
+            font-size: 2rem;
+            line-height: 0.95;
+            font-weight: 800;
+        }
+
+        .btn-citycash {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1f2937;
+            box-shadow: 0 18px 28px -22px rgba(245, 158, 11, 0.8);
+        }
+
+        .btn-citycash:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .admin-citycash-note {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        @media (max-width: 820px) {
+            .admin-citycash-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+
+<body>
+    <header class="section"
+        style="padding-top: 16px; padding-bottom: 16px; border-bottom: 1px solid #eee; background: #fff; position: sticky; top:0; z-index: 50;">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;"
+                    onclick="window.location.href='profile.html'">
+                    <i data-lucide="chevron-left"></i>
+                    <h1 style="font-family: 'Inter'; font-weight: 700; font-size: 1.4rem;">Panel <span
+                            style="color: var(--secondary-color);">Admin</span></h1>
+                </div>
+                <div id="admin-user" style="font-size: 0.8rem; font-weight: 700; color: #666;"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-bottom: 100px;">
+        <div id="admin-login-check" class="loader-container">
+            <div class="loader" style="margin: 0 auto;"></div>
+            <p style="margin-top: 15px; color: #666;">Verificando acceso de administrador...</p>
+        </div>
+
+        <section id="admin-content" style="display: none;">
+            <div class="admin-citycash-panel">
+                <div>
+                    <span class="admin-citycash-eyebrow">CityCash admin</span>
+                    <h2>Bono rapido para tu wallet administrador.</h2>
+                    <p>Este control agrega CityCash con historial registrado. No representa un costo aparte relevante mas alla de unas pocas escrituras en Firestore.</p>
+                </div>
+                <div class="admin-citycash-box">
+                    <div>
+                        <small>Mi wallet admin</small>
+                        <div id="admin-citycash-balance" class="admin-citycash-balance">&#x1FA99; 0 CityCash</div>
+                    </div>
+                    <button id="admin-citycash-bonus-btn" class="admin-btn btn-citycash" onclick="window.grantAdminCityCashBonus()">Agregar 10000 CityCash</button>
+                    <p id="admin-citycash-note" class="admin-citycash-note">Bono unico protegido para tu cuenta admin.</p>
+                </div>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="switchTab('negocios', this)">NEGOCIOS</button>
+                <button class="tab-btn" onclick="switchTab('promos', this)">PROMOS <span
+                        id="count-promos"></span></button>
+                <button class="tab-btn" onclick="switchTab('noticias', this)">NOTICIAS <span
+                        id="count-noticias"></span></button>
+                <button class="tab-btn" onclick="switchTab('encuestas', this)">ESTUDIOS <span
+                        id="count-encuestas"></span></button>
+            </div>
+
+            <!-- Tab Negocios -->
+            <div id="tab-negocios" class="tab-content">
+                <div class="section-title">Todos los Negocios</div>
+                <div class="admin-search-container">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="admin-search-negocios" class="admin-search-input" placeholder="Buscar por nombre o categoría..." oninput="window.filterAdminNegocios(this.value)">
+                </div>
+                <div id="list-negocios"></div>
+            </div>
+
+            <!-- Tab Promos -->
+            <div id="tab-promos" class="tab-content" style="display: none;">
+                <div class="section-title">Todas las Promociones</div>
+                <div id="list-promos"></div>
+            </div>
+
+            <!-- Tab Noticias -->
+            <div id="tab-noticias" class="tab-content" style="display: none;">
+                <div class="section-title">Todas las Noticias</div>
+                <div id="list-noticias"></div>
+            </div>
+
+            <!-- Tab Encuestas -->
+            <div id="tab-encuestas" class="tab-content" style="display: none;">
+                <div class="section-title">Estudios de Mercado (Encuestas)</div>
+                <div id="list-encuestas"></div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { auth, db } from './assets/js/firebase-init.js';
+        import { fetchUserCityCash, formatCityCashBalance, grantCityCashAdmin } from './assets/js/citycash.js';
+        import { collection, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const ADMIN_EMAIL = "admin@gmail.com";
+        const ADMIN_CITYCASH_BONUS_KEY = "admin_self_bonus_20260408_v1";
+        let currentAdminUser = null;
+
+        auth.onAuthStateChanged((user) => {
+            if (user && user.email === ADMIN_EMAIL) {
+                currentAdminUser = user;
+                document.getElementById('admin-login-check').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                document.getElementById('admin-user').innerText = user.email;
+                initAdmin();
+            } else if (user) {
+                showToast("Acceso denegado. Solo administradores.", "error");
+                window.location.href = 'profile.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        function initAdmin() {
+            refreshAdminCityCash();
+            loadNegocios();
+            listenPending('promociones', 'list-promos', 'count-promos');
+            listenPending('noticias', 'list-noticias', 'count-noticias');
+            listenPending('encuestas_diarias', 'list-encuestas', 'count-encuestas');
+            lucide.createIcons();
+        }
+
+        async function refreshAdminCityCash(force = false) {
+            if (!currentAdminUser) return;
+
+            try {
+                const summary = await fetchUserCityCash(currentAdminUser.uid, { force });
+                const balanceEl = document.getElementById('admin-citycash-balance');
+                if (balanceEl) balanceEl.textContent = formatCityCashBalance(summary.balance || 0);
+            } catch (error) {
+                console.error('Admin CityCash load error:', error);
+            }
+        }
+
+        window.grantAdminCityCashBonus = async () => {
+            if (!currentAdminUser) return;
+
+            const button = document.getElementById('admin-citycash-bonus-btn');
+            const note = document.getElementById('admin-citycash-note');
+            const originalLabel = button ? button.textContent : '';
+
+            if (button) {
+                button.disabled = true;
+                button.textContent = 'Aplicando bono...';
+            }
+
+            try {
+                const result = await grantCityCashAdmin({
+                    targetUid: currentAdminUser.uid,
+                    amount: 10000,
+                    label: 'Bono administrador CityCash',
+                    grantKey: ADMIN_CITYCASH_BONUS_KEY,
+                    note: 'Bono rapido autogestionado desde admin'
+                });
+
+                if (note) note.textContent = `Saldo actualizado: ${formatCityCashBalance(result.balance || 0)}.`;
+                showToast('Bono admin aplicado: +10000 CityCash.', 'success');
+                await refreshAdminCityCash(true);
+            } catch (error) {
+                const message = String(error?.message || error || '');
+                if (message.includes('grant-already-used')) {
+                    if (note) note.textContent = 'Este bono admin ya fue usado una vez.';
+                    showToast('Ese bono admin ya fue aplicado antes.', 'error');
+                } else if (message.includes('admin-required')) {
+                    showToast('Tu sesion no tiene permisos de administrador.', 'error');
+                } else {
+                    console.error('Admin CityCash grant error:', error);
+                    showToast('No se pudo asignar el bono CityCash.', 'error');
+                }
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = originalLabel || 'Agregar 10000 CityCash';
+                }
+            }
+        };
+
+        window.switchTab = (tabId, btn) => {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.getElementById('tab-' + tabId).style.display = 'block';
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            lucide.createIcons();
+        };
+
+        let unsubscribeNegocios = null;
+        let allAdminNegocios = [];
+
+        function loadNegocios() {
+            const container = document.getElementById('list-negocios');
+            container.innerHTML = '<p style="padding:20px; text-align:center;">Cargando negocios...</p>';
+
+            if (unsubscribeNegocios) unsubscribeNegocios();
+
+            const qAll = query(collection(db, "negocio"));
+            unsubscribeNegocios = onSnapshot(qAll, (snap) => {
+                if (snap.empty) {
+                    allAdminNegocios = [];
+                    renderAdminNegociosList([]);
+                    return;
+                }
+
+                // Generar lista
+                const negocios = [];
+                snap.forEach(docSnap => {
+                    negocios.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // Ordenar por fecha de registro (más reciente primero)
+                negocios.sort((a, b) => {
+                    const dateA = a.fecha_registro?.seconds || 0;
+                    const dateB = b.fecha_registro?.seconds || 0;
+                    return dateB - dateA;
+                });
+
+                allAdminNegocios = negocios;
+                
+                // Si hay algo en el buscador, filtrar de una vez
+                const searchEl = document.getElementById('admin-search-negocios');
+                const searchTerm = searchEl ? searchEl.value.toLowerCase() : "";
+                
+                if (searchTerm) {
+                    window.filterAdminNegocios(searchTerm);
+                } else {
+                    renderAdminNegociosList(allAdminNegocios);
+                }
+            }, (error) => {
+                console.error("Error cargando negocios:", error);
+                container.innerHTML = '<p>Error al cargar negocios.</p>';
+            });
+        }
+
+        function renderAdminNegociosList(negocios) {
+            const container = document.getElementById('list-negocios');
+            if (negocios.length === 0) {
+                container.innerHTML = '<p style="padding:20px; text-align:center; color:#999;">No hay negocios registrados o que coincidan con la búsqueda.</p>';
+                return;
+            }
+
+            // Contar cuántos Premium hay actualmente
+            const premiumCount = allAdminNegocios.filter(n => n.promocionanuncio === true).length;
+
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 4px; margin-bottom: 8px; background: #f9fafb; border-radius: 10px;">
+                    <span style="font-size: 0.8rem; font-weight: 700; color: #4b5563;">Mostrando: ${negocios.length}</span>
+                    <span style="font-size: 0.8rem; font-weight: 700; color: ${premiumCount >= 30 ? '#ef4444' : '#10b981'};">⭐ Premium Total: ${premiumCount}/30</span>
+                </div>
+            `;
+
+            negocios.forEach(data => {
+                const id = data.id;
+                const isPremium = data.promocionanuncio === true;
+                const cityValue = (data.ciudad || data.provincia || data.ubicacion || '').toString().trim();
+                const cityBadgeHtml = cityValue
+                    ? `<p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:6px;">CIUDAD: ${cityValue.toUpperCase()}</p>`
+                    : '';
+
+                // Fecha legible
+                let fechaStr = '';
+                if (data.fecha_registro) {
+                    const d = new Date(data.fecha_registro.seconds * 1000);
+                    fechaStr = d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
+                }
+
+                container.innerHTML += `
+                    <div class="admin-card">
+                        <img src="${data.foto || 'assets/placeholder.svg'}">
+                        <div class="admin-info">
+                            <h3>${data.nombre}</h3>
+                            ${cityBadgeHtml}
+                            <p>${data.categoria} • ${data.direccion || 'Lamas'}${fechaStr ? ' • ' + fechaStr : ''}</p>
+                        </div>
+                        <div class="action-btns" style="align-items: flex-end;">
+                            <div class="switch-container">
+                                <span class="switch-label ${isPremium ? 'active-label' : 'inactive-label'}">PREMIUM ${isPremium ? 'ON' : 'OFF'}</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" onchange="window.updateField('negocio', '${id}', {promocionanuncio: this.checked})" ${isPremium ? 'checked' : ''}>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        window.filterAdminNegocios = (term) => {
+            const t = (term || "").toLowerCase().trim();
+            if (!t) {
+                renderAdminNegociosList(allAdminNegocios);
+            } else {
+                const filtered = allAdminNegocios.filter(n => 
+                    (n.nombre || "").toLowerCase().includes(t) || 
+                    (n.categoria || "").toLowerCase().includes(t)
+                );
+                renderAdminNegociosList(filtered);
+            }
+        };
+
+        function listenPending(collName, containerId, countId) {
+            const qAll = query(collection(db, collName));
+
+            onSnapshot(qAll, (snap) => {
+                const container = document.getElementById(containerId);
+                const countBadge = document.getElementById(countId);
+
+                const docs = [];
+                let pendingCount = 0;
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    if (data.estado === 'pendiente') pendingCount++;
+                    docs.push({ id: docSnap.id, ...data });
+                });
+
+                // Ordenar: pendientes primero, luego por fecha más reciente
+                docs.sort((a, b) => {
+                    if (a.estado === 'pendiente' && b.estado !== 'pendiente') return -1;
+                    if (a.estado !== 'pendiente' && b.estado === 'pendiente') return 1;
+                    const dateA = a.fecha_registro?.seconds || a.fecha_creacion?.seconds || 0;
+                    const dateB = b.fecha_registro?.seconds || b.fecha_creacion?.seconds || 0;
+                    return dateB - dateA;
+                });
+
+                countBadge.innerText = pendingCount > 0 ? `(${pendingCount})` : '';
+                container.innerHTML = '';
+
+                if (docs.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding: 40px; opacity:0.5;"><p>No hay elementos registrados.</p></div>';
+                    return;
+                }
+
+                docs.forEach(data => {
+                    const id = data.id;
+                    const isPromo = collName === 'promociones';
+                    const isSurvey = collName === 'encuestas_diarias';
+                    const isPending = data.estado === 'pendiente';
+                    const isApproved = data.estado === 'aprobado';
+
+                    let extraPromoInfo = '';
+                    if (isPromo) {
+                        const days = data.duracion_dias || 1;
+                        const expectedPayment = days === 3 ? 15 : 5;
+                        extraPromoInfo = `
+                            <p style="color:var(--jungle-green); font-size:0.75rem; font-weight: 700; margin-bottom:2px;">⏱ ${days} Día(s) &nbsp; | &nbsp; 💸 Monto: S/ ${expectedPayment}.00</p>
+                            <p style="font-weight: 700; color:var(--primary-color);">Precio Promo: S/ ${data.precio_oferta ? data.precio_oferta.toString().replace(/^S\/\s*/i, '') : ''}</p>
+                        `;
+                    }
+
+                    if (isSurvey) {
+                        const opciones = data.opciones || [];
+                        const surveyCity = (data.ciudad || data.provincia || 'lamas').toUpperCase();
+                        let opsHtml = opciones.map(o => `• ${o.texto}`).join('<br>');
+                        extraPromoInfo = `
+                            <p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:4px;">CIUDAD: ${surveyCity}</p>
+                            <p style="font-size:0.75rem; color:#4b5563; font-weight:700; background:#f3f4f6; padding:6px; border-radius:6px; margin-top:4px;">${opsHtml}</p>
+                            <p style="color:var(--secondary-color); font-size:0.75rem; font-weight: 700; margin-top:4px;">⏱ ${data.duracion_horas} Horas</p>
+                        `;
+                    }
+
+                    // Fecha legible
+                    let fechaStr = '';
+                    const rawDate = data.fecha_creacion || data.fecha_registro;
+                    if (rawDate) {
+                        const d = new Date(rawDate.seconds * 1000);
+                        fechaStr = d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                    }
+
+                    const badgeHtml = isPending
+                        ? `<span class="badge-pending">⏳ PENDIENTE</span>`
+                        : `<span class="badge-pending" style="background:#dcfce7; color:#166534;">✅ APROBADO</span>`;
+
+                    const cityValue = (data.ciudad || data.provincia || data.ubicacion || '').toString().trim();
+                    const cityBadgeHtml = cityValue
+                        ? `<p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:6px;">CIUDAD: ${cityValue.toUpperCase()}</p>`
+                        : '';
+
+                    // Botones simplificados: APROBAR / DESAPROBAR
+                    const actionBtn = isPending
+                        ? `<button class="admin-btn btn-approve" onclick="${isPromo ? `window.approvePromo('${id}', ${data.duracion_dias || (data.duracion === '3dias' ? 3 : 1)})` : `window.updateField('${collName}', '${id}', {estado: 'aprobado'})`}">✅ APROBAR</button>`
+                        : `<button class="admin-btn btn-reject" onclick="window.updateField('${collName}', '${id}', {estado: 'pendiente'})">❌ DESAPROBAR</button>`;
+
+                    // Imagen / Title para Encuesta vs Promo/Noticias
+                    const imgSrc = isSurvey ? (data.patrocinador_foto || 'assets/placeholder.svg') : (data.imagen || 'assets/placeholder.svg');
+                    const titleText = isPromo ? ((data.precio_oferta ? 'S/ ' + data.precio_oferta.toString().replace(/^S\/\s*/i, '') + ' - ' : '') + data.titulo) : (isSurvey ? data.pregunta : data.titulo);
+                    const subtitleText = isSurvey ? 'Por: ' + (data.patrocinador_nombre || data.nombre_creador || 'Usuario') : (isPromo ? 'De: ' + (data.nombre_negocio || 'Usuario') : (data.contenido || '').substring(0, 60) + '...');
+
+                    container.innerHTML += `
+                        <div class="admin-card">
+                            <img src="${imgSrc}">
+                            <div class="admin-info">
+                                ${badgeHtml}
+                                <h3>${titleText}</h3>
+                                <p>${subtitleText}</p>
+                                ${cityBadgeHtml}
+                                ${extraPromoInfo}
+                                ${fechaStr ? `<p style="font-size: 0.7rem; color: #9ca3af; margin-top: 2px;">📅 ${fechaStr}</p>` : ''}
+                            </div>
+                            <div class="action-btns">
+                                ${actionBtn}
+                                <button class="admin-btn btn-view" onclick="window.deleteItem('${collName}', '${id}')">🗑 ELIMINAR</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                lucide.createIcons();
+            });
+        }
+
+        window.updateField = async (coll, id, fields) => {
+            try {
+                await updateDoc(doc(db, coll, id), fields);
+                if (window.CityCache) {
+                    if (coll === 'negocio') CityCache.invalidate('negocios');
+                    if (coll === 'promociones') CityCache.invalidate('promociones');
+                    if (coll === 'noticias') CityCache.invalidate('noticias');
+                    if (coll === 'encuestas_diarias') CityCache.invalidate('encuestas');
+                }
+            } catch (e) {
+                console.error(e);
+                showToast("Error al actualizar", "error");
+            }
+        };
+
+        window.approvePromo = async (id, days) => {
+            try {
+                const expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + parseInt(days));
+                await updateDoc(doc(db, 'promociones', id), {
+                    estado: 'aprobado',
+                    fechaExpiracion: expireDate
+                });
+                if (window.CityCache) CityCache.invalidate('promociones');
+            } catch (e) {
+                console.error(e);
+                showToast("Error al aprobar promoción", "error");
+            }
+        };
+
+        window.deleteItem = async (coll, id) => {
+            if (confirm("¿Estás seguro de ELIMINAR este elemento permanentemente?")) {
+                try {
+                    await deleteDoc(doc(db, coll, id));
+                    if (window.CityCache) {
+                        if (coll === 'negocio') CityCache.invalidate('negocios');
+                        if (coll === 'promociones') CityCache.invalidate('promociones');
+                        if (coll === 'noticias') CityCache.invalidate('noticias');
+                        if (coll === 'encuestas_diarias') CityCache.invalidate('encuestas');
+                    }
+                } catch (e) {
+                    console.error(e);
+                    showToast("Error al eliminar", "error");
+                }
+            }
+        };
+
+    </script>
+
+        <script src="assets/js/pwa-init.js"></script>
+</body>
+
+</html>
+
+

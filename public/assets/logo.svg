@@ -1,0 +1,10 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shopping Cart Icon - Futuristic/Minimalist -->
+  <path d="M10 15H18L22 35H45L49 20H20" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="26" cy="45" r="3" fill="#16a34a"/>
+  <circle cx="41" cy="45" r="3" fill="#16a34a"/>
+  <!-- "City" - Strong/Modern Bold -->
+  <text x="60" y="38" fill="#111827" font-family="Outfit, sans-serif" font-size="28" font-weight="900" letter-spacing="-1">City</text>
+  <!-- "Mart" - Thinner/Futuristic Green -->
+  <text x="115" y="38" fill="#16a34a" font-family="Inter, sans-serif" font-size="28" font-weight="400" letter-spacing="-1">Mart</text>
+</svg>

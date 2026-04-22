@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Estudio de Mercado | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/cache.js"></script>
+    <style>
+        .creator-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            color: #6b7280;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .creator-btn.active {
+            border-color: var(--primary-color);
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+
+        .duration-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            color: #6b7280;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .duration-btn.active {
+            border-color: var(--secondary-color);
+            background: #fffbeb;
+            color: var(--secondary-color);
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .option-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .option-input:focus {
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body style="background: #fcfcfc;">
+    <!-- Encabezado con flecha de retroceso -->
+    <header
+        style="background: white; padding: 16px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #f3f4f6; position: sticky; top: 0; z-index: 100;">
+        <i data-lucide="arrow-left" style="width: 24px; color: #111; cursor: pointer;"
+            onclick="window.history.back()"></i>
+        <div>
+            <h1 style="font-family: 'Inter'; font-weight: 700; font-size: 1.25rem; color: #111; line-height: 1;">
+                Estudio de Mercado</h1>
+            <p style="font-size: 0.75rem; color: #6b7280; margin-top: 2px;">Los estudios/encuestas deben ser aprobados
+                por administración</p>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 24px; padding-bottom: 40px;">
+        <form id="survey-form" style="display: flex; flex-direction: column; gap: 24px;">
+
+            <!-- Creador -->
+            <section
+                style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f3f4f6; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <label
+                    style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 12px;">TIPO
+                    DE CREADOR</label>
+                <div style="display: flex; gap: 12px;">
+                    <div id="btn-user" class="creator-btn active" onclick="setCreatorType('usuario')">Usuario</div>
+                    <div id="btn-business" class="creator-btn" onclick="setCreatorType('negocio')">Negocio</div>
+                </div>
+
+                <!-- Sección Oculta de Negocio -->
+                <div id="business-selection-area" style="display: none; margin-top: 16px;">
+                    <label
+                        style="font-size: 0.75rem; font-weight: 700; color: #6b7280; display: block; margin-bottom: 6px;">SELECCIONA
+                        TU NEGOCIO</label>
+                    <select id="business-select"
+                        style="width: 100%; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 0.95rem; background: #f9fafb;"
+                        onchange="updateBusinessPreview()">
+                        <option value="">Selecciona un negocio...</option>
+                        <!-- Cargado desde JS -->
+                    </select>
+
+                    <div id="business-preview"
+                        style="display: none; align-items: center; gap: 12px; margin-top: 16px; background: #fffbeb; padding: 12px; border-radius: 12px; border: 1px solid #fde68a;">
+                        <img id="business-logo" src="assets/placeholder.svg" alt="Logo del negocio"
+                            style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div>
+                            <span
+                                style="font-size: 0.65rem; color: #b45309; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: -2px;">Patrocinado
+                                por</span>
+                            <span id="business-name"
+                                style="font-family: 'Inter'; font-weight: 700; font-size: 1rem; color: #92400e; display: block;">Nombre
+                                Negocio</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pregunta -->
+            <section
+                style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f3f4f6; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <label
+                    style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 12px;">PREGUNTA
+                    O CONCEPTO DEL ESTUDIO</label>
+                <textarea id="survey-question" rows="3"
+                    placeholder="Ej: ¿Qué le parece un nuevo local de Sushi en el centro?"
+                    style="width: 100%; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; font-family: 'Inter'; outline: none; transition: border-color 0.2s; resize: none;"
+                    maxlength="150" oninput="updateCharCount()"></textarea>
+                <div style="text-align: right; margin-top: 6px;">
+                    <span id="char-count" style="font-size: 0.75rem; color: #9ca3af; font-weight: 600;">0/150</span>
+                </div>
+            </section>
+
+            <!-- Opciones -->
+            <section
+                style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f3f4f6; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+                    <label
+                        style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 0;">OPCIONES
+                        DE RESPUESTA</label>
+                    <span style="font-size: 0.7rem; color: #9ca3af; font-weight: 700;">(Mín 2, Máx 4)</span>
+                </div>
+
+                <div id="options-container">
+                    <div class="option-group">
+                        <input type="text" class="option-input required-option" placeholder="Opción 1 (Ej: Sí)"
+                            required>
+                    </div>
+                    <div class="option-group">
+                        <input type="text" class="option-input required-option" placeholder="Opción 2 (Ej: No)"
+                            required>
+                    </div>
+                </div>
+
+                <button type="button" id="add-option-btn" onclick="addOption()"
+                    style="width: 100%; padding: 12px; background: #f3f4f6; color: #4b5563; border: 1px dashed #d1d5db; border-radius: 12px; font-weight: 700; font-size: 0.85rem; margin-top: 4px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;">
+                    <i data-lucide="plus" style="width: 16px;"></i> AGREGAR OPCIÓN
+                </button>
+            </section>
+
+            <!-- Duración -->
+            <section
+                style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f3f4f6; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <label
+                    style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 12px;">DURACIÓN
+                    DEL ESTUDIO</label>
+                <div style="display: flex; gap: 12px;">
+                    <div id="duration-24" class="duration-btn active" onclick="setDuration('24')">24 HORAS</div>
+                    <div id="duration-72" class="duration-btn" onclick="setDuration('72')">3 DÍAS</div>
+                    <div id="duration-120" class="duration-btn" onclick="setDuration('120')">5 DÍAS</div>
+                </div>
+            </section>
+
+            <section
+                style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f3f4f6; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <label for="survey-city"
+                    style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 12px;">CIUDAD
+                    DEL ESTUDIO</label>
+                <select id="survey-city"
+                    style="width: 100%; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 0.95rem; background: #f9fafb;">
+                    <option value="lamas">Lamas</option>
+                    <option value="tarapoto">Tarapoto</option>
+                </select>
+            </section>
+
+            <p
+                style="font-size: 0.75rem; color: #10b981; font-weight: 700; margin-top: -6px; margin-bottom: -6px; text-align: center;">
+                *Crear un Estudio de Mercado es totalmente GRATIS por tiempo limitado.
+            </p>
+
+            <!-- Botón Guardar -->
+            <button type="submit" id="submit-btn" disabled
+                style="width: 100%; padding: 18px; background: #fbbf24; color: #111; border: none; border-radius: 14px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: not-allowed; opacity: 0.5; transition: all 0.3s; margin-top: 10px;">
+                <i data-lucide="send" style="width: 20px;"></i>
+                ENVIAR PARA APROBACIÓN
+            </button>
+        </form>
+    </main>
+
+    <script type="module">
+        import { auth, db } from './assets/js/firebase-init.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { collection, addDoc, query, where, getDocs, Timestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+
+        let creatorType = 'usuario';
+        let duration = '24';
+        let myBusinesses = [];
+
+        // Elementos UI
+        const questionInput = document.getElementById('survey-question');
+        const submitBtn = document.getElementById('submit-btn');
+        const optionsContainer = document.getElementById('options-container');
+        const addOptionBtn = document.getElementById('add-option-btn');
+        const surveyCitySelect = document.getElementById('survey-city');
+
+        const savedCity = window.getStoredCity ? window.getStoredCity() : 'lamas';
+        if (surveyCitySelect) {
+            surveyCitySelect.value = savedCity === 'tarapoto' ? 'tarapoto' : 'lamas';
+        }
+
+        // Verificación Auth
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                showToast("Debes iniciar sesión para realizar estudios de mercado.", "error");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Cargar negocios
+            try {
+                const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
+                const snap = await getDocs(q);
+                const selectElement = document.getElementById('business-select');
+
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    myBusinesses.push({ id: docSnap.id, ...data });
+                    const option = document.createElement("option");
+                    option.value = docSnap.id;
+                    option.text = data.nombre || 'Mi Negocio';
+                    selectElement.add(option);
+                });
+            } catch (error) {
+                console.error("Error cargando negocios:", error);
+            }
+
+            checkFormValidity();
+        });
+
+        // Contar caracteres
+        window.updateCharCount = function () {
+            const length = questionInput.value.length;
+            document.getElementById('char-count').innerText = `${length}/150`;
+            checkFormValidity();
+        };
+
+        // Cambiar creador
+        window.setCreatorType = function (type) {
+            creatorType = type;
+            document.getElementById('btn-user').classList.toggle('active', type === 'usuario');
+            document.getElementById('btn-business').classList.toggle('active', type === 'negocio');
+
+            document.getElementById('business-selection-area').style.display = type === 'negocio' ? 'block' : 'none';
+            if (type === 'usuario') {
+                document.getElementById('business-select').value = "";
+                updateBusinessPreview();
+            }
+            checkFormValidity();
+        };
+
+        // Mostrar Preview de Negocio
+        window.updateBusinessPreview = function () {
+            const selectId = document.getElementById('business-select').value;
+            const previewArea = document.getElementById('business-preview');
+
+            if (!selectId) {
+                previewArea.style.display = 'none';
+                checkFormValidity();
+                return;
+            }
+
+            const business = myBusinesses.find(b => b.id === selectId);
+            if (business) {
+                document.getElementById('business-logo').src = business.foto || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=200';
+                document.getElementById('business-name').innerText = business.nombre;
+                previewArea.style.display = 'flex';
+            }
+            checkFormValidity();
+        };
+
+        // Agregar Opciones
+        window.addOption = function () {
+            const currentCount = optionsContainer.querySelectorAll('.option-group').length;
+            if (currentCount >= 4) return;
+
+            const div = document.createElement('div');
+            div.className = 'option-group';
+            div.innerHTML = `
+                <input type="text" class="option-input" placeholder="Opción ${currentCount + 1}" oninput="checkFormValidity()">
+                <button type="button" onclick="this.parentElement.remove(); checkFormValidity(); checkLimitOptions();" style="background: none; border: none; color: #ef4444; padding: 10px; cursor: pointer;">
+                    <i data-lucide="x-circle" style="width: 20px;"></i>
+                </button>
+            `;
+            optionsContainer.appendChild(div);
+            lucide.createIcons();
+
+            // Check limits again
+            checkLimitOptions();
+            checkFormValidity();
+        };
+
+        window.checkLimitOptions = function () {
+            const currentCount = optionsContainer.querySelectorAll('.option-group').length;
+            addOptionBtn.style.display = currentCount >= 4 ? 'none' : 'flex';
+        };
+
+        // Duracion
+        window.setDuration = function (hs) {
+            duration = hs;
+            if (document.getElementById('duration-24')) document.getElementById('duration-24').classList.toggle('active', hs === '24');
+            if (document.getElementById('duration-72')) document.getElementById('duration-72').classList.toggle('active', hs === '72');
+            if (document.getElementById('duration-120')) document.getElementById('duration-120').classList.toggle('active', hs === '120');
+        };
+
+        // Validacion
+        window.checkFormValidity = function () {
+            const questionText = questionInput.value.trim();
+            const optionInputs = optionsContainer.querySelectorAll('.option-input');
+
+            let allOptionsFilled = true;
+            let filledCount = 0;
+            optionInputs.forEach(input => {
+                if (input.value.trim() === '') allOptionsFilled = false;
+                else filledCount++;
+            });
+
+            let isValid = true;
+            if (questionText.length < 5) isValid = false;
+            if (filledCount < 2 || !allOptionsFilled) isValid = false;
+
+            if (creatorType === 'negocio') {
+                if (!document.getElementById('business-select').value) isValid = false;
+            }
+
+            if (isValid) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+                submitBtn.style.cursor = 'not-allowed';
+            }
+        };
+
+        // Attach listeners to static option inputs
+        document.querySelectorAll('.required-option').forEach(input => {
+            input.addEventListener('input', checkFormValidity);
+        });
+
+        // Enviar Formulario
+        document.getElementById('survey-form').onsubmit = async (e) => {
+            e.preventDefault();
+            if (submitBtn.disabled) return;
+
+            submitBtn.innerHTML = "PROCESANDO...";
+            submitBtn.disabled = true;
+
+            try {
+                const user = auth.currentUser;
+                const pregunta = document.getElementById('survey-question').value.trim();
+
+                const options = [];
+                optionsContainer.querySelectorAll('.option-input').forEach(input => {
+                    options.push({
+                        texto: input.value.trim(),
+                        votos: 0
+                    });
+                });
+
+                // Obtener siempre la foto más actualizada desde la BD en lugar de la sesión
+                let fotoFinal = user.photoURL || '';
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists() && userDoc.data().photoURL) {
+                        fotoFinal = userDoc.data().photoURL;
+                    }
+                } catch (e) { }
+
+                const payload = {
+                    pregunta: pregunta,
+                    opciones: options,
+                    duracion_horas: parseInt(duration),
+                    total_votos: 0,
+                    estado: 'pendiente',
+                    uid_creador: user.uid,
+                    nombre_creador: user.displayName || 'Usuario',
+                    foto_creador: fotoFinal,
+                    fecha_creacion: Timestamp.now(),
+                    ciudad: surveyCitySelect.value,
+                    provincia: surveyCitySelect.value
+                };
+
+                if (creatorType === 'negocio') {
+                    const selectId = document.getElementById('business-select').value;
+                    const business = myBusinesses.find(b => b.id === selectId);
+
+                    payload.patrocinador_id = business.id;
+                    payload.patrocinador_nombre = business.nombre;
+                    payload.patrocinador_foto = business.foto || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=200';
+                }
+
+                await addDoc(collection(db, "encuestas_diarias"), payload);
+                if (window.CityCache) CityCache.invalidate('encuestas');
+
+                showToast("Estudio enviado para aprobación. Un administrador lo revisará pronto.");
+                window.location.href = 'profile.html';
+
+            } catch (err) {
+                console.error("Error creando encuesta:", err);
+                showToast("Hubo un error al crear la encuesta.", "error");
+                submitBtn.innerHTML = `<i data-lucide="send" style="width: 20px;"></i> ENVIAR PARA APROBACIÓN`;
+                submitBtn.disabled = false;
+                lucide.createIcons();
+            }
+        };
+
+    </script>
+</body>
+
+</html>
+

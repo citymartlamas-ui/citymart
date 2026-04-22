@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Crear Promoción | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/cache.js"></script>
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--jungle-green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            background: #fdfdfd;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            background: #fff;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .duration-btn {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .duration-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .upload-area {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            height: auto;
+            border: 2px dashed #e5e7eb;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 10px;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f0f7ff;
+            color: var(--primary-color);
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 8px; border-bottom: 1px solid #eee;">
+        <div class="container">
+                <div style="display: flex; align-items: center; margin-bottom: 20px; cursor: pointer; gap: 8px;"
+                    onclick="window.location.href='./'">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 42px; width: auto; margin-left: -10px;">
+                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 5px;">CityMart</h1>
+                </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <a href="profile.html" style="color: var(--text-color);"><i data-lucide="chevron-left"
+                        style="width: 28px; height: 28px;"></i></a>
+                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.5rem; margin-bottom: 15px; color: #111;">Casi listo!</h2>
+            </div>
+            <div id="promo-build-badge" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: #fff7ed; color: #9a3412; font-size: 0.78rem; font-weight: 700; border: 1px solid #fdba74;">
+                Build promo: 2026-03-30-02
+            </div>
+        </div>
+    </header>
+
+    <!-- MODAL DE ÉXITO Y PAGO -->
+    <div id="success-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);">
+        <div
+            style="background: white; border-radius: 24px; padding: 30px; width: 100%; max-width: 400px; text-align: center; position: relative; animation: slideUp 0.3s ease-out;">
+            <div
+                style="width: 80px; height: 80px; background: #dcfce7; color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <i data-lucide="check-circle" style="width: 40px; height: 40px;"></i>
+            </div>
+            <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.5rem; margin-bottom: 15px; color: #111;">Casi listo!</h2>
+            <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Tu promocion ha sido enviada. Realiza el pago via <b>Yape</b> al <b>928 403 248</b> y envianos el comprobante para su publicacion.</p>
+
+            <a id="whatsapp-admin-link" href="#" target="_blank"
+                style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 16px; border-radius: 12px; font-weight: 700; text-decoration: none; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
+                <i data-lucide="message-circle"></i> ENVIAR COMPROBANTE
+            </a>
+
+            <div id="video-optimization-msg" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 12px; border-radius: 12px; font-size: 0.8rem; margin-bottom: 20px; text-align: left;">
+                <i data-lucide="info" style="width: 14px; vertical-align: middle; margin-right: 4px;"></i>
+                El video esta siendo procesado por el sistema. Puede tardar unos segundos en aparecer en el inicio.
+            </div>
+
+            <button onclick="window.location.href='profile.html'"
+                style="background: transparent; border: none; color: #9ca3af; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">Volver
+                al perfil</button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <form id="promo-form">
+            <div class="form-group">
+                <label>Imagen de la Promocion</label>
+                <div class="upload-area" style="position: relative; overflow: hidden; cursor: pointer;">
+                    <div id="default-upload-content"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none;">
+                        <i data-lucide="image" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
+                        <p style="font-weight: 600; font-size: 0.9rem;">Subir imagen o video corto</p>
+                        <p style="font-size: 0.7rem;">Imagen 1:1 o video (Max. 10 MB)</p>
+                    </div>
+                    <img id="image-preview"
+                        style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;" />
+                    <video id="video-preview"
+                        style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;"
+                        autoplay loop muted></video>
+                    <input type="file" id="promo-image" accept="image/*,video/*"
+                        style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Titulo de la oferta</label>
+                <input type="text" id="title" placeholder="Ej. 2x1 en Hamburguesas" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripcion corta</label>
+                <textarea id="description" rows="2" placeholder="Describe brevemente la oferta..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Duracion de la promocion</label>
+                <div class="duration-options" style="grid-template-columns: 1fr 1fr;">
+                    <div class="duration-btn active" data-days="1">1 Dia<br><span
+                            style="font-size:0.75rem; font-weight:normal;">S/ 5.00</span></div>
+                    <div class="duration-btn" data-days="3">3 Dias<br><span
+                            style="font-size:0.75rem; font-weight:normal;">S/ 15.00</span></div>
+                </div>
+                <input type="hidden" id="duration" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="price">Precio Anterior (Opcional)</label>
+                <input type="text" id="price" placeholder="S/ 25.00">
+            </div>
+
+            <div class="form-group">
+                <label for="promo-price">Precio de Oferta</label>
+                <input type="text" id="promo-price" placeholder="S/ 15.00" required>
+            </div>
+
+            <div class="form-group" id="phone-group">
+                <label for="phone">Telefono de contacto (WhatsApp)</label>
+                <div style="position: relative;">
+                    <span
+                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #666;">+51</span>
+                    <input type="tel" id="phone" placeholder="999 999 999" style="padding-left: 50px;" required>
+                </div>
+                <p style="font-size: 0.7rem; color: #666; margin-top: 4px;">Este numero se mostrara en la oferta para
+                    que los clientes te contacten.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="promo-city">En que ciudad se muestra esta promo?</label>
+                <select id="promo-city" required>
+                    <option value="lamas">Lamas</option>
+                    <option value="tarapoto">Tarapoto</option>
+                </select>
+            </div>
+
+            <button type="submit" id="submit-btn"
+                style="width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; margin-top: 20px; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2); transition: background 0.2s; cursor: pointer;">PUBLICAR
+                OFERTA</button>
+        </form>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { auth, db, storage } from './assets/js/firebase-init.js';
+        import { collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { awardCityCashAction, showCityCashRewardToast } from './assets/js/citycash.js';
+
+        lucide.createIcons();
+
+        // Variables de estado
+        let currentUser = null;
+        let userBusiness = null;
+
+        // Pre-select current city
+        const savedCity = window.getStoredCity ? window.getStoredCity() : 'lamas';
+        const promoCityEl = document.getElementById('promo-city');
+        if (promoCityEl) promoCityEl.value = savedCity;
+
+        // Verificar autenticación y buscar negocio del usuario
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                try {
+                    const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        userBusiness = {
+                            id: querySnapshot.docs[0].id,
+                            nombre: querySnapshot.docs[0].data().nombre,
+                            telefono: querySnapshot.docs[0].data().numerodecontacto || querySnapshot.docs[0].data().telefono || ""
+                        };
+                        console.log("Negocio detectado:", userBusiness.nombre);
+                        if (userBusiness.telefono) {
+                            let phoneVal = userBusiness.telefono;
+                            if (phoneVal.startsWith("51")) {
+                                phoneVal = phoneVal.substring(2);
+                            }
+                            document.getElementById('phone').value = phoneVal.trim();
+                        }
+                    } else {
+                        console.log("El usuario no tiene un negocio registrado. Permitir oferta personal.");
+                        // Pre-cargar telefono si existe en el perfil del usuario (opcional)
+                    }
+                } catch (error) {
+                    console.error("Error buscando negocio:", error);
+                }
+            } else {
+                showToast("Debes iniciar sesion para publicar promociones.", "error");
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Image/Video Preview Logic
+        const fileInput = document.getElementById('promo-image');
+        const previewEl = document.getElementById('image-preview');
+        const videoPreviewEl = document.getElementById('video-preview');
+        const defaultContent = document.getElementById('default-upload-content');
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    if (file.type.startsWith('video/')) {
+                        videoPreviewEl.src = e.target.result;
+                        videoPreviewEl.style.display = 'block';
+                        previewEl.style.display = 'none';
+                    } else {
+                        previewEl.src = e.target.result;
+                        previewEl.style.display = 'block';
+                        videoPreviewEl.style.display = 'none';
+                    }
+                    defaultContent.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewEl.src = '';
+                previewEl.style.display = 'none';
+                videoPreviewEl.style.display = 'none';
+                videoPreviewEl.src = '';
+                defaultContent.style.display = 'flex';
+            }
+        });
+
+        // Manejo de botones de duracion
+        const durationBtns = document.querySelectorAll('.duration-btn');
+        const durationInput = document.getElementById('duration');
+
+        durationBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                durationBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                durationInput.value = btn.dataset.days;
+            });
+        });
+
+        document.getElementById('promo-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!currentUser) {
+                showToast("Debes iniciar sesion.", "error");
+                return;
+            }
+
+            // Nota: Se permite publicar aunque no tenga negocio (userBusiness can be null)
+            const contactPhone = document.getElementById('phone').value;
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            const setStatus = (text) => {
+                submitBtn.innerHTML = `<div class="loader-small" style="display:inline-block; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite;"></div> ${text}`;
+            };
+
+            try {
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+                const price = document.getElementById('price').value;
+                const promoPrice = document.getElementById('promo-price').value;
+                const duration = durationInput.value;
+
+                let imageUrl = "";
+                let imagePath = "";
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const isImage = file.type.startsWith('image/');
+                    
+                    setStatus(isImage ? 'Procesando imagen...' : 'Preparando video...');
+                    const processedFile = isImage
+                        ? (window.optimizeUploadImage
+                            ? await window.optimizeUploadImage(file, 'promo')
+                            : (window.compressImage ? await window.compressImage(file) : file))
+                        : file;
+                    
+                    setStatus(isImage ? 'Subiendo imagen...' : 'Subiendo video...');
+                    const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
+                    imagePath = `promociones/${Date.now()}_${sanitizeName}`;
+                    const storageRef = ref(storage, imagePath);
+
+                    await uploadBytes(storageRef, processedFile);
+                    imageUrl = await getDownloadURL(storageRef);
+                }
+
+                setStatus('Guardando promocion...');
+
+                    const promoRef = await addDoc(collection(db, "promociones"), {
+                        titulo: title,
+                        descripcion: description,
+                        precio_anterior: price,
+                        precio_oferta: promoPrice,
+                        duracion_dias: parseInt(duration),
+                        imagen: imageUrl,
+                        imagen_path: imagePath,
+                        estado: 'pendiente',
+                    negocioId: userBusiness ? userBusiness.id : null,
+                    nombre_negocio: userBusiness ? userBusiness.nombre : (currentUser.displayName || "Usuario Independiente"),
+                    telefono_contacto: contactPhone,
+                    ciudad: document.getElementById('promo-city').value,
+                    es_oferta_personal: !userBusiness,
+                    uid_propietario: currentUser.uid,
+                    fecha_registro: serverTimestamp()
+                });
+
+                try {
+                    const reward = await awardCityCashAction('create_promo', promoRef.id);
+                    showCityCashRewardToast(reward);
+                } catch (rewardError) {
+                    if (rewardError?.message !== 'already-claimed') {
+                        console.warn('CityCash promo reward error:', rewardError);
+                    }
+                }
+
+                if (window.CityCache) CityCache.invalidate('promociones');
+
+                // Preparar mensaje de WhatsApp para el administrador
+                const adminPhone = "51928403248"; // <-- ACTUALIZA ESTE NUMERO
+                const promoCost = parseInt(duration) === 3 ? 15 : 5;
+                const msg = encodeURIComponent(`Hola CityMart, acabo de crear la promocion "${title}". Adjunto el comprobante de pago por S/ ${promoCost}.00 (Yape a 928403248) para su aprobacion.`);
+                document.getElementById('whatsapp-admin-link').href = `https://wa.me/${adminPhone}?text=${msg}`;
+
+                // Mostrar modal de exito
+                document.querySelector('#success-modal p').innerHTML = `Tu promocion ha sido enviada. Realiza el pago de <b>S/ ${promoCost}.00</b> via <b>Yape</b> al <b>928 403 248</b> y envianos el comprobante para su publicacion.`;
+                document.getElementById('success-modal').style.display = 'flex';
+                lucide.createIcons();
+
+            } catch (error) {
+                console.error("Error al publicar la promocion:", error);
+                showToast("Hubo un error al publicar la promocion.", "error");
+                const errorCode = error?.code || error?.message || "";
+                alert(errorCode);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'PUBLICAR OFERTA';
+            }
+        });
+    </script>
+
+        <script src="assets/js/pwa-init.js"></script>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer></body>
+
+</html>
+
+

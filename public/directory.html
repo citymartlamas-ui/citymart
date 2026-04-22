@@ -1,0 +1,742 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Directorio | CityMart</title>
+    <meta name="description" content="Encuentra negocios, servicios y emprendedores locales de Lamas y Tarapoto en el directorio CityMart.">
+    <link rel="canonical" href="https://citymart.vip/directory">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CityMart">
+    <meta property="og:title" content="Directorio | CityMart">
+    <meta property="og:description" content="Encuentra negocios, servicios y emprendedores locales de Lamas y Tarapoto en el directorio CityMart.">
+    <meta property="og:url" content="https://citymart.vip/directory">
+    <meta property="og:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Directorio | CityMart">
+    <meta name="twitter:description" content="Encuentra negocios, servicios y emprendedores locales de Lamas y Tarapoto en el directorio CityMart.">
+    <meta name="twitter:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
+    <meta name="application-name" content="CityMart">
+    <meta name="apple-mobile-web-app-title" content="CityMart">
+    <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="assets/js/utils.js?v=20260401-homefix-2"></script>
+    <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
+    <style>
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+            scroll-snap-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cat-icon {
+            width: 56px;
+            height: 56px;
+            background: white;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.03);
+            color: var(--text-soft);
+        }
+
+        .cat-item:active { transform: scale(0.9); }
+
+        .cat-item.active .cat-icon {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .cat-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-soft);
+            transition: var(--transition);
+        }
+
+        .cat-item.active .cat-label {
+            color: var(--primary-color);
+        }
+
+        .business-mosaic {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 20px 0;
+            min-height: clamp(620px, 70vh, 960px);
+            align-content: start;
+        }
+
+        .sub-chip {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sub-chip.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+        }
+
+        .loader {
+            border: 3px solid rgba(0,0,0,0.05);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            margin: 40px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6211692359872996"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header class="section modern-glass"
+        style="padding-top: 10px; padding-bottom: 10px; position: sticky; top: 0; z-index: 1000; border-bottom: none; box-shadow: var(--shadow-sm);">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="window.location.href='./'">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 40px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));">
+                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.25rem; margin-top: 4px; letter-spacing: -0.02em;">CityMart</h1>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                   <div style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 6px 14px; border-radius: 100px; font-weight: 600; font-size: 0.65rem; border: 1px solid rgba(16, 185, 129, 0.2); text-transform: uppercase;">Directorio</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <a href="./" style="background: white; width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); color: var(--text-main); flex-shrink: 0;"><i data-lucide="chevron-left" style="width: 22px;"></i></a>
+                <div style="flex: 1; position: relative;">
+                    <i data-lucide="search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; width: 18px;"></i>
+                    <input type="text" id="business-search" placeholder="Buscar negocios locales..."
+                        style="width: 100%; padding: 14px 14px 14px 48px; border-radius: 18px; border: 1px solid #f1f5f9; background: #f8fafc; outline: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s;"
+                        onfocus="this.style.borderColor='var(--primary-color)'; this.style.background='white'; this.style.boxShadow='0 4px 15px rgba(16,185,129,0.1)';"
+                        onblur="this.style.borderColor='#f1f5f9'; this.style.background='#f8fafc'; this.style.boxShadow='none';">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 14px; padding-bottom: 120px; min-height: calc(100vh - 220px);">
+        <!-- Carrusel de CategorÃ­as (Rotativo) -->
+        <section class="section" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 16px;">
+            <div id="category-carousel" class="carousel-track" style="padding-left: 0; gap: 16px;">
+                <div class="cat-item active" onclick="filterBy('Todos')">
+                    <div class="cat-icon"><i data-lucide="layout-grid"></i></div>
+                    <span class="cat-label">Todos</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Comida')">
+                    <div class="cat-icon"><i data-lucide="utensils"></i></div>
+                    <span class="cat-label">Comida</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Hoteles')">
+                    <div class="cat-icon"><i data-lucide="bed"></i></div>
+                    <span class="cat-label">Hoteles</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Comercio')">
+                    <div class="cat-icon"><i data-lucide="shopping-cart"></i></div>
+                    <span class="cat-label">Comercio</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Salud')">
+                    <div class="cat-icon"><i data-lucide="heart-pulse"></i></div>
+                    <span class="cat-label">Salud</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Servicios')">
+                    <div class="cat-icon"><i data-lucide="wrench"></i></div>
+                    <span class="cat-label">Servicios</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('ArtesanÃ­as')">
+                    <div class="cat-icon"><i data-lucide="shopping-bag"></i></div>
+                    <span class="cat-label">ArtesanÃ­as</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('Transporte')">
+                    <div class="cat-icon"><i data-lucide="car"></i></div>
+                    <span class="cat-label">Transporte</span>
+                </div>
+                <div class="cat-item" onclick="filterBy('EducaciÃ³n')">
+                    <div class="cat-icon"><i data-lucide="graduation-cap"></i></div>
+                    <span class="cat-label">EducaciÃ³n</span>
+                </div>
+                <!-- Ver todas las categorÃ­as -->
+                <div class="cat-item" onclick="window.location.href='all_categories.html'">
+                    <div class="cat-icon" style="background: #eef2ff; color: var(--primary-color);">
+                        <i data-lucide="plus"></i>
+                    </div>
+                    <span class="cat-label" style="color: var(--primary-color);">Ver mÃ¡s</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mosaico Inmersivo de Negocios -->
+        <div class="business-mosaic">
+            <!-- Cargando... -->
+        </div>
+    </main>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item active">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <!-- BotÃ³n Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { collection, documentId, getDocs, limit, orderBy, query, startAfter } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+        setTimeout(async () => {
+            try {
+                const { initPresence } = await import('./assets/js/presence.js');
+                initPresence();
+            } catch(e) {
+                console.warn("Presence init error", e);
+            }
+        }, 1500);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedCity = window.normalizeCityValue ? window.normalizeCityValue(urlParams.get('city')) : '';
+        if (requestedCity && window.setStoredCity) {
+            window.setStoredCity(requestedCity);
+        }
+
+        const mosaic = document.querySelector('.business-mosaic');
+        const citySearchInput = document.getElementById('business-search');
+        const DIRECTORY_PAGE_SIZE = 10;
+        const DIRECTORY_CACHE_KEY = 'directory_businesses_v2';
+
+        let currentCity = requestedCity || (window.getStoredCity ? window.getStoredCity() : 'lamas');
+        let currentMainCat = 'Todos';
+        let searchTerm = '';
+        let searchDebounceId = null;
+        let allBusinesses = [];
+        let directoryRawBusinesses = [];
+        let directoryLastDocId = '';
+        let directoryHasMore = true;
+        let directoryLoading = false;
+        let directoryObserver = null;
+
+        function updateCityUI() {
+            const span = document.getElementById('city-title-span');
+            if (span) span.innerText = currentCity.charAt(0).toUpperCase() + currentCity.slice(1);
+        }
+        updateCityUI();
+
+        function normalizeCategoryGroup(value = '') {
+            return String(value)
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '')
+                .trim();
+        }
+
+        const categoryGroups = {
+            'Comida': ['restaurantes', 'cafeteria', 'bar', 'panaderia', 'comida_rapida', 'discoteca', 'night_club'],
+            'Hoteles': ['hospedaje', 'alquiler'],
+            'Artesanias': ['artesania', 'arte_cultura'],
+            'Comercio': ['tiendas', 'moda', 'tecnologia', 'ferreteria', 'libreria'],
+            'Salud': ['salud', 'clinica', 'spa', 'gimnasio'],
+            'Servicios': ['servicios', 'construccion', 'carpinteria', 'gasfiteria', 'electricista', 'peluqueria', 'sastreria', 'lavanderia', 'contabilidad', 'mecanica'],
+            'Transporte': ['transporte', 'turismo', 'recreo_turistico'],
+            'Educacion': ['educacion'],
+            'Agro': ['agro', 'veterinaria']
+        };
+
+        const fallbackKeywords = {
+            'Comida': ['restauran', 'comida', 'chifa', 'cafe', 'almuerzo', 'snack', 'piqueo', 'karaoke', 'cevicheria', 'pollos', 'alimenta', 'bar', 'panaderia', 'pasteleria', 'discoteca', 'night', 'club', 'pub'],
+            'Hoteles': ['hotel', 'hospedaje', 'albergue', 'bungalow', 'inmobiliaria', 'cuarto', 'alquiler'],
+            'Artesanias': ['artesania', 'tejido', 'ceramica', 'recuerdo', 'souvenir', 'arte', 'cultura'],
+            'Comercio': ['tienda', 'bodega', 'moda', 'ropa', 'tecnologia', 'celular', 'ferreteria', 'libreria', 'papeleria'],
+            'Salud': ['farmacia', 'botica', 'clinica', 'medico', 'doctor', 'spa', 'gimnasio', 'deporte'],
+            'Servicios': ['servicio', 'construc', 'carpinter', 'gasfit', 'electric', 'peluquer', 'barber', 'sastre', 'lavander', 'contab', 'abogad', 'mecanic', 'repara'],
+            'Transporte': ['taxi', 'transporte', 'mototaxi', 'turismo', 'agencia', 'viaje', 'recreo', 'campestre', 'esparcimiento', 'piscina', 'resort'],
+            'Educacion': ['academia', 'instituto', 'colegio', 'universidad', 'educacion', 'clases'],
+            'Agro': ['agri', 'ganader', 'veterinar', 'mascota', 'animal']
+        };
+
+        function transformBusiness(raw) {
+            return {
+                id: raw._id,
+                title: raw.nombre || 'Sin nombre',
+                cat: raw.categoria || 'Otros',
+                sub: raw.descripcion || '',
+                img: window.pickEntityImage
+                    ? window.pickEntityImage(raw, 'assets/placeholder.svg', { width: 420 })
+                    : (raw.foto_thumb || raw.imagen_thumb || raw.foto || raw.imagen || 'assets/placeholder.svg'),
+                type: raw.negocio_o_servicio === 'servicio' ? 'service' : 'biz',
+                phone: raw.numerodecontacto || raw.telefono || '',
+                rating: Number(raw.promedio_puntuacion || 0),
+                isVisible: raw.negociovisible !== false,
+                ciudad: window.normalizeCityValue
+                    ? window.normalizeCityValue(raw.ciudad || raw.provincia || raw.ubicacion || 'lamas')
+                    : (raw.ciudad || raw.provincia || raw.ubicacion || 'lamas').toLowerCase().trim()
+            };
+        }
+
+        function syncBusinessState() {
+            allBusinesses = directoryRawBusinesses
+                .map(transformBusiness)
+                .filter((business) => business.isVisible && business.ciudad === currentCity);
+        }
+
+        function getFilteredBusinesses() {
+            const filtered = allBusinesses.filter((business) => {
+                const searchLower = searchTerm.toLowerCase().trim();
+                const titleLower = business.title.toLowerCase();
+                const descLower = business.sub.toLowerCase();
+                const catLower = business.cat.toLowerCase().trim();
+                const matchesSearch = !searchLower || titleLower.includes(searchLower) || descLower.includes(searchLower) || catLower.includes(searchLower);
+
+                let matchesCat = true;
+                if (currentMainCat !== 'Todos') {
+                    const normalizedGroupKey = normalizeCategoryGroup(currentMainCat);
+                    const groupKey = Object.keys(categoryGroups).find((key) => normalizeCategoryGroup(key) === normalizedGroupKey) || currentMainCat;
+                    const groupValues = categoryGroups[groupKey] || [];
+                    matchesCat = groupValues.some((value) => catLower === value || catLower.includes(value));
+
+                    if (!matchesCat) {
+                        const keywords = fallbackKeywords[groupKey] || [];
+                        matchesCat = keywords.some((keyword) => catLower.includes(keyword) || titleLower.includes(keyword) || descLower.includes(keyword));
+                    }
+                }
+
+                return matchesCat && matchesSearch;
+            });
+
+            return window.rankCityMartResults
+                ? window.rankCityMartResults(filtered, {
+                    query: searchTerm,
+                    city: currentCity,
+                    scope: `directory-${normalizeCategoryGroup(currentMainCat || 'todos')}`,
+                    contextTerms: currentMainCat && currentMainCat !== 'Todos' ? [currentMainCat] : [],
+                    getId: (item) => item.id,
+                    getTitle: (item) => item.title,
+                    getCategory: (item) => item.cat,
+                    getDescription: (item) => item.sub,
+                    getTimestamp: (item) => window.getEntityTimestamp ? window.getEntityTimestamp(item) : 0
+                })
+                : filtered;
+        }
+
+        function persistDirectoryCache() {
+            if (!window.CityCache?.set) return;
+            CityCache.set(DIRECTORY_CACHE_KEY, {
+                items: directoryRawBusinesses,
+                lastDocId: directoryLastDocId,
+                hasMore: directoryHasMore
+            });
+        }
+
+        function setupDirectoryLoadMore() {
+            if (directoryObserver) {
+                directoryObserver.disconnect();
+                directoryObserver = null;
+            }
+
+            const sentinel = document.getElementById('directory-load-more');
+            if (!sentinel || !directoryHasMore) return;
+
+            directoryObserver = new IntersectionObserver((entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    loadData();
+                }
+            }, { rootMargin: '240px 0px' });
+
+            directoryObserver.observe(sentinel);
+        }
+
+        async function loadData({ reset = false } = {}) {
+            if (directoryLoading) return;
+
+            if (reset) {
+                directoryRawBusinesses = [];
+                allBusinesses = [];
+                directoryLastDocId = '';
+                directoryHasMore = true;
+
+                const cached = window.CityCache?.getStale ? CityCache.getStale(DIRECTORY_CACHE_KEY) : null;
+                if (cached?.data?.items?.length) {
+                    directoryRawBusinesses = cached.data.items;
+                    directoryLastDocId = cached.data.lastDocId || '';
+                    directoryHasMore = cached.data.hasMore !== false;
+                    syncBusinessState();
+                    renderBusinesses();
+                    if (cached.fresh && allBusinesses.length >= DIRECTORY_PAGE_SIZE) {
+                        return;
+                    }
+                } else {
+                    mosaic.innerHTML = `<div style="text-align:center; padding: 40px; grid-column: 1/-1;"><div class="loader"></div><p style="margin-top:10px; color:#666;">Cargando directorio...</p></div>`;
+                }
+            }
+
+            if (!directoryHasMore) {
+                renderBusinesses();
+                return;
+            }
+
+            directoryLoading = true;
+            renderBusinesses();
+
+            try {
+                const currentVisibleCount = allBusinesses.length;
+                const targetVisibleCount = reset ? DIRECTORY_PAGE_SIZE : currentVisibleCount + DIRECTORY_PAGE_SIZE;
+
+                while (directoryHasMore && allBusinesses.length < targetVisibleCount) {
+                    const constraints = [orderBy(documentId()), limit(DIRECTORY_PAGE_SIZE)];
+                    if (directoryLastDocId) {
+                        constraints.splice(1, 0, startAfter(directoryLastDocId));
+                    }
+
+                    const snapshot = await getDocs(query(collection(db, 'negocio'), ...constraints));
+                    if (snapshot.empty) {
+                        directoryHasMore = false;
+                        break;
+                    }
+
+                    directoryLastDocId = snapshot.docs[snapshot.docs.length - 1]?.id || directoryLastDocId;
+                    if (snapshot.size < DIRECTORY_PAGE_SIZE) {
+                        directoryHasMore = false;
+                    }
+
+                    const seenIds = new Set(directoryRawBusinesses.map((item) => item._id));
+                    snapshot.docs.forEach((docSnap) => {
+                        if (seenIds.has(docSnap.id)) return;
+                        directoryRawBusinesses.push({ _id: docSnap.id, ...docSnap.data() });
+                        seenIds.add(docSnap.id);
+                    });
+
+                    syncBusinessState();
+                }
+
+                persistDirectoryCache();
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+                if (!directoryRawBusinesses.length) {
+                    mosaic.innerHTML = `<p style="text-align: center; grid-column: 1/-1; padding: 40px; color: #ef4444;">Error al conectar con la base de datos.</p>`;
+                }
+            } finally {
+                directoryLoading = false;
+                syncBusinessState();
+                renderBusinesses();
+            }
+        }
+
+        function renderBusinesses() {
+            if (directoryObserver) {
+                directoryObserver.disconnect();
+                directoryObserver = null;
+            }
+
+            const filtered = getFilteredBusinesses();
+            if (!filtered.length) {
+                const emptyCopy = directoryLoading
+                    ? 'Buscando negocios para tu ciudad...'
+                    : (directoryHasMore ? 'Aun estamos cargando mas negocios para afinar tus resultados.' : 'No se encontraron negocios o servicios en esta categoria.');
+                const helperCopy = directoryHasMore && !directoryLoading
+                    ? '<p style="margin-top: 8px; color: #94a3b8; font-size: 0.8rem;">Sigue bajando o espera un momento para cargar mas resultados.</p>'
+                    : '';
+                mosaic.innerHTML = `<div style="text-align: center; grid-column: 1/-1; padding: 40px; color: #666;">${emptyCopy}${helperCopy}</div>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((business) => {
+                const actionBtn = business.type === 'service'
+                    ? `<button onclick="event.stopPropagation(); window.location.href='tel:${business.phone}'"
+                        style="background: #f1f5f9; color: var(--text-main); border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); transition: var(--transition);">
+                        <i data-lucide="phone" style="width: 14px; height: 14px;"></i>
+                    </button>`
+                    : `<button onclick="event.stopPropagation(); window.location.href='https://wa.me/51${business.phone}'"
+                        style="background: #25d366; color: white; border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2); transition: var(--transition);">
+                        <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i>
+                    </button>`;
+
+                html += `
+                    <div class="modern-dir-card" onclick="window.location.href='business_detail.html?id=${business.id}'">
+                        <img src="${business.img}" alt="${business.title}" loading="lazy" decoding="async">
+                        <div class="modern-dir-card-content">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+                                <h3 style="flex: 1;">${business.title}</h3>
+                                <div class="premium-badge">
+                                    <i data-lucide="star"></i>
+                                    <span>${business.rating.toFixed(1)}</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.8rem; color: #64748b; margin: 4px 0 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; font-weight: 500;">${business.sub}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                                <span class="category">${business.cat}</span>
+                                ${actionBtn}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += directoryHasMore
+                ? `
+                    <div id="directory-load-more" style="text-align: center; grid-column: 1/-1; padding: 10px 0 18px; color: #64748b; font-size: 0.82rem; font-weight: 700;">
+                        ${directoryLoading ? 'Cargando mas negocios...' : 'Desliza para cargar mas negocios'}
+                    </div>
+                `
+                : `
+                    <div style="text-align: center; grid-column: 1/-1; padding: 10px 0 18px; color: #94a3b8; font-size: 0.78rem; font-weight: 700;">
+                        Ya viste lo disponible en ${currentCity.charAt(0).toUpperCase() + currentCity.slice(1)}.
+                    </div>
+                `;
+
+            mosaic.innerHTML = html;
+            lucide.createIcons();
+
+            if (!directoryLoading && window.recordCityMartSearchExposure) {
+                window.recordCityMartSearchExposure(filtered, {
+                    query: searchTerm,
+                    city: currentCity,
+                    scope: `directory-${normalizeCategoryGroup(currentMainCat || 'todos')}`,
+                    limit: 6
+                });
+            }
+
+            setupDirectoryLoadMore();
+        }
+
+        if (citySearchInput) {
+            citySearchInput.addEventListener('input', (event) => {
+                if (searchDebounceId) clearTimeout(searchDebounceId);
+                const value = event.target.value;
+                searchDebounceId = setTimeout(() => {
+                    searchTerm = value;
+                    renderBusinesses();
+                    if (searchTerm.trim() && !getFilteredBusinesses().length && directoryHasMore) {
+                        loadData();
+                    }
+                }, 120);
+            });
+        }
+
+        window.filterBy = (category) => {
+            currentMainCat = category;
+            document.querySelectorAll('.cat-item').forEach((item) => {
+                const label = item.querySelector('.cat-label');
+                if (label && normalizeCategoryGroup(label.textContent) === normalizeCategoryGroup(category)) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+            renderBusinesses();
+            if (!getFilteredBusinesses().length && directoryHasMore) {
+                loadData();
+            }
+        };
+
+        const paramToGroup = {
+            'restaurantes': 'Comida', 'cafeteria': 'Comida', 'bar': 'Comida', 'panaderia': 'Comida', 'comida_rapida': 'Comida', 'discoteca': 'Comida', 'night_club': 'Comida',
+            'hospedaje': 'Hoteles', 'alquiler': 'Hoteles',
+            'artesania': 'Artesanias', 'arte_cultura': 'Artesanias',
+            'tiendas': 'Comercio', 'moda': 'Comercio', 'tecnologia': 'Comercio', 'ferreteria': 'Comercio', 'libreria': 'Comercio',
+            'salud': 'Salud', 'clinica': 'Salud', 'spa': 'Salud', 'gimnasio': 'Salud',
+            'servicios': 'Servicios', 'construccion': 'Servicios', 'carpinteria': 'Servicios', 'gasfiteria': 'Servicios',
+            'electricista': 'Servicios', 'peluqueria': 'Servicios', 'sastreria': 'Servicios', 'lavanderia': 'Servicios',
+            'contabilidad': 'Servicios', 'mecanica': 'Servicios',
+            'transporte': 'Transporte', 'turismo': 'Transporte', 'recreo_turistico': 'Transporte',
+            'educacion': 'Educacion',
+            'agro': 'Agro', 'veterinaria': 'Agro'
+        };
+
+        const catParam = urlParams.get('cat');
+        const searchParam = urlParams.get('search');
+
+        loadData({ reset: true });
+
+        setTimeout(() => {
+            if (catParam) {
+                const lowerParam = catParam.toLowerCase();
+                if (paramToGroup[lowerParam]) {
+                    const group = paramToGroup[lowerParam];
+                    filterBy(group);
+                    if (lowerParam !== group.toLowerCase()) {
+                        searchTerm = lowerParam;
+                        if (citySearchInput) citySearchInput.value = lowerParam;
+                        renderBusinesses();
+                    }
+                } else {
+                    filterBy(catParam);
+                }
+            }
+
+            if (searchParam) {
+                searchTerm = searchParam;
+                if (citySearchInput) citySearchInput.value = searchParam;
+                renderBusinesses();
+                if (!getFilteredBusinesses().length && directoryHasMore) {
+                    loadData();
+                }
+            }
+        }, 500);
+
+        if (citySearchInput) {
+            citySearchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    searchTerm = event.target.value;
+                    renderBusinesses();
+                    if (!getFilteredBusinesses().length && directoryHasMore) {
+                        loadData();
+                    }
+                }
+            });
+        }
+
+        function autoScroll(el) {
+            if (!el || el._isScrolling) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            el._isScrolling = true;
+            let isVisible = true;
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    isVisible = entries.some(entry => entry.isIntersecting);
+                }, { threshold: 0.15 });
+
+                observer.observe(el);
+            }
+
+            setTimeout(() => {
+                if (el.scrollWidth <= el.clientWidth) return;
+
+                const maxScroll = el.scrollWidth - el.clientWidth;
+                let paused = false;
+                let scrollPos = el.scrollLeft || 0;
+                const speed = 0.55;
+
+                const step = () => {
+                    if (!paused && !document.hidden && isVisible) {
+                        scrollPos += speed;
+                        if (scrollPos >= maxScroll) scrollPos = 0;
+                        el.scrollLeft = scrollPos;
+                    }
+
+                    requestAnimationFrame(step);
+                };
+
+                requestAnimationFrame(step);
+
+                el.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+                el.addEventListener('touchend', () => {
+                    setTimeout(() => {
+                        paused = false;
+                        scrollPos = el.scrollLeft;
+                    }, 2500);
+                }, { passive: true });
+                el.addEventListener('mouseenter', () => { paused = true; });
+                el.addEventListener('mouseleave', () => {
+                    paused = false;
+                    scrollPos = el.scrollLeft;
+                });
+            }, 1500);
+        }
+
+        const catTrack = document.getElementById('category-carousel');
+        if (catTrack) autoScroll(catTrack);
+    </script>
+
+        <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
+</body>
+
+</html>
+
+
+
+

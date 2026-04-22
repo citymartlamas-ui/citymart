@@ -2,119 +2,194 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email == "admin@gmail.com";
+    }
+
+    function unchangedKeys(allowed) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
+    }
+
+    function isOwnerCreate(field) {
+      return signedIn() && request.resource.data[field] == request.auth.uid;
+    }
+
+    function isOwnerExisting(field) {
+      return signedIn() && resource.data[field] == request.auth.uid;
+    }
+
+    function canUpdateOnlyNewsViews() {
+      return unchangedKeys(["vistas"])
+        && request.resource.data.vistas is int
+        && request.resource.data.vistas >= (resource.data.vistas is int ? resource.data.vistas : 0);
+    }
+
+    function canUpdateOnlyReviewStats() {
+      return unchangedKeys(["rating_promedio", "total_resenas"])
+        && request.resource.data.total_resenas is int
+        && request.resource.data.total_resenas >= 0;
+    }
+
+    function canUpdateOnlySurveyVotes() {
+      return unchangedKeys(["opciones", "total_votos"])
+        && request.resource.data.total_votos is int
+        && request.resource.data.total_votos >= (resource.data.total_votos is int ? resource.data.total_votos : 0);
+    }
+
+    function canUpdateOnlyVoters() {
+      return signedIn() && unchangedKeys(["voters"]);
+    }
+
     match /CHATS/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
-    }
-
-    match /Noticias/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
-    }
-
-    match /categoriasmarketplace/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow read, create, update, delete: if signedIn();
     }
 
     match /CHATS/{parent}/chatsmensajes/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow read, create, update, delete: if signedIn();
     }
 
     match /{path=**}/chatsmensajes/{document} {
+      allow read: if signedIn();
+    }
+
+    match /Noticias/{document} {
       allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /categoriasmarketplace/{document} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
     }
 
     match /ciudad/{document} {
-      allow create: if true;
       allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create, update, delete: if isAdmin();
     }
 
     match /categorias/{document} {
-      allow create: if true;
       allow read: if true;
-      allow write: if true;
-      allow delete: if true;
-    }
-
-    match /negocio/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create, update, delete: if isAdmin();
     }
 
     match /productos/{document} {
-      allow create: if true;
       allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create, update, delete: if isAdmin();
     }
 
     match /servicios/{document} {
-      allow create: if true;
       allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create, update, delete: if isAdmin();
     }
 
     match /users/{document} {
-      allow create: if true;
       allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create: if isAdmin() || (signedIn() && request.auth.uid == document);
+      allow update, delete: if isAdmin() || (signedIn() && request.auth.uid == document);
+    }
+
+    match /negocio/{document} {
+      allow read: if true;
+      allow create: if isAdmin() || isOwnerCreate("uid");
+      allow update: if isAdmin() || isOwnerExisting("uid") || canUpdateOnlyReviewStats();
+      allow delete: if isAdmin() || isOwnerExisting("uid");
     }
 
     match /promociones/{document} {
-      allow create: if request.auth != null;
       allow read: if true;
-      allow write: if request.auth != null;
-      allow delete: if true;
+      allow create: if isAdmin() || isOwnerCreate("uid_propietario");
+      allow update, delete: if isAdmin() || isOwnerExisting("uid_propietario");
     }
 
     match /noticias/{document} {
-      allow create: if request.auth != null;
       allow read: if true;
-      allow write: if request.auth != null;
-      allow delete: if true;
+      allow create: if signedIn();
+      allow update: if isAdmin() || canUpdateOnlyNewsViews();
+      allow delete: if isAdmin();
     }
 
     match /resenas/{document} {
-      allow create: if request.auth != null;
       allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow create, update: if signedIn() && request.resource.data.usuario_id == request.auth.uid;
+      allow delete: if isAdmin() || (signedIn() && resource.data.usuario_id == request.auth.uid);
     }
 
     match /fcmTokens/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create, update: if isAdmin() || (signedIn() && request.resource.data.uid == request.auth.uid);
+      allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
     }
 
     match /alertas/{document} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /encuestas_diarias/{document} {
       allow read: if true;
-      allow write: if true;
+      allow create: if isAdmin() || isOwnerCreate("uid_creador");
+      allow update: if isAdmin() || isOwnerExisting("uid_creador") || canUpdateOnlySurveyVotes();
+      allow delete: if isAdmin() || isOwnerExisting("uid_creador");
+    }
+
+    match /sugerencias/{document} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /comunidad_posts/{document} {
+      allow read: if true;
+      allow create: if isAdmin() || isOwnerCreate("userId");
+      allow update, delete: if isAdmin() || isOwnerExisting("userId");
+    }
+
+    match /comunidad_lostfound/{document} {
+      allow read: if true;
+      allow create: if isAdmin() || isOwnerCreate("userId");
+      allow update, delete: if isAdmin() || isOwnerExisting("userId");
+    }
+
+    match /foro_temas/{document} {
+      allow read: if true;
+      allow create: if isAdmin() || isOwnerCreate("userId");
+      allow update: if isAdmin() || isOwnerExisting("userId") || canUpdateOnlyVoters();
+      allow delete: if isAdmin() || isOwnerExisting("userId");
+    }
+
+    match /foro_respuestas/{document} {
+      allow read: if true;
+      allow create: if isAdmin() || isOwnerCreate("userId");
+      allow update: if isAdmin() || isOwnerExisting("userId") || canUpdateOnlyVoters();
+      allow delete: if isAdmin() || isOwnerExisting("userId");
+    }
+
+    match /citycash_transactions/{document} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /citycash_action_claims/{document} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /citycash_weeks/{weekId} {
+      allow read: if true;
+      allow write: if false;
+
+      match /entries/{entryId} {
+        allow read: if true;
+        allow write: if false;
+      }
     }
 
     match /{document=**} {
-      allow read, write: if request.auth.token.email.matches("firebase@flutterflow.io");
-    }
-
-    match /{document=**} {
-      allow read: if request.time < timestamp.date(2026, 12, 31);
+      allow read, write: if false;
     }
   }
 }

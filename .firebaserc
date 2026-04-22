@@ -1,5 +1,7 @@
 {
-  "projects": {},
+  "projects": {
+    "default": "usuarios-citymart-lamas"
+  },
   "targets": {},
   "etags": {}
 }

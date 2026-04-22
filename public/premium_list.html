@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Negocios o Servicios Premium | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="assets/js/utils.js?v=20260401-homefix-2"></script>
+    <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+
+<body>
+    <header class="section modern-glass"
+        style="padding-top: 16px; padding-bottom: 12px; position: sticky; top: 0; z-index: 1000; border-bottom: none; box-shadow: var(--shadow-sm);">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="window.location.href='./'">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 44px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));">
+                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.3rem; margin-top: 6px; letter-spacing: -0.02em;">CityMart</h1>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.1); color: var(--primary-color); padding: 6px 14px; border-radius: 100px; font-weight: 600; font-size: 0.65rem; border: 1px solid rgba(16, 185, 129, 0.2);">Exclusivo</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <a href="./" style="background: white; width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); color: var(--text-main);"><i data-lucide="chevron-left" style="width: 22px;"></i></a>
+                <div>
+                   <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.4rem; color: #111; margin: 0; line-height: 1;">Premium</h2>
+                   <p style="font-size: 0.7rem; color: #6b7280; font-weight: 700; margin: 2px 0 0 0; text-transform: uppercase; letter-spacing: 0.05em;">Solo negocios con plan premium activo</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 24px; padding-bottom: 120px;">
+        <div id="premium-list" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+            <!-- Se poblará dinámicamente -->
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="turismo.html" class="nav-item">
+            <i data-lucide="compass" class="nav-icon"></i>
+            <span>Turismo</span>
+        </a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+        const currentCity = window.getStoredCity ? window.getStoredCity() : 'lamas';
+
+        function transformBizDoc(docSnap) {
+            const data = docSnap.data();
+            return {
+                id: docSnap.id,
+                nombre: data.nombre || "Sin nombre",
+                categoria: data.categoria || "Servicio Premium",
+                foto: window.pickEntityImage
+                    ? window.pickEntityImage(data, "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600", { width: 420 })
+                    : (data.foto_thumb || data.imagen_thumb || data.foto || data.logo || data.imagen || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600"),
+                premium: data.promocionanuncio === true,
+                visible: data.negociovisible !== false,
+                ciudad: window.normalizeCityValue
+                    ? window.normalizeCityValue(data.ciudad || data.provincia || data.ubicacion || 'lamas')
+                    : (data.ciudad || data.provincia || data.ubicacion || 'lamas').toLowerCase().trim(),
+                rating: Number(data.promedio_puntuacion || 0)
+            };
+        }
+
+        function loadPremium() {
+            const listContainer = document.getElementById('premium-list');
+            listContainer.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px;"><div class="loader"></div></div>`;
+
+            CityCache.loadWithCache('negocios_raw',
+                async () => {
+                    const snap = await getDocs(collection(db, "negocio"));
+                    return snap.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+                },
+                (rows) => {
+                listContainer.innerHTML = '';
+                const items = rows
+                                .map(row => transformBizDoc({ id: row.id, data: () => row }))
+                                .filter(n => n.visible && n.premium && n.ciudad === currentCity);
+
+                if (items.length === 0) {
+                    listContainer.innerHTML = `<p style="text-align:center; padding:40px; opacity:0.6;">No hay negocios premium destacados en ${currentCity}.</p>`;
+                    return;
+                }
+
+                listContainer.innerHTML = items.map(data => {
+                    const rating = data.rating || 0;
+                    const img = window.pickDisplayImage
+                        ? window.pickDisplayImage(data.foto, 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600', { width: 420 })
+                        : data.foto;
+
+                    return `
+                        <div class="modern-dir-card" onclick="window.location.href='business_detail.html?id=${data.id}'">
+                            <img src="${img}" alt="${data.nombre}" loading="lazy" decoding="async" fetchpriority="low">
+                            <div class="modern-dir-card-content">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                                    <h3 style="flex: 1;">${data.nombre}</h3>
+                                    <div class="premium-badge">
+                                        <i data-lucide="star"></i>
+                                        <span style="font-size: 0.75rem; font-weight: 600; color: #92400e;">${Number(rating).toFixed(1)}</span>
+                                    </div>
+                                </div>
+                                <p class="category">${data.categoria || 'Servicio Premium'}</p>
+                                
+                                <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+                                    <button class="glass-pill active" style="font-size: 0.65rem; padding: 6px 14px; background: var(--primary-color); color: white; border: none; font-weight: 600;">EXPLORAR</button>
+                                    <div style="width: 32px; height: 32px; border-radius: 50%; background: #f8fafc; display: flex; align-items: center; justify-content: center; color: #64748b; border: 1px solid #f1f5f9;">
+                                        <i data-lucide="arrow-right" style="width: 16px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                lucide.createIcons();
+            }).catch((error) => {
+                console.error("Error cargando premium:", error);
+                listContainer.innerHTML = `<p style="text-align:center; padding:40px; color:#ef4444;">Error de conexión con la red.</p>`;
+            });
+        }
+
+        loadPremium();
+    </script>
+
+        <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer></body>
+
+</html>
+
+
+

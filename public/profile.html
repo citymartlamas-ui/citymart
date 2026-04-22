@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Perfil | CityMart</title>
+    <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
+    <link rel="stylesheet" href="assets/style.css?v=20260411-premium-fix-1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <style>
+        .profile-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action-tile {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-tile:active {
+            transform: scale(0.95);
+        }
+
+        .action-tile i {
+            width: 24px;
+            height: 24px;
+        }
+
+        .action-tile span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .citycash-wallet {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            padding: 22px;
+            margin-bottom: 24px;
+            background:
+                radial-gradient(circle at top right, rgba(251, 191, 36, 0.24), transparent 34%),
+                linear-gradient(145deg, rgba(20, 24, 21, 0.96), rgba(18, 78, 56, 0.94));
+            color: white;
+            box-shadow: 0 24px 44px -28px rgba(15, 23, 42, 0.45);
+        }
+
+        .citycash-wallet::after {
+            content: "";
+            position: absolute;
+            right: -40px;
+            bottom: -54px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 70%);
+        }
+
+        .citycash-wallet-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .citycash-wallet-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 13px 14px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 0.82rem;
+        }
+
+        .citycash-wallet-btn.primary {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1f2937;
+        }
+
+        .citycash-wallet-btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .citycash-mini-history {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .settings-group {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .settings-item {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item:active {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Switch Toggle Premium */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .profile-edit-modal {
+            z-index: 2600;
+            padding-top: 16px;
+        }
+
+        .profile-edit-sheet {
+            width: 100%;
+            max-width: 500px;
+            max-height: min(720px, calc(100dvh - 12px));
+            border-radius: 32px 32px 0 0;
+            padding: 30px 24px 18px;
+            padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .profile-edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 4px;
+            padding-bottom: 10px;
+            overscroll-behavior: contain;
+        }
+
+        .profile-edit-actions {
+            position: sticky;
+            bottom: 0;
+            margin-top: 6px;
+            padding-top: 10px;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.98) 72%, rgba(255, 255, 255, 0));
+        }
+
+        .profile-edit-actions .btn-submit {
+            margin: 0;
+        }
+
+        @supports not (height: 100dvh) {
+            .profile-edit-sheet {
+                max-height: calc(100vh - 12px);
+            }
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+
+<body>
+    <header class="sticky-glass-header">
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between; height: 64px;">
+            <div style="display: flex; align-items: center; cursor: pointer; gap: 8px;" onclick="window.location.href='./'">
+                <img src="assets/logo.png" alt="CityMart" style="height: 32px; width: auto;">
+                <span style="font-family: 'Inter'; font-weight: 700; font-size: 1.2rem; color: var(--primary-color); letter-spacing: -0.5px;">CityMart</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button onclick="logout()" style="background: rgba(239, 68, 68, 0.1); border: none; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #ef4444;">
+                    <i data-lucide="log-out" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 84px; padding-bottom: 120px;">
+        <!-- Perfil Card -->
+        <div id="profile-content" style="display: none; flex-direction: column;">
+            <div class="profile-card" style="text-align: center;">
+                <div style="position: relative; width: 110px; height: 110px; margin: 0 auto 16px;">
+                    <div id="profile-img-container" style="width: 110px; height: 110px; background: #f1f5f9; border-radius: 30px; position: relative; overflow: hidden; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                        <div id="default-user-icon" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="user" style="width: 50px; height: 50px; color: #94a3b8;"></i>
+                        </div>
+                        <img id="user-photo" style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+                    </div>
+                    <label for="profile-upload" style="position: absolute; bottom: -5px; right: -5px; background: var(--primary-color); color: white; width: 36px; height: 36px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid white; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); transition: all 0.2s;">
+                        <i data-lucide="camera" style="width: 16px; height: 16px;"></i>
+                    </label>
+                    <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                </div>
+
+                <div id="premium-badge-container" style="margin-bottom: 8px; display: none;">
+                    <span class="badge-premium"><i data-lucide="award" style="width: 12px;"></i> Miembro Premium</span>
+                </div>
+
+                <h2 id="profile-name" style="font-family: 'Inter'; font-weight: 700; font-size: 1.6rem; color: var(--text-main); margin-bottom: 4px; letter-spacing: -0.5px;">Invitado</h2>
+                <p id="profile-email" style="color: var(--text-soft); font-size: 0.9rem; margin-bottom: 12px;">Miembro de CityMart</p>
+                
+                <div id="profile-status-container" style="margin-bottom: 16px;">
+                    <span id="profile-status-badge">
+                        <!-- JS fills this -->
+                    </span>
+                </div>
+
+                <div id="profile-details-pills" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px;">
+                    <!-- JS fills this -->
+                </div>
+
+                <button onclick="openEditModal()" class="modern-glass" style="padding: 10px 24px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; color: var(--primary-color); display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(5, 150, 105, 0.2); box-shadow: var(--shadow-sm);">
+                    <i data-lucide="edit-3" style="width: 14px;"></i> CONFIGURAR PERFIL
+                </button>
+            </div>
+
+            <!-- Acciones Rapidas -->
+            <div class="section-title" style="margin-bottom: 16px; font-size: 0.85rem; letter-spacing: 1px; color: var(--text-soft);">ACCIONES RAPIDAS</div>
+            <div class="action-grid">
+                <div class="action-tile" onclick="window.location.href='create_promo.html'">
+                    <div style="background: rgba(242, 70, 13, 0.1); width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #f2460d;">
+                        <i data-lucide="tag"></i>
+                    </div>
+                    <span>Crear Oferta</span>
+                </div>
+                <div class="action-tile" onclick="window.location.href='request_premium.html'">
+                    <div style="background: rgba(251, 191, 36, 0.1); width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #f59e0b;">
+                        <i data-lucide="award"></i>
+                    </div>
+                    <span>Ser Premium</span>
+                </div>
+                <div class="action-tile" onclick="window.location.href='create_survey.html'">
+                    <div style="background: rgba(59, 130, 246, 0.1); width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #3b82f6;">
+                        <i data-lucide="bar-chart-2"></i>
+                    </div>
+                    <span>Estudio Mercado</span>
+                </div>
+                <div class="action-tile" onclick="window.location.href='create_news.html'">
+                    <div style="background: rgba(5, 150, 105, 0.1); width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                        <i data-lucide="file-text"></i>
+                    </div>
+                    <span>Publicar Noticia</span>
+                </div>
+            </div>
+
+            <div id="citycash-wallet-card" class="citycash-wallet" style="display: none;">
+                <div style="position: relative; z-index: 1;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+                        <div>
+                            <div style="display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.78); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">
+                                <i data-lucide="coins" style="width: 14px;"></i>
+                                Wallet CityCash
+                            </div>
+                            <div id="citycash-wallet-balance" style="font-size: 2rem; font-weight: 800; line-height: 1; margin: 12px 0 6px;">&#x1FA99; 0 CityCash</div>
+                            <p style="margin: 0; color: rgba(255,255,255,0.72); line-height: 1.45; max-width: 32ch;">Gana CityCash participando y aumenta tu visibilidad.</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.7rem; color: rgba(255,255,255,0.64); font-weight: 700; text-transform: uppercase;">Mas exposicion</div>
+                            <div style="font-size: 1rem; font-weight: 800;">Mas oportunidades</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 120px; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);">
+                            <div style="font-size: 0.66rem; color: rgba(255,255,255,0.64); text-transform: uppercase; font-weight: 700;">Ganado</div>
+                            <strong id="citycash-wallet-earned" style="font-size: 1rem;">+0</strong>
+                        </div>
+                        <div style="flex: 1; min-width: 120px; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);">
+                            <div style="font-size: 0.66rem; color: rgba(255,255,255,0.64); text-transform: uppercase; font-weight: 700;">Gastado</div>
+                            <strong id="citycash-wallet-spent" style="font-size: 1rem;">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="citycash-wallet-actions">
+                        <button class="citycash-wallet-btn primary" onclick="window.location.href='citycash.html?view=earn'">Ganar CityCash</button>
+                        <button class="citycash-wallet-btn secondary" onclick="window.location.href='citycash.html?view=use'">Usar CityCash</button>
+                    </div>
+
+                    <div id="citycash-wallet-history" class="citycash-mini-history">
+                        <div style="padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 0.82rem; color: rgba(255,255,255,0.72);">
+                            Tu historial CityCash aparecera aqui.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mis Negocios -->
+            <div id="business-list-container" style="display: none; flex-direction: column; gap: 12px; margin-bottom: 24px;"></div>
+
+            <!-- Mis Promociones -->
+            <div id="promo-list-container" style="display: none; flex-direction: column; gap: 12px; margin-bottom: 24px;"></div>
+
+            <!-- Registrar Negocio Section -->
+            <div id="no-business-section" style="display: none; margin-bottom: 24px;">
+                <div class="modern-glass" style="padding: 30px 20px; text-align: center; border-radius: 24px; border: 2px dashed rgba(5, 150, 105, 0.2); background: rgba(5, 150, 105, 0.02);">
+                    <div style="width: 64px; height: 64px; background: rgba(5, 150, 105, 0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); margin: 0 auto 16px;">
+                        <i data-lucide="store" style="width: 32px; height: 32px;"></i>
+                    </div>
+                    <h3 style="font-family: 'Inter'; font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">Tienes un negocio?</h3>
+                    <p id="no-business-desc" style="color: var(--text-soft); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">Publica tu negocio o servicio gratis y llega a miles de personas en Lamas y Tarapoto.</p>
+                    <a id="no-business-btn" href="register_business.html" class="btn-submit" style="margin: 0;">
+                        <i data-lucide="plus-circle"></i> REGISTRAR NEGOCIO
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ajustes -->
+            <div class="section-title" style="margin-bottom: 16px; font-size: 0.85rem; letter-spacing: 1px; color: var(--text-soft);">AJUSTES Y CUENTA</div>
+            <div class="settings-group">
+                <div class="settings-item" onclick="window.requestNotificationPermission()">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div style="width: 38px; height: 38px; background: rgba(5, 150, 105, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                            <i data-lucide="bell" style="width: 20px;"></i>
+                        </div>
+                        <span style="font-weight: 700; font-size: 0.9rem;">Notificaciones Push</span>
+                    </div>
+                    <i data-lucide="chevron-right" style="width: 18px; color: var(--text-soft);"></i>
+                </div>
+                <div class="settings-item" onclick="toggleDarkMode()">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div style="width: 38px; height: 38px; background: rgba(15, 23, 42, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #1e293b;">
+                            <i data-lucide="moon" style="width: 20px;"></i>
+                        </div>
+                        <span style="font-weight: 700; font-size: 0.9rem;">Modo Oscuro</span>
+                    </div>
+                    <div id="dark-mode-status" style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); background: #f1f5f9; padding: 4px 10px; border-radius: 8px;">OFF</div>
+                </div>
+                <div class="settings-item" onclick="window.open('https://wa.me/51928403248?text=Ayuda%20CityMart', '_blank')">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div style="width: 38px; height: 38px; background: rgba(34, 197, 94, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #22c55e;">
+                            <i data-lucide="help-circle" style="width: 20px;"></i>
+                        </div>
+                        <span style="font-weight: 700; font-size: 0.9rem;">Soporte WhatsApp</span>
+                    </div>
+                    <i data-lucide="chevron-right" style="width: 18px; color: var(--text-soft);"></i>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 0.7rem; color: var(--text-soft); font-weight: 600; margin-top: 10px;">ID Usuario: <span id="user-id-display" style="font-family: monospace;">---</span></p>
+        </div>
+
+        <div id="auth-section" style="display: none; flex-direction: column; gap: 24px; text-align: center; padding: 40px 0;">
+            <div style="width: 80px; height: 80px; background: rgba(5, 150, 105, 0.1); border-radius: 24px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); margin: 0 auto;">
+                <i data-lucide="user-plus" style="width: 40px; height: 40px;"></i>
+            </div>
+            <div>
+                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.5rem; margin-bottom: 8px;">Unete a la comunidad</h2>
+                <p style="color: var(--text-soft); font-size: 0.95rem; line-height: 1.5;">Inicia sesion para gestionar tus negocios, publicar promociones y conectar con la ciudad.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button onclick="window.location.href='login.html'" class="btn-submit" style="margin: 0;">INICIAR SESION</button>
+                <button onclick="window.location.href='signup.html'" class="modern-glass" style="width: 100%; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 1rem; color: var(--text-main); border: 1px solid rgba(0,0,0,0.05);">CREAR CUENTA</button>
+            </div>
+        </div>
+
+        <!-- Modal Editar Perfil Moderno -->
+        <div id="edit-profile-modal" class="profile-edit-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); align-items: flex-end; justify-content: center;">
+            <div class="premium-card profile-edit-sheet" style="transform: translateY(0); animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                <div style="width: 40px; height: 5px; background: #e2e8f0; border-radius: 10px; margin: -15px auto 25px;"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h3 style="font-family: 'Inter'; font-weight: 700; font-size: 1.4rem; margin: 0; color: var(--text-main);">Mi Cuenta</h3>
+                    <button onclick="closeEditModal()" style="border: none; background: #f1f5f9; width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                        <i data-lucide="x" style="width: 20px; color: var(--text-soft);"></i>
+                    </button>
+                </div>
+
+                <form id="edit-profile-form" class="profile-edit-form">
+                    <div class="form-group">
+                        <label><i data-lucide="user" style="width: 14px;"></i> NOMBRE COMPLETO</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="type"></i>
+                            <input type="text" id="edit-name" placeholder="Tu nombre">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i data-lucide="smartphone" style="width: 14px;"></i> TELEFONO / WHATSAPP</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="phone"></i>
+                            <input type="tel" id="edit-phone" placeholder="999 999 999">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i data-lucide="map-pin" style="width: 14px;"></i> DIRECCION</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="map-pinned"></i>
+                            <input type="text" id="edit-address" placeholder="Ej. Jr. San Martin 123">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i data-lucide="info" style="width: 14px;"></i> BIO / ESPECIALIDAD</label>
+                        <div class="input-wrapper">
+                            <textarea id="edit-bio" placeholder="Ej. Carpintero, Gasfitero, Reparto de comida..." maxlength="60" style="padding-left: 14px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="modern-glass" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border-radius: 20px; background: rgba(5, 150, 105, 0.05); border: 1px solid rgba(5, 150, 105, 0.1);">
+                        <div style="flex: 1; padding-right: 12px;">
+                            <label style="font-size: 0.75rem; font-weight: 700; color: var(--primary-color); display: block; margin-bottom: 2px;">PERFIL PUBLICO</label>
+                            <span style="font-size: 0.65rem; color: var(--text-soft); line-height: 1.3; display: block;">Aparecer en las Paginas Amarillas para recibir contactos.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="edit-public">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i data-lucide="mail" style="width: 14px;"></i> CORREO ELECTRONICO</label>
+                        <input type="email" id="edit-email" readonly style="background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 0.9rem; cursor: not-allowed;">
+                    </div>
+
+                    <div class="profile-edit-actions">
+                        <button type="submit" class="btn-submit">
+                            <i data-lucide="check-circle" style="width: 20px;"></i>
+                            GUARDAR CAMBIOS
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="turismo.html" class="nav-item">
+            <i data-lucide="compass" class="nav-icon"></i>
+            <span>Turismo</span>
+        </a>
+        <!-- Boton Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { app, auth, db, storage } from './assets/js/firebase-init.js';
+        import { signOut, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { collection, query, where, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { requestPushPermission } from './assets/js/push.js';
+        import { awardCityCashAction, formatCityCashAmount, formatCityCashBalance, showCityCashRewardToast } from './assets/js/citycash.js';
+        import { linkLegacyBusinessesByEmail } from './assets/js/legacy-business-link.js';
+
+        lucide.createIcons();
+        // Carga de presencia diferida
+        setTimeout(async () => {
+            try {
+                const { initPresence } = await import('./assets/js/presence.js');
+                initPresence();
+            } catch(e) {
+                console.warn("Presence init error", e);
+            }
+        }, 1500);
+
+        window.requestNotificationPermission = requestPushPermission;
+
+        const authSection = document.getElementById('auth-section');
+        const profileContent = document.getElementById('profile-content');
+        const userDisplayName = document.getElementById('profile-name');
+        const userDisplayEmail = document.getElementById('profile-email');
+        const userPhotoImg = document.getElementById('user-photo');
+        const defaultUserIcon = document.getElementById('default-user-icon');
+        const profileUpload = document.getElementById('profile-upload');
+        const profileDetailsPills = document.getElementById('profile-details-pills');
+        const cityCashWalletCard = document.getElementById('citycash-wallet-card');
+        const cityCashWalletBalance = document.getElementById('citycash-wallet-balance');
+        const cityCashWalletEarned = document.getElementById('citycash-wallet-earned');
+        const cityCashWalletSpent = document.getElementById('citycash-wallet-spent');
+        const cityCashWalletHistory = document.getElementById('citycash-wallet-history');
+        // Modal Elements
+        const editModal = document.getElementById('edit-profile-modal');
+        const editForm = document.getElementById('edit-profile-form');
+        const editNameInput = document.getElementById('edit-name');
+        const editPhoneInput = document.getElementById('edit-phone');
+        const editAddressInput = document.getElementById('edit-address');
+        const editBioInput = document.getElementById('edit-bio');
+        const editPublicCheck = document.getElementById('edit-public');
+        const editEmailInput = document.getElementById('edit-email');
+
+        // Modo Oscuro Inicial
+        if (localStorage.getItem('dark-mode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            const statusEl = document.getElementById('dark-mode-status');
+            if (statusEl) statusEl.innerText = 'ON';
+        }
+
+        function renderCityCashWallet(balance = 0, stats = { totalEarned: 0, totalSpent: 0 }) {
+            if (!cityCashWalletCard) return;
+            cityCashWalletCard.style.display = 'block';
+            cityCashWalletBalance.textContent = formatCityCashBalance(balance);
+            cityCashWalletEarned.textContent = formatCityCashAmount(stats.totalEarned || 0);
+            cityCashWalletSpent.textContent = `${Number(stats.totalSpent || 0)}`;
+        }
+
+        function renderCityCashMiniHistory(items = []) {
+            if (!cityCashWalletHistory) return;
+
+            if (!items.length) {
+                cityCashWalletHistory.innerHTML = `
+                    <div style="padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 0.82rem; color: rgba(255,255,255,0.72);">
+                        Tu historial CityCash aparecera aqui.
+                    </div>
+                `;
+                return;
+            }
+
+            cityCashWalletHistory.innerHTML = items.slice(0, 3).map((item) => `
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);">
+                    <div style="min-width: 0;">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.label || 'Movimiento CityCash'}</div>
+                        <div style="font-size: 0.7rem; color: rgba(255,255,255,0.62);">${item.type === 'earn' ? 'Ganancia' : 'Gasto'}</div>
+                    </div>
+                    <div style="font-size: 0.9rem; font-weight: 800; color: ${Number(item.amount || 0) >= 0 ? '#facc15' : '#fda4af'};">${formatCityCashAmount(item.amount || 0)}</div>
+                </div>
+            `).join('');
+        }
+
+        function extractCityCashSummary(data = {}) {
+            const stats = data.cityCashStats || {};
+            return {
+                balance: Number(data.cityCashBalance || 0),
+                stats: {
+                    totalEarned: Number(stats.totalEarned || 0),
+                    totalSpent: Number(stats.totalSpent || 0)
+                },
+                recent: Array.isArray(data.cityCashRecent) ? data.cityCashRecent.slice(0, 8) : []
+            };
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Mostrar perfil
+                if (profileContent) profileContent.style.display = 'flex';
+                if (userDisplayName) userDisplayName.innerText = user.displayName || 'Usuario de CityMart';
+                if (userDisplayEmail) userDisplayEmail.innerText = user.email;
+                renderCityCashWallet();
+                renderCityCashMiniHistory();
+
+                // Cargar datos adicionales de Firestore
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    if (userDoc.exists()) {
+                        const data = userDoc.data();
+                        const cityCashSummary = extractCityCashSummary(data);
+                        renderCityCashWallet(cityCashSummary.balance, cityCashSummary.stats);
+                        renderCityCashMiniHistory(cityCashSummary.recent);
+                        renderDetails(data.telefono, data.direccion);
+                        renderStatusBadge(data.publicContact);
+                        const canUseThumb = data.photo_path && data.photo_thumb_path
+                            && /\/profile\.[^/]+$/i.test(data.photo_path)
+                            && /\/thumb_profile\.jpg$/i.test(data.photo_thumb_path);
+                        const profileImage = (canUseThumb ? data.photoURL_thumb : '') || data.photoURL || user.photoURL || '';
+                        if (profileImage) {
+                            if (userPhotoImg) { userPhotoImg.src = profileImage; userPhotoImg.style.display = 'block'; }
+                            if (defaultUserIcon) defaultUserIcon.style.display = 'none';
+                        }
+                    } else {
+                        // Crear documento si no existe con datos basicos
+                        await setDoc(userDocRef, {
+                            nombre: user.displayName || '',
+                            email: user.email,
+                            photoURL: user.photoURL || '',
+                            fechaRegistro: new Date()
+                        });
+                        renderCityCashWallet();
+                        renderCityCashMiniHistory();
+                    }
+                } catch (e) { console.error("Error cargando metadatos de usuario:", e); }
+
+                // Foto de perfil
+                if (user.photoURL && (!userPhotoImg || !userPhotoImg.src)) {
+                    if (userPhotoImg) { userPhotoImg.src = user.photoURL; userPhotoImg.style.display = 'block'; }
+                    if (defaultUserIcon) defaultUserIcon.style.display = 'none';
+                } else if (!user.photoURL && (!userPhotoImg || !userPhotoImg.src)) {
+                    if (userPhotoImg) userPhotoImg.style.display = 'none';
+                    if (defaultUserIcon) defaultUserIcon.style.display = 'block';
+                }
+
+                // Mostrar ID Usuario para soporte
+                const userIdDisplay = document.getElementById('user-id-display');
+                if (userIdDisplay) userIdDisplay.innerText = user.uid.substring(0, 8);
+
+                // Panel de Administrador (solo admin@gmail.com)
+                if (user.email === 'admin@gmail.com') {
+                    if (!document.getElementById('admin-btn-container')) {
+                        const adminBtn = document.createElement('div');
+                        adminBtn.id = 'admin-btn-container';
+                        adminBtn.innerHTML = `
+                            <div class="section-title" style="margin-top: 20px; margin-bottom: 12px; font-size: 0.85rem; letter-spacing: 1px;">ADMINISTRACION</div>
+                            <div class="action-tile" onclick="window.location.href='admin.html'" style="flex-direction: row; justify-content: flex-start; padding: 20px; background: #1e293b; color: white;">
+                                <div style="background: rgba(251, 191, 36, 0.2); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
+                                    <i data-lucide="shield-check"></i>
+                                </div>
+                                <div style="text-align: left; flex: 1;">
+                                    <p style="margin: 0; font-weight: 700; font-size: 0.95rem;">Panel Control Admin</p>
+                                    <p style="margin: 0; font-size: 0.7rem; opacity: 0.7;">Gestionar toda la plataforma</p>
+                                </div>
+                                <i data-lucide="chevron-right" style="width: 18px; opacity: 0.5;"></i>
+                            </div>
+                        `;
+                        profileContent.insertBefore(adminBtn, profileContent.querySelector('.settings-group'));
+                        lucide.createIcons();
+                    }
+                }
+
+                try {
+                    await linkLegacyBusinessesByEmail({ app, authUser: user });
+                } catch (e) {
+                    console.warn("No se pudo sincronizar negocios heredados del usuario:", e);
+                }
+
+                // Buscar negocios del usuario
+                try {
+                    const q = query(collection(db, "negocio"), where("uid", "==", user.uid));
+                    const snap = await getDocs(q);
+
+                    const bizContainer = document.getElementById('business-list-container');
+                    const noBizSection = document.getElementById('no-business-section');
+                    const noBizDesc = document.getElementById('no-business-desc');
+                    const noBizBtn = document.getElementById('no-business-btn');
+
+                    if (!snap.empty) {
+                        bizContainer.style.display = 'flex';
+                        bizContainer.innerHTML = '<div class="section-title" style="margin-bottom: 4px; font-size: 0.85rem; letter-spacing: 1px; color: var(--text-soft);">MIS NEGOCIOS</div>';
+
+                        snap.forEach(docSnap => {
+                            const data = docSnap.data();
+                            const id = docSnap.id;
+
+                            bizContainer.innerHTML += `
+                            <div class="modern-glass" style="padding: 16px; border-radius: 20px; border-left: 4px solid var(--primary-color);">
+                                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                                    <div style="width: 44px; height: 44px; background: rgba(5, 150, 105, 0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                                        <i data-lucide="store" style="width: 22px;"></i>
+                                    </div>
+                                    <div style="flex: 1">
+                                        <p style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin: 0; line-height: 1.2;">${data.nombre || 'Mi Negocio'}</p>
+                                        <div style="display: flex; align-items: center; gap: 5px; margin-top: 2px;">
+                                            <span style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%;"></span>
+                                            <span style="font-size: 0.65rem; font-weight: 700; color: #15803d; text-transform: uppercase;">Activo</span>
+                                        </div>
+                                    </div>
+                                    <a href="business_detail.html?id=${id}" class="modern-glass" style="width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                                        <i data-lucide="external-link" style="width:16px;"></i>
+                                    </a>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button onclick="window.location.href='edit_business.html?id=${id}'" 
+                                        style="flex:1; padding: 10px; border-radius: 12px; border: 1px solid rgba(5, 150, 105, 0.2); background: white; color: var(--primary-color); font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
+                                        <i data-lucide="edit" style="width:14px;"></i> Editar
+                                    </button>
+                                    <button onclick="deleteBusiness('${id}', '${(data.nombre || 'Mi Negocio').replace(/'/g, "\\'")}')"
+                                        style="flex:1; padding: 10px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.1); background: rgba(239, 68, 68, 0.05); color: #ef4444; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i data-lucide="trash-2" style="width:14px;"></i> Borrar
+                                    </button>
+                                </div>
+                            </div>`;
+                        });
+
+                        // Limite de 5 negocios
+                        if (snap.size >= 5) {
+                            noBizSection.style.display = 'none';
+                        } else {
+                            noBizSection.style.display = 'block';
+                            noBizDesc.innerText = `Puedes registrar hasta 5 negocios o servicios (${snap.size}/5)`;
+                            noBizBtn.innerHTML = `<i data-lucide="plus-circle"></i> REGISTRAR OTRO NEGOCIO`;
+                        }
+                    } else {
+                        // 0 negocios
+                        bizContainer.style.display = 'none';
+                        noBizSection.style.display = 'block';
+                    }
+                } catch (e) { console.error("Error cargando negocios:", e); }
+
+                // Buscar promociones del usuario
+                try {
+                    const qP = query(collection(db, "promociones"), where("uid_propietario", "==", user.uid));
+                    const snapP = await getDocs(qP);
+
+                    const promoContainer = document.getElementById('promo-list-container');
+                    if (!snapP.empty) {
+                        promoContainer.style.display = 'flex';
+                        promoContainer.innerHTML = '<div class="section-title" style="margin-bottom: 4px; font-size: 0.85rem; letter-spacing: 1px; color: var(--text-soft);">MIS OFERTAS</div>';
+
+                        snapP.forEach(docSnap => {
+                            const data = docSnap.data();
+                            const id = docSnap.id;
+                            const isVideo = data.imagen && (data.imagen.includes('.mp4') || data.imagen.includes('video'));
+                            const isApproved = data.estado === 'aprobado';
+                            const promoImage = window.pickDisplayImage
+                                ? window.pickDisplayImage([data.imagen_thumb, data.imagen], 'assets/placeholder.svg', { width: 240 })
+                                : (data.imagen_thumb || data.imagen || 'assets/placeholder.svg');
+
+                            promoContainer.innerHTML += `
+                            <div class="modern-glass" style="padding: 16px; border-radius: 20px; border-left: 4px solid #ef4444;">
+                                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                                    <div style="width: 50px; height: 50px; background: #f1f5f9; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.05);">
+                                        ${isVideo ? `<video src="${data.imagen}" style="width:100%; height:100%; object-fit:cover;" preload="metadata"></video>` : `<img src="${promoImage}" alt="${data.titulo || 'Promocion'}" style="width:100%; height:100%; object-fit:cover;" loading="lazy" decoding="async">`}
+                                    </div>
+                                    <div style="flex: 1">
+                                        <p style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin: 0; line-height: 1.2;">${data.titulo || 'Sin titulo'}</p>
+                                        <div style="display: flex; align-items: center; gap: 5px; margin-top: 2px;">
+                                            <span style="width: 6px; height: 6px; background: ${isApproved ? '#22c55e' : '#f59e0b'}; border-radius: 50%;"></span>
+                                            <span style="font-size: 0.65rem; font-weight: 700; color: ${isApproved ? '#15803d' : '#b45309'}; text-transform: uppercase;">${isApproved ? 'Aprobado' : 'Pendiente'}</span>
+                                        </div>
+                                    </div>
+                                    <a href="promo_detail.html?id=${id}" class="modern-glass" style="width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ef4444;">
+                                        <i data-lucide="external-link" style="width:16px;"></i>
+                                    </a>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button onclick="window.location.href='edit_promo.html?id=${id}'" 
+                                        style="flex:1; padding: 10px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.1); background: white; color: #ef4444; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i data-lucide="edit" style="width:14px;"></i> Editar
+                                    </button>
+                                    <button onclick="deletePromo('${id}', '${(data.titulo || 'Promocion').replace(/'/g, "\\'")}')"
+                                        style="flex:1; padding: 10px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.1); background: rgba(239, 68, 68, 0.05); color: #ef4444; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <i data-lucide="trash-2" style="width:14px;"></i> Borrar
+                                    </button>
+                                </div>
+                            </div>`;
+                        });
+                    }
+                } catch (e) { console.error("Error cargando promos:", e); }
+
+                lucide.createIcons();
+            } else {
+                // No logueado
+                if (authSection) authSection.style.display = 'flex';
+                if (profileContent) profileContent.style.display = 'none';
+            }
+        });
+
+        function renderDetails(phone, address) {
+            profileDetailsPills.innerHTML = '';
+            if (phone) {
+                profileDetailsPills.innerHTML += `
+                    <div style="background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="phone" style="width:10px;"></i> ${phone}
+                    </div>
+                `;
+            }
+            if (address) {
+                profileDetailsPills.innerHTML += `
+                    <div style="background: #fdf2f8; color: #be185d; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="map-pin" style="width:10px;"></i> ${address}
+                    </div>
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        // Modal Logic
+        window.openEditModal = async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+            editModal.style.display = 'flex';
+            editNameInput.value = user.displayName || '';
+            editEmailInput.value = user.email || '';
+
+            // Cargar datos extra de Firestore al abrir
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                editPhoneInput.value = data.telefono || '';
+                editAddressInput.value = data.direccion || '';
+                editBioInput.value = data.bio || '';
+                editPublicCheck.checked = data.publicContact || false;
+            }
+        };
+
+        window.renderStatusBadge = (isPublic) => {
+            const badge = document.getElementById('profile-status-badge');
+            if (!badge) return;
+            if (isPublic) {
+                badge.innerHTML = `<i data-lucide="users" style="width:12px;"></i> PUBLICO (DIRECTORIO)`;
+                badge.style.background = '#dcfce7';
+                badge.style.color = '#15803d';
+            } else {
+                badge.innerHTML = `<i data-lucide="lock" style="width:12px;"></i> PRIVADO`;
+                badge.style.background = '#f3f4f6';
+                badge.style.color = '#6b7280';
+            }
+            lucide.createIcons();
+        };
+
+        window.closeEditModal = () => { editModal.style.display = 'none'; };
+
+        editForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const newName = editNameInput.value.trim();
+            const newPhone = editPhoneInput.value.trim();
+            const newAddress = editAddressInput.value.trim();
+            const newBio = editBioInput.value.trim();
+            const isPublic = editPublicCheck.checked;
+
+            try {
+                // 1. Actualizar Firebase Auth
+                await updateProfile(user, { displayName: newName });
+
+                // 2. Actualizar Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    nombre: newName,
+                    displayName: newName, // sync both fields
+                    telefono: newPhone,
+                    phone: newPhone.replace(/\D/g, ''), // clean phone for WhatsApp
+                    direccion: newAddress,
+                    bio: newBio,
+                    publicContact: isPublic,
+                    email: user.email,
+                    photoURL: user.photoURL || ''
+                }, { merge: true });
+
+                userDisplayName.innerText = newName;
+                renderDetails(newPhone, newAddress);
+                renderStatusBadge(isPublic);
+                try {
+                    const reward = await awardCityCashAction('complete_profile', 'profile');
+                    if (reward?.awarded) {
+                        showCityCashRewardToast(reward);
+                        renderCityCashWallet(reward.balance, reward.stats);
+                        renderCityCashMiniHistory(reward.recent);
+                    }
+                } catch (rewardError) {
+                    if (rewardError?.message !== 'already-claimed' && rewardError?.message !== 'profile-incomplete') {
+                        console.warn('CityCash profile reward error:', rewardError);
+                    }
+                }
+                closeEditModal();
+                showToast("Perfil actualizado correctamente.");
+            } catch (error) {
+                console.error("Error actualizando perfil:", error);
+                showToast("Hubo un error al guardar los cambios.", "error");
+            }
+        };
+
+        // Cambio de Foto
+        profileUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file || !auth.currentUser) return;
+
+            try {
+                const originalName = userDisplayName.innerText;
+                userDisplayName.innerText = "Comprimiendo...";
+                
+                const compressed = window.optimizeUploadImage
+                    ? await window.optimizeUploadImage(file, 'profile')
+                    : (window.compressImage ? await window.compressImage(file) : file);
+                userDisplayName.innerText = "Subiendo...";
+                
+                // Fix storage path to follow storage.rules (match /users/{userId}/...)
+                const filePath = `users/${auth.currentUser.uid}/profile.jpg`;
+                const storageRef = ref(storage, filePath);
+                await uploadBytes(storageRef, compressed);
+                const url = await getDownloadURL(storageRef);
+
+                await updateProfile(auth.currentUser, { photoURL: url });
+                // Sincronizar con Firestore tambien
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { photoURL: url, photo_path: filePath });
+
+                if (userPhotoImg) { userPhotoImg.src = url; userPhotoImg.style.display = 'block'; }
+                if (defaultUserIcon) defaultUserIcon.style.display = 'none';
+                userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
+                showToast("Foto de perfil actualizada.");
+            } catch (err) {
+                console.error("Error subiendo foto:", err);
+                showToast("Error al actualizar la foto.", "error");
+                userDisplayName.innerText = auth.currentUser.displayName || 'Usuario';
+            }
+        });
+
+        window.toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('dark-mode', isDark ? 'enabled' : 'disabled');
+            const statusEl = document.getElementById('dark-mode-status');
+            if (statusEl) statusEl.innerText = isDark ? 'ON' : 'OFF';
+        };
+
+        // // La funcion requestNotificationPermission ya fue asignada arriba
+        // desde push.js, que genera el token FCM y lo guarda en Firestore.
+        // No sobreescribir aqui.
+
+        window.logout = async () => {
+            try {
+                localStorage.removeItem('userLogedIn');
+                localStorage.removeItem('userEmail');
+                await signOut(auth);
+                window.location.reload(); // Reload for clean state
+            } catch (e) {
+                localStorage.removeItem('userLogedIn');
+                console.error(e);
+                window.location.href = './';
+            }
+        };
+
+        window.deletePromo = async (promoId, promoTitle) => {
+            const confirmed = confirm(`?Estas seguro de que deseas ELIMINAR "${promoTitle}" permanentemente?\n\nEsta accion no se puede deshacer.`);
+            if (!confirmed) return;
+
+            try {
+                await deleteDoc(doc(db, "promociones", promoId));
+                showToast(`"${promoTitle}" eliminada correctamente.`);
+                window.location.reload();
+            } catch (error) {
+                console.error("Error al eliminar promo:", error);
+                showToast("Error al eliminar.", "error");
+            }
+        };
+
+        window.deleteBusiness = async (businessId, businessName) => {
+            const confirmed = confirm(`?Estas seguro de que deseas ELIMINAR "${businessName}" permanentemente?\n\nEsta accion no se puede deshacer.`);
+            if (!confirmed) return;
+
+            try {
+                await deleteDoc(doc(db, "negocio", businessId));
+                showToast(`"${businessName}" eliminado correctamente.`);
+                window.location.reload();
+            } catch (error) {
+                console.error("Error al eliminar negocio:", error);
+                showToast("Error al eliminar el negocio.", "error");
+            }
+        };
+    </script>
+
+        <script src="assets/js/pwa-init.js?v=20260411-premium-fix-1"></script>
+</body>
+
+</html>
+
+
+
+
+

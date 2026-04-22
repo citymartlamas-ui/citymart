@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Icono PWA - CityMart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7f5;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #dbe4dd;
+      --green: #16a34a;
+      --green-dark: #0f6b35;
+      --green-soft: #dcfce7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      background:
+        radial-gradient(circle at top left, #e8f7ed 0, transparent 28%),
+        radial-gradient(circle at bottom right, #e3f5ea 0, transparent 30%),
+        var(--bg);
+      color: var(--ink);
+      padding: 32px;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 0.95;
+    }
+
+    .intro {
+      margin: 0 0 28px;
+      color: var(--muted);
+      max-width: 780px;
+      font-size: 1.05rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+
+    .icon-stage {
+      background: linear-gradient(180deg, #f8fffa 0%, #edf8f0 100%);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 240px;
+      margin-bottom: 16px;
+    }
+
+    .meta {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .meta strong {
+      color: var(--ink);
+    }
+
+    .dock {
+      margin-top: 16px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.84rem;
+    }
+
+    .note {
+      margin-top: 28px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: #ffffffb3;
+      border: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Preview visual del icono PWA</h1>
+    <p class="intro">
+      Esta vez no reemplacé nada. Preparé propuestas visuales basadas en el logo actual de CityMart, manteniendo el carrito y la vibra que ya te gusta, para elegir una dirección antes de exportar los PNG finales.
+    </p>
+
+    <div class="grid">
+      <section class="card">
+        <div class="label">Opción A · Muy fiel al logo actual</div>
+        <div class="icon-stage">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-label="Icono actual refinado">
+            <rect width="256" height="256" rx="62" fill="#ffffff"/>
+            <rect x="18" y="18" width="220" height="220" rx="52" fill="#f5fbf7" stroke="#d8efe0" stroke-width="2"/>
+            <path d="M66 92H88L103 150H162L176 108H95" fill="none" stroke="#16a34a" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="114" cy="182" r="12" fill="#16a34a"/>
+            <circle cx="154" cy="182" r="12" fill="#16a34a"/>
+            <text x="44" y="222" fill="#111827" font-size="48" font-weight="900">City</text>
+            <text x="135" y="222" fill="#16a34a" font-size="48" font-weight="500">Mart</text>
+          </svg>
+        </div>
+        <p class="meta"><strong>Idea:</strong> conservar casi intacto el logo actual, pero dentro de una placa limpia para que funcione mejor como icono instalable.</p>
+        <div class="dock">
+          <span class="chip">Más reconocible</span>
+          <span class="chip">Muy cercano al logo actual</span>
+          <span class="chip">Riesgo bajo</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="label">Opción B · Icono solo con símbolo</div>
+        <div class="icon-stage">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-label="Icono símbolo carrito">
+            <defs>
+              <linearGradient id="g1" x1="50" y1="34" x2="202" y2="224" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#22c55e"/>
+                <stop offset="1" stop-color="#15803d"/>
+              </linearGradient>
+            </defs>
+            <rect width="256" height="256" rx="62" fill="url(#g1)"/>
+            <circle cx="198" cy="58" r="24" fill="#ffffff" fill-opacity="0.14"/>
+            <path d="M55 88H83L103 152H171L188 105H94" fill="none" stroke="#ffffff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="116" cy="184" r="12" fill="#ffffff"/>
+            <circle cx="159" cy="184" r="12" fill="#ffffff"/>
+            <path d="M87 72C106 56 129 49 154 51" fill="none" stroke="#dcfce7" stroke-width="10" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="meta"><strong>Idea:</strong> usar solo el carrito del logo, más grueso y más centrado, para que se vea bien incluso en tamaños pequeños.</p>
+        <div class="dock">
+          <span class="chip">Más profesional en móvil</span>
+          <span class="chip">Se lee mejor en 48 px</span>
+          <span class="chip">Minimalista</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="label">Opción C · Símbolo + letra C</div>
+        <div class="icon-stage">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-label="Icono CityMart con C">
+            <defs>
+              <linearGradient id="g2" x1="40" y1="30" x2="214" y2="220" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f8fffa"/>
+                <stop offset="1" stop-color="#ddf8e6"/>
+              </linearGradient>
+            </defs>
+            <rect width="256" height="256" rx="62" fill="#0f172a"/>
+            <rect x="18" y="18" width="220" height="220" rx="52" fill="url(#g2)"/>
+            <text x="50" y="125" fill="#0f172a" font-size="102" font-weight="900">C</text>
+            <path d="M86 133H114L129 174H177L191 143H123" fill="none" stroke="#16a34a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="139" cy="197" r="10" fill="#16a34a"/>
+            <circle cx="173" cy="197" r="10" fill="#16a34a"/>
+          </svg>
+        </div>
+        <p class="meta"><strong>Idea:</strong> tomar el lenguaje del logo actual pero con una composición más compacta, usando la inicial para dar identidad sin perder el carrito.</p>
+        <div class="dock">
+          <span class="chip">Más marca</span>
+          <span class="chip">Más moderno</span>
+          <span class="chip">Todavía reconocible</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="note">
+      Si quieres, en el siguiente paso hago 2 o 3 variantes más, pero siempre partiendo del logo actual, no de una idea nueva.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Editar Promoción | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/cache.js"></script>
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--jungle-green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            background: #fdfdfd;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            background: #fff;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .duration-btn {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .duration-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .upload-area {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border: 2px dashed #e5e7eb;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f0f7ff;
+            color: var(--primary-color);
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 8px; border-bottom: 1px solid #eee;">
+        <div class="container">
+                <div style="display: flex; align-items: center; margin-bottom: 20px; cursor: pointer; gap: 8px;"
+                    onclick="window.location.href='./'">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 42px; width: auto; margin-left: -10px;">
+                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 5px;">CityMart</h1>
+                </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <a href="profile.html" style="color: var(--text-color);"><i data-lucide="chevron-left"
+                        style="width: 28px; height: 28px;"></i></a>
+                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.3rem;">Editar Promoción</h2>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
+        <form id="promo-form" style="display: none;">
+            <div class="form-group">
+                <label>Imagen o Video de la Promoción</label>
+                <div class="upload-area" onclick="document.getElementById('promo-image').click()">
+                    <div id="default-upload-content"
+                        style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none;">
+                        <i data-lucide="image" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
+                        <p style="font-weight: 600; font-size: 0.9rem;">Cambiar archivo</p>
+                    </div>
+                    <img id="image-preview"
+                        style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;" />
+                    <video id="video-preview"
+                        style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; pointer-events: none;"
+                        autoplay loop muted></video>
+                    <input type="file" id="promo-image" accept="image/*,video/*" style="display: none;">
+                </div>
+                <p style="font-size: 0.7rem; color: #666; text-align: center;">Deja vacío para mantener el archivo
+                    actual.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Título de la Oferta</label>
+                <input type="text" id="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción Corta</label>
+                <textarea id="description" rows="2" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Duración</label>
+                <div class="duration-options">
+                    <div class="duration-btn active" data-days="1">1 Día</div>
+                    <div class="duration-btn" data-days="3">3 Días</div>
+                </div>
+                <input type="hidden" id="duration" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="price">Precio Anterior (Opcional)</label>
+                <input type="text" id="price">
+            </div>
+
+            <div class="form-group">
+                <label for="promo-price">Precio de Oferta</label>
+                <input type="text" id="promo-price" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">WhatsApp de contacto</label>
+                <input type="tel" id="phone" required>
+            </div>
+
+            <button type="submit" id="submit-btn"
+                style="width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; margin-top: 20px; cursor: pointer;">
+                GUARDAR CAMBIOS
+            </button>
+        </form>
+        <div id="loading" style="text-align: center; padding: 40px;">
+            <div class="loader"></div>
+            <p style="margin-top: 10px; color: #666;">Cargando datos...</p>
+        </div>
+    </main>
+
+    <script type="module">
+        import { auth, db, storage } from './assets/js/firebase-init.js';
+        import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        lucide.createIcons();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const promoId = urlParams.get('id');
+        let currentPromoData = null;
+
+        if (!promoId) {
+            window.location.href = 'profile.html';
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            loadPromoData(user);
+        });
+
+        async function loadPromoData(user) {
+            try {
+                const docRef = doc(db, "promociones", promoId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    currentPromoData = docSnap.data();
+
+                    // Verify ownership
+                    if (currentPromoData.uid_propietario !== user.uid && user.email !== 'admin@gmail.com') {
+                        alert("No tienes permiso para editar esta promoción.");
+                        window.location.href = 'profile.html';
+                        return;
+                    }
+
+                    fillForm(currentPromoData);
+                } else {
+                    alert("No se encontró la promoción.");
+                    window.location.href = 'profile.html';
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error al cargar datos.");
+            }
+        }
+
+        function fillForm(data) {
+            document.getElementById('title').value = data.titulo || '';
+            document.getElementById('description').value = data.descripcion || '';
+            document.getElementById('price').value = data.precio_anterior || '';
+            document.getElementById('promo-price').value = data.precio_oferta || '';
+            document.getElementById('phone').value = data.telefono_contacto || data.telefono || '';
+
+            const days = data.duracion_dias || 1;
+            document.getElementById('duration').value = days;
+            document.querySelectorAll('.duration-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.days) === days);
+            });
+
+            if (data.imagen) {
+                const isVideo = data.imagen.includes('.mp4') || data.imagen.includes('video');
+                if (isVideo) {
+                    document.getElementById('video-preview').src = data.imagen;
+                    document.getElementById('video-preview').style.display = 'block';
+                } else {
+                    document.getElementById('image-preview').src = data.imagen;
+                    document.getElementById('image-preview').style.display = 'block';
+                }
+            } else {
+                document.getElementById('default-upload-content').style.display = 'flex';
+            }
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('promo-form').style.display = 'block';
+        }
+
+        // Preview Logic
+        const fileInput = document.getElementById('promo-image');
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    if (file.type.startsWith('video/')) {
+                        document.getElementById('video-preview').src = e.target.result;
+                        document.getElementById('video-preview').style.display = 'block';
+                        document.getElementById('image-preview').style.display = 'none';
+                    } else {
+                        document.getElementById('image-preview').src = e.target.result;
+                        document.getElementById('image-preview').style.display = 'block';
+                        document.getElementById('video-preview').style.display = 'none';
+                    }
+                    document.getElementById('default-upload-content').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Duration switch
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('duration').value = btn.dataset.days;
+            });
+        });
+
+        document.getElementById('promo-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+
+            const setStatus = (text) => {
+                btn.innerHTML = `<div class="loader-small" style="display:inline-block; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite;"></div> ${text}`;
+            };
+
+            try {
+                let imageUrl = currentPromoData.imagen;
+                let imagePath = currentPromoData.imagen_path || "";
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
+                    const filePath = `promociones/${Date.now()}_${sanitizeName}`;
+                    const storageRef = ref(storage, filePath);
+
+                    if (file.type.startsWith('image/')) {
+                        setStatus('Comprimiendo imagen...');
+                        const compressed = window.optimizeUploadImage
+                            ? await window.optimizeUploadImage(file, 'promo')
+                            : (window.compressImage ? await window.compressImage(file) : file);
+                        setStatus('Subiendo imagen...');
+                        await uploadBytes(storageRef, compressed);
+                    } else {
+                        setStatus('Subiendo video...');
+                        await uploadBytes(storageRef, file);
+                    }
+                    
+                    imageUrl = await getDownloadURL(storageRef);
+                    imagePath = filePath;
+                }
+
+                setStatus('Guardando cambios...');
+                await updateDoc(doc(db, "promociones", promoId), {
+                    titulo: document.getElementById('title').value,
+                    descripcion: document.getElementById('description').value,
+                    imagen_path: imagePath,
+                    precio_anterior: document.getElementById('price').value,
+                    precio_oferta: document.getElementById('promo-price').value,
+                    duracion_dias: parseInt(document.getElementById('duration').value),
+                    imagen: imageUrl,
+                    telefono_contacto: document.getElementById('phone').value,
+                    estado: 'pendiente' // Reset status for admin review after edit
+                });
+
+                if (window.CityCache) CityCache.invalidate('promociones');
+                alert("¡Cambios guardados! Tu promoción pasará a revisión.");
+                window.location.href = 'profile.html';
+            } catch (err) {
+                console.error(err);
+                alert("Error al guardar.");
+                btn.disabled = false;
+                btn.innerText = 'GUARDAR CAMBIOS';
+            }
+        });
+    </script>
+</body>
+
+</html>
+

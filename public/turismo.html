@@ -1,0 +1,2546 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Turismo | CityMart</title>
+    <meta name="description" content="Explora rutas, lugares, cultura y experiencias de Lamas y Tarapoto con la guia turistica de CityMart.">
+    <link rel="canonical" href="https://citymart.vip/turismo">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CityMart">
+    <meta property="og:title" content="Turismo | CityMart">
+    <meta property="og:description" content="Explora rutas, lugares, cultura y experiencias de Lamas y Tarapoto con la guia turistica de CityMart.">
+    <meta property="og:url" content="https://citymart.vip/turismo">
+    <meta property="og:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Turismo | CityMart">
+    <meta name="twitter:description" content="Explora rutas, lugares, cultura y experiencias de Lamas y Tarapoto con la guia turistica de CityMart.">
+    <meta name="twitter:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
+    <meta name="application-name" content="CityMart">
+    <meta name="apple-mobile-web-app-title" content="CityMart">
+    <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://commons.wikimedia.org" crossorigin>
+    <link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="assets/js/utils.js?v=20260401-homefix-2"></script>
+    <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
+    <style>
+        :root {
+            --tour-bg: #f4efe3;
+            --tour-surface: rgba(255, 251, 244, 0.86);
+            --tour-panel: rgba(255, 248, 240, 0.92);
+            --tour-border: rgba(63, 46, 25, 0.12);
+            --tour-ink: #173228;
+            --tour-soft: #5d6b63;
+            --tour-deep: #0d211a;
+            --tour-moss: #1f6b52;
+            --tour-accent: #ff7a45;
+            --tour-sand: #d9c4a1;
+            --tour-shadow: 0 24px 60px -30px rgba(13, 33, 26, 0.35);
+            --tour-shadow-soft: 0 16px 30px -24px rgba(13, 33, 26, 0.28);
+        }
+
+        html {
+            background:
+                radial-gradient(circle at top left, rgba(255, 122, 69, 0.16), transparent 28%),
+                radial-gradient(circle at top right, rgba(31, 107, 82, 0.22), transparent 34%),
+                linear-gradient(180deg, #f7f1e6 0%, #efe7d8 55%, #f6f1e7 100%);
+            min-height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body.page-tourism {
+            min-height: 100vh;
+            background: transparent;
+            color: var(--tour-ink);
+            font-family: 'Manrope', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body.page-tourism::before,
+        body.page-tourism::after {
+            content: '';
+            position: fixed;
+            inset: auto;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(50px);
+            z-index: 0;
+            opacity: 0.65;
+        }
+
+        body.page-tourism::before {
+            top: -180px;
+            right: -120px;
+            background: rgba(255, 122, 69, 0.18);
+        }
+
+        body.page-tourism::after {
+            bottom: 140px;
+            left: -180px;
+            background: rgba(31, 107, 82, 0.18);
+        }
+
+        .page-tourism h1,
+        .page-tourism h2,
+        .page-tourism h3,
+        .page-tourism h4 {
+            font-family: 'Fraunces', serif;
+            letter-spacing: -0.03em;
+            color: var(--tour-deep);
+        }
+
+        .page-tourism p,
+        .page-tourism a,
+        .page-tourism button,
+        .page-tourism span {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .tour-topbar {
+            position: sticky;
+            top: 12px;
+            z-index: 120;
+            width: min(1180px, calc(100% - 28px));
+            margin: 12px auto 0;
+            padding: 14px 0;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: var(--tour-shadow-soft);
+        }
+
+        .tour-topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            padding: 0 14px;
+            min-height: 0 !important;
+            height: auto !important;
+            border: 0 !important;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+        }
+
+        .brand-mark {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(31, 107, 82, 0.14), rgba(255, 122, 69, 0.14));
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(31, 107, 82, 0.12);
+        }
+
+        .brand-mark img {
+            width: 38px;
+            height: auto;
+        }
+
+        .brand-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .brand-copy small {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 800;
+            color: rgba(23, 50, 40, 0.58);
+        }
+
+        .brand-copy strong {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--tour-deep);
+            line-height: 1;
+        }
+
+        .tour-chip-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        .city-switcher-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 0;
+            padding: 0;
+            background: transparent;
+            border: 0;
+            overflow: visible;
+        }
+
+        .city-pill {
+            min-height: 44px;
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 14px;
+            background: transparent;
+            color: rgba(23, 50, 40, 0.7);
+            font-size: 0.84rem;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .city-pill:hover {
+            background: rgba(31, 107, 82, 0.08);
+        }
+
+        .city-pill.active {
+            background: linear-gradient(135deg, var(--tour-moss), #2e8164);
+            color: #fff;
+            box-shadow: 0 14px 24px -18px rgba(31, 107, 82, 0.9);
+        }
+
+        .turismo-hero {
+            position: relative;
+            min-height: 430px;
+            margin-top: -18px;
+            padding: 54px 0 36px;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .turismo-hero img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.04);
+            filter: saturate(1.05);
+        }
+
+        .turismo-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(8, 18, 14, 0.86) 0%, rgba(8, 18, 14, 0.58) 42%, rgba(8, 18, 14, 0.22) 100%),
+                linear-gradient(180deg, rgba(255, 122, 69, 0.16) 0%, transparent 30%, rgba(8, 18, 14, 0.58) 100%);
+            z-index: 1;
+        }
+
+        .turismo-hero::after {
+            content: '';
+            position: absolute;
+            inset: 18% 8% auto auto;
+            width: min(36vw, 420px);
+            height: min(36vw, 420px);
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 72%);
+            z-index: 1;
+            filter: blur(8px);
+        }
+
+        .hero-shell {
+            position: relative;
+            z-index: 2;
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, 430px);
+            gap: 22px;
+            align-items: end;
+        }
+
+        .hero-copy {
+            max-width: 660px;
+            padding: 14px 0 0;
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff5ec;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            margin-bottom: 18px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .turismo-city-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: #ffddc8;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .hero-copy h1 {
+            font-size: clamp(2.9rem, 4.8vw, 5rem);
+            line-height: 0.95;
+            color: #fffaf2;
+            margin: 0 0 12px;
+            text-wrap: balance;
+        }
+
+        .hero-copy p {
+            font-size: clamp(0.96rem, 1.12vw, 1.08rem);
+            line-height: 1.58;
+            color: rgba(255, 248, 240, 0.88);
+            max-width: 520px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .hero-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 0 18px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            transition: transform 0.24s ease, background 0.24s ease, color 0.24s ease, box-shadow 0.24s ease;
+        }
+
+        .hero-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-action-primary {
+            background: linear-gradient(135deg, #fff7ef, #ffd6c1);
+            color: #612812;
+            box-shadow: 0 18px 36px -22px rgba(255, 214, 193, 0.9);
+        }
+
+        .hero-action-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff8f0;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .trip-brief-card {
+            background:
+                linear-gradient(180deg, rgba(255, 251, 244, 0.95) 0%, rgba(248, 238, 224, 0.92) 100%);
+            border-radius: 30px;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            box-shadow: 0 28px 65px -32px rgba(8, 18, 14, 0.72);
+            transform: translateY(18px);
+            position: relative;
+            overflow: hidden;
+            animation: floatCard 7s ease-in-out infinite;
+        }
+
+        .trip-brief-card::before {
+            content: '';
+            position: absolute;
+            top: -58px;
+            right: -38px;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 122, 69, 0.28), transparent 70%);
+        }
+
+        .trip-brief-card::after {
+            content: '';
+            position: absolute;
+            left: -40px;
+            bottom: -56px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(31, 107, 82, 0.24), transparent 72%);
+        }
+
+        .trip-brief-label {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(23, 50, 40, 0.54);
+        }
+
+        .trip-brief-card h2 {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 10px;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .trip-brief-card p {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            font-size: 0.94rem;
+            line-height: 1.7;
+            color: var(--tour-soft);
+        }
+
+        .hero-metrics {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin: 16px 0 14px;
+        }
+
+        .hero-metric {
+            padding: 14px 12px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(63, 46, 25, 0.08);
+            text-align: center;
+        }
+
+        .hero-metric strong {
+            display: block;
+            font-size: 1.35rem;
+            line-height: 1;
+            color: var(--tour-deep);
+            margin-bottom: 6px;
+        }
+
+        .hero-metric span {
+            display: block;
+            font-size: 0.72rem;
+            line-height: 1.35;
+            color: rgba(23, 50, 40, 0.68);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 800;
+        }
+
+        .hero-tags {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 12px;
+            border-radius: 999px;
+            background: rgba(12, 33, 26, 0.92);
+            color: #fff7ef;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .tourism-main {
+            position: relative;
+            z-index: 3;
+            width: min(1180px, calc(100% - 32px));
+            margin: -22px auto 0;
+            padding: 0 0 92px;
+        }
+
+        .tour-panel {
+            background: linear-gradient(180deg, rgba(255, 252, 247, 0.9), rgba(251, 244, 234, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.76);
+            border-radius: 26px;
+            padding: 16px;
+            box-shadow: var(--tour-shadow);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            margin-bottom: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tour-panel::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -16px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 122, 69, 0.12), transparent 72%);
+            pointer-events: none;
+        }
+
+        .tour-panel--soft::before {
+            background: radial-gradient(circle, rgba(31, 107, 82, 0.14), transparent 72%);
+        }
+
+        .panel-heading,
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel-heading-copy,
+        .section-heading-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .section-kicker {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(23, 50, 40, 0.5);
+        }
+
+        .panel-heading h2,
+        .section-header h3 {
+            margin: 0;
+            font-size: clamp(1.48rem, 1.85vw, 1.92rem);
+            line-height: 1.02;
+            text-wrap: balance;
+        }
+
+        .panel-heading p,
+        .section-header p {
+            margin: 0;
+            font-size: 0.86rem;
+            line-height: 1.52;
+            color: var(--tour-soft);
+            max-width: 520px;
+        }
+
+        .section-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 0 16px;
+            border-radius: 999px;
+            background: rgba(31, 107, 82, 0.08);
+            color: var(--tour-moss);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 800;
+            white-space: nowrap;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .section-link:hover {
+            transform: translateY(-1px);
+            background: rgba(31, 107, 82, 0.13);
+        }
+
+        .intent-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .intent-card {
+            border: 0;
+            border-radius: 20px;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 241, 231, 0.92));
+            border: 1px solid rgba(63, 46, 25, 0.08);
+            box-shadow: var(--tour-shadow-soft);
+            transition: transform 0.24s ease, box-shadow 0.24s ease;
+        }
+
+        .intent-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 38px -30px rgba(13, 33, 26, 0.58);
+        }
+
+        .intent-card .icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 10px;
+        }
+
+        .intent-card h4 {
+            margin: 0 0 6px;
+            font-size: 0.98rem;
+            line-height: 1.1;
+        }
+
+        .intent-card p {
+            margin: 0;
+            color: var(--tour-soft);
+            font-size: 0.78rem;
+            line-height: 1.46;
+        }
+
+        .intent-card:nth-child(1) .icon {
+            background: rgba(31, 107, 82, 0.14);
+            color: var(--tour-moss);
+        }
+
+        .intent-card:nth-child(2) .icon {
+            background: rgba(83, 72, 186, 0.12);
+            color: #5348ba;
+        }
+
+        .intent-card:nth-child(3) .icon {
+            background: rgba(255, 122, 69, 0.14);
+            color: #cb5a2e;
+        }
+
+        .intent-card:nth-child(4) .icon {
+            background: rgba(23, 50, 40, 0.1);
+            color: #173228;
+        }
+
+        .carousel-horizontal {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding: 2px 2px 4px;
+            scroll-snap-type: x proximity;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .carousel-horizontal::-webkit-scrollbar {
+            display: none;
+        }
+
+        .lugar-card,
+        .business-card,
+        .culture-card {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+        }
+
+        .lugar-card {
+            position: relative;
+            min-width: 248px;
+            width: 248px;
+            min-height: 264px;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #d8d8d8;
+            box-shadow: var(--tour-shadow-soft);
+        }
+
+        .lugar-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lugar-card-body {
+            position: relative;
+            z-index: 1;
+            min-height: 264px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+            background: linear-gradient(180deg, rgba(8, 18, 14, 0) 18%, rgba(8, 18, 14, 0.82) 100%);
+        }
+
+        .lugar-card-body h4 {
+            color: #fff8f1;
+            font-size: 1.12rem;
+            margin: 0 0 6px;
+            line-height: 1;
+        }
+
+        .lugar-card-body p {
+            margin: 0;
+            color: rgba(255, 248, 241, 0.84);
+            font-size: 0.78rem;
+            line-height: 1.4;
+        }
+
+        .lugar-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fff4e8;
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            margin-bottom: 9px;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .dual-panel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .business-card {
+            width: 184px;
+            border-radius: 22px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(63, 46, 25, 0.08);
+            box-shadow: var(--tour-shadow-soft);
+            cursor: pointer;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .business-card:hover,
+        .culture-card:hover,
+        .evento-card:hover,
+        .ruta-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .business-card img,
+        .culture-card img {
+            width: 100%;
+            height: 122px;
+            object-fit: cover;
+            display: block;
+            background: #e7e2d8;
+        }
+
+        .business-card-body,
+        .culture-card-body {
+            padding: 12px;
+        }
+
+        .business-card-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(31, 107, 82, 0.1);
+            color: var(--tour-moss);
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .business-card-body h4,
+        .culture-card-body h4 {
+            margin: 0 0 6px;
+            font-size: 0.92rem;
+            line-height: 1.08;
+        }
+
+        .business-card-body p,
+        .culture-card-body p {
+            margin: 0;
+            color: var(--tour-soft);
+            font-size: 0.75rem;
+            line-height: 1.38;
+        }
+
+        .business-card-footer {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            color: var(--tour-deep);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        #day-carousel .business-card,
+        #nightlife-carousel .business-card {
+            width: 198px;
+        }
+
+        #day-carousel .business-card img,
+        #nightlife-carousel .business-card img {
+            height: 138px;
+        }
+
+        .eventos-stack {
+            display: grid;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .evento-card {
+            background: rgba(255, 255, 255, 0.78);
+            border-radius: 24px;
+            padding: 14px;
+            border: 1px solid rgba(63, 46, 25, 0.08);
+            display: grid;
+            grid-template-columns: 74px minmax(0, 1fr) 24px;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--tour-shadow-soft);
+            transition: transform 0.22s ease;
+        }
+
+        .evento-date-box {
+            min-height: 74px;
+            border-radius: 22px;
+            padding: 10px 8px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(180deg, var(--tour-deep), #173a2e);
+            color: #fff6ee;
+            box-shadow: 0 20px 30px -24px rgba(13, 33, 26, 0.95);
+        }
+
+        .evento-date-box .day {
+            font-size: 1.55rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .evento-date-box .month {
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .evento-card h4 {
+            margin: 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .evento-card p {
+            margin: 0;
+            color: var(--tour-soft);
+            font-size: 0.8rem;
+            line-height: 1.46;
+        }
+
+        .ruta-stack {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ruta-card {
+            position: relative;
+            padding: 18px;
+            border-radius: 24px;
+            overflow: hidden;
+            color: #fffaf4;
+            background:
+                radial-gradient(circle at top right, rgba(255, 122, 69, 0.28), transparent 30%),
+                linear-gradient(135deg, #0e261d 0%, #184635 55%, #246049 100%);
+            box-shadow: 0 30px 48px -34px rgba(13, 33, 26, 0.95);
+        }
+
+        .ruta-card h4 {
+            margin: 0 0 8px;
+            color: #fffaf4;
+            font-size: 1.24rem;
+            line-height: 1;
+        }
+
+        .ruta-card p {
+            margin: 0;
+            color: rgba(255, 247, 238, 0.84);
+            font-size: 0.84rem;
+            line-height: 1.46;
+            max-width: 38ch;
+        }
+
+        .ruta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fffaf4;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .info-stack {
+            display: grid;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-card {
+            display: grid;
+            grid-template-columns: 60px minmax(0, 1fr);
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(63, 46, 25, 0.08);
+            box-shadow: var(--tour-shadow-soft);
+        }
+
+        .info-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            font-size: 1rem;
+            font-weight: 800;
+            border: 1px solid rgba(63, 46, 25, 0.06);
+        }
+
+        .info-card h4 {
+            margin: 0 0 4px;
+            font-size: 0.95rem;
+        }
+
+        .info-card p {
+            margin: 0;
+            color: var(--tour-soft);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .culture-card {
+            width: 190px;
+            border-radius: 22px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(63, 46, 25, 0.08);
+            box-shadow: var(--tour-shadow-soft);
+        }
+
+        .agencies-spotlight {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        .agency-hero-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 26px;
+            padding: 22px;
+            color: #fff9f3;
+            background:
+                radial-gradient(circle at top right, rgba(255, 160, 93, 0.32), transparent 32%),
+                linear-gradient(135deg, #15352a 0%, #1f5b47 48%, #2d7c61 100%);
+            box-shadow: 0 28px 46px -34px rgba(13, 33, 26, 0.92);
+        }
+
+        .agency-hero-card::after {
+            content: '';
+            position: absolute;
+            inset: auto -34px -40px auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 72%);
+            pointer-events: none;
+        }
+
+        .agency-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffe6d3;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .agency-hero-card h3 {
+            margin: 10px 0 8px;
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            line-height: 0.98;
+            color: #fffaf4;
+        }
+
+        .agency-hero-card p {
+            margin: 0;
+            max-width: 46ch;
+            color: rgba(255, 247, 239, 0.88);
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        .agency-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .agency-meta-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 38px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #fff9f3;
+            font-size: 0.76rem;
+            font-weight: 800;
+        }
+
+        .agency-note-card {
+            border-radius: 24px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(63, 46, 25, 0.08);
+            box-shadow: var(--tour-shadow-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .agency-note-card h4 {
+            margin: 0;
+            font-size: 1.04rem;
+            line-height: 1.1;
+        }
+
+        .agency-note-card p {
+            margin: 0;
+            color: var(--tour-soft);
+            font-size: 0.82rem;
+            line-height: 1.48;
+        }
+
+        .agency-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(31, 107, 82, 0.08);
+            color: var(--tour-moss);
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .empty-tourism {
+            padding: 6px 4px 2px;
+            color: var(--tour-soft);
+            font-size: 0.84rem;
+            line-height: 1.52;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tour-deferred-placeholder {
+            position: relative;
+            min-height: 164px;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px dashed rgba(31, 107, 82, 0.22);
+            background:
+                linear-gradient(135deg, rgba(255, 251, 244, 0.82), rgba(247, 241, 230, 0.96)),
+                radial-gradient(circle at top right, rgba(31, 107, 82, 0.08), transparent 36%);
+        }
+
+        .tour-deferred-placeholder::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            transform: translateX(-100%);
+            animation: tourLoadingSweep 2.3s ease-in-out infinite;
+        }
+
+        .tour-deferred-placeholder--compact {
+            min-height: 118px;
+        }
+
+        .tour-deferred-placeholder--list {
+            min-height: 132px;
+        }
+
+        .tour-deferred-label {
+            position: absolute;
+            left: 18px;
+            bottom: 14px;
+            z-index: 1;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: rgba(23, 50, 40, 0.56);
+        }
+
+        @keyframes tourLoadingSweep {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .tour-footer {
+            position: relative;
+            z-index: 3;
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto 120px;
+            padding: 28px 24px 30px;
+            border-radius: 28px;
+            background:
+                radial-gradient(circle at top right, rgba(255, 122, 69, 0.1), transparent 24%),
+                linear-gradient(135deg, rgba(252, 248, 242, 0.97), rgba(246, 239, 229, 0.97));
+            border: 1px solid rgba(255, 255, 255, 0.76);
+            box-shadow: var(--tour-shadow);
+            text-align: left;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+            gap: 18px;
+        }
+
+        .tour-footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .tour-footer-brand img {
+            width: 44px;
+            height: auto;
+        }
+
+        .tour-footer h3 {
+            margin: 0;
+            font-size: 1.34rem;
+        }
+
+        .tour-footer p {
+            margin: 0 0 16px;
+            max-width: 540px;
+            color: var(--tour-soft);
+            font-size: 0.86rem;
+            line-height: 1.6;
+        }
+
+        .tour-footer-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 0;
+        }
+
+        .tour-footer-links a,
+        .tour-footer-social {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 0 16px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--tour-deep);
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(63, 46, 25, 0.08);
+        }
+
+        .tour-footer-meta {
+            color: rgba(23, 50, 40, 0.54);
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tour-footer-aside {
+            display: grid;
+            gap: 12px;
+            align-content: start;
+            justify-items: start;
+        }
+
+        .tour-footer-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(23, 50, 40, 0.48);
+        }
+
+        .bottom-nav {
+            background: rgba(255, 250, 244, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.76);
+            box-shadow: 0 18px 40px -26px rgba(13, 33, 26, 0.5);
+        }
+
+        .nav-item {
+            color: rgba(23, 50, 40, 0.56);
+            font-weight: 700;
+        }
+
+        .nav-item.active {
+            color: var(--tour-moss);
+        }
+
+        @keyframes floatCard {
+            0%,
+            100% {
+                transform: translateY(26px);
+            }
+
+            50% {
+                transform: translateY(18px);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-shell,
+            .dual-panel-grid,
+            .ruta-stack,
+            .intent-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-shell {
+                gap: 18px;
+            }
+
+            .trip-brief-card {
+                transform: none;
+                animation: none;
+            }
+
+            .tour-topbar {
+                top: 8px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .tour-topbar {
+                width: calc(100% - 20px);
+                margin-top: 10px;
+                border-radius: 24px;
+            }
+
+            .tour-topbar-inner {
+                align-items: stretch;
+            }
+
+            .tour-chip-group,
+            .city-switcher-container {
+                width: 100%;
+            }
+
+            .city-switcher-container {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .city-pill {
+                justify-content: center;
+            }
+
+            .turismo-hero {
+                min-height: 470px;
+                padding: 88px 0 30px;
+            }
+
+            .hero-copy h1 {
+                font-size: 2.9rem;
+            }
+
+            .hero-actions {
+                gap: 10px;
+            }
+
+            .hero-action {
+                width: 100%;
+            }
+
+            .hero-metrics {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .tourism-main,
+            .tour-footer {
+                width: calc(100% - 20px);
+            }
+
+            .tour-panel,
+            .tour-footer {
+                border-radius: 24px;
+                padding: 16px;
+            }
+
+            .agencies-spotlight,
+            .tour-footer {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-heading,
+            .section-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section-link {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .intent-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .lugar-card {
+                min-width: 222px;
+                width: 222px;
+                min-height: 236px;
+            }
+
+            .lugar-card-body {
+                min-height: 236px;
+                padding: 14px;
+            }
+
+            .business-card {
+                width: 164px;
+            }
+
+            #day-carousel .business-card,
+            #nightlife-carousel .business-card {
+                width: 174px;
+            }
+
+            .business-card img,
+            .culture-card img {
+                height: 114px;
+            }
+
+            #day-carousel .business-card img,
+            #nightlife-carousel .business-card img {
+                height: 124px;
+            }
+
+            .evento-card {
+                grid-template-columns: 72px minmax(0, 1fr);
+            }
+
+            .evento-card i[data-lucide="arrow-right"] {
+                display: none;
+            }
+
+            .tour-footer-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .brand-copy strong {
+                font-size: 1.08rem;
+            }
+
+            .hero-kicker,
+            .turismo-city-badge {
+                margin-bottom: 14px;
+            }
+
+            .hero-copy h1 {
+                font-size: 2.35rem;
+            }
+
+            .hero-copy p {
+                font-size: 0.95rem;
+            }
+
+            .hero-metrics {
+                gap: 8px;
+            }
+
+            .hero-metric {
+                padding: 12px 8px;
+            }
+
+            .hero-metric strong {
+                font-size: 1.1rem;
+            }
+
+            .hero-metric span {
+                font-size: 0.64rem;
+            }
+
+            .intent-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .evento-card {
+                grid-template-columns: 1fr;
+            }
+
+            .evento-date-box {
+                min-height: 72px;
+            }
+
+            .info-card {
+                grid-template-columns: 60px minmax(0, 1fr);
+                gap: 14px;
+            }
+
+            .info-icon-box {
+                width: 60px;
+                height: 60px;
+                border-radius: 18px;
+            }
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+</head>
+
+<body class="page-tourism">
+    <header class="tour-topbar modern-glass">
+        <div class="tour-topbar-inner">
+            <div class="brand-lockup" onclick="window.location.href='./'">
+                <div class="brand-mark">
+                    <img src="assets/logo.png" alt="CityMart">
+                </div>
+                <div class="brand-copy">
+                    <small>CityMart guide</small>
+                    <strong>Turismo amazonia viva</strong>
+                </div>
+            </div>
+
+            <div class="tour-chip-group">
+                <div id="turismo-city-switcher" class="city-switcher-container" aria-label="Cambiar ciudad">
+                    <button type="button" class="city-pill active" onclick="switchTurismoCity('lamas')">Lamas</button>
+                    <button type="button" class="city-pill" onclick="switchTurismoCity('tarapoto')">Tarapoto</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="turismo-hero" id="hero-section">
+        <img id="hero-img" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Plaza%20de%20Armas%20de%20Lamas,%20Tarapoto,%20San%20Mart%C3%ADn,%20Per%C3%BA.%2003%20%28cropped%29.jpg?width=1280"
+            alt="Turismo" fetchpriority="high" decoding="async">
+        <div class="hero-shell">
+            <div class="hero-copy">
+                <div class="hero-kicker" id="hero-kicker-wrap" hidden>
+                    <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+                    <span id="hero-kicker"></span>
+                </div>
+                <div class="turismo-city-badge">
+                    <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>
+                    <span id="hero-city-name">Lamas</span>
+                </div>
+                <h1 id="hero-title">Lamas</h1>
+                <p id="hero-subtitle">Ciudad de los tres pisos naturales, a unos 20 km de Tarapoto, con plaza historica, castillo y cultura Kichwa Lamista viva.</p>
+                <div class="hero-actions">
+                    <a href="#lugares-shell" class="hero-action hero-action-primary">Explorar paradas clave</a>
+                    <a href="#rutas-shell" class="hero-action hero-action-secondary">Ver ruta sugerida</a>
+                </div>
+            </div>
+
+            <aside class="trip-brief-card">
+                <div class="trip-brief-label">
+                    <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+                    <span>Bitacora del viaje</span>
+                </div>
+                <h2 id="hero-note-title">Ruta corta con identidad</h2>
+                <p id="hero-note">La ciudad combina patrimonio urbano, cultura viva y una subida breve desde Tarapoto, por eso funciona muy bien para una escapada de un dia.</p>
+
+                <div class="hero-metrics">
+                    <div class="hero-metric">
+                        <strong id="stat-lugares">5</strong>
+                        <span>paradas</span>
+                    </div>
+                    <div class="hero-metric">
+                        <strong id="stat-eventos">3</strong>
+                        <span>eventos</span>
+                    </div>
+                    <div class="hero-metric">
+                        <strong id="stat-rutas">2</strong>
+                        <span>rutas</span>
+                    </div>
+                </div>
+
+                <div id="hero-tags" class="hero-tags">
+                    <span class="hero-tag">
+                        <i data-lucide="leaf" style="width: 12px; height: 12px;"></i>
+                        <span>Plaza de Armas</span>
+                    </span>
+                    <span class="hero-tag">
+                        <i data-lucide="leaf" style="width: 12px; height: 12px;"></i>
+                        <span>Castillo de Lamas</span>
+                    </span>
+                    <span class="hero-tag">
+                        <i data-lucide="leaf" style="width: 12px; height: 12px;"></i>
+                        <span>Kichwa Lamista</span>
+                    </span>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <main class="tourism-main">
+        <section class="tour-panel tour-panel--soft">
+            <div class="panel-heading">
+                <div class="panel-heading-copy">
+                    <span class="section-kicker">Editorial Amazon Escape</span>
+                    <h2>Empieza el viaje segun el plan que tienes en mente</h2>
+                    <p>Esta portada esta pensada como una guia viva: primero eliges el mood del viaje y luego bajas directo a los lugares, experiencias y negocios que te resuelven la ruta.</p>
+                </div>
+            </div>
+
+            <div class="intent-grid">
+                <button class="intent-card" type="button"
+                    onclick="document.getElementById('day-section').scrollIntoView({behavior:'smooth', block:'start'})">
+                    <div class="icon">
+                        <i data-lucide="trees" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h4>Pasar el dia</h4>
+                    <p>Recreos, centros de esparcimiento y puntos donde la experiencia vale la salida completa.</p>
+                </button>
+
+                <button class="intent-card" type="button"
+                    onclick="document.getElementById('night-section').scrollIntoView({behavior:'smooth', block:'start'})">
+                    <div class="icon">
+                        <i data-lucide="music-4" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h4>Seguir de noche</h4>
+                    <p>Bares, karaokes y lugares con mas energia para cuando la ciudad cambia de ritmo.</p>
+                </button>
+
+                <button class="intent-card" type="button"
+                    onclick="document.getElementById('food-section').scrollIntoView({behavior:'smooth', block:'start'})">
+                    <div class="icon">
+                        <i data-lucide="utensils-crossed" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h4>Comer bien</h4>
+                    <p>Sabores locales, almuerzos y paradas donde la gastronomia acompana la ruta.</p>
+                </button>
+
+                <button class="intent-card" type="button"
+                    onclick="document.getElementById('sleep-section').scrollIntoView({behavior:'smooth', block:'start'})">
+                    <div class="icon">
+                        <i data-lucide="bed-double" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <h4>Quedarte cerca</h4>
+                    <p>Hospedajes y opciones para dormir sin alejarte de los puntos que mas interesan.</p>
+                </button>
+            </div>
+        </section>
+
+        <section id="lugares-shell" class="tour-panel">
+            <div class="section-header">
+                <div class="section-heading-copy">
+                    <span class="section-kicker">Postales y miradores</span>
+                    <h3>Lugares que merecen una parada completa</h3>
+                    <p>Los spots mas memorables para abrir la ruta con un panorama claro de la ciudad y su identidad.</p>
+                </div>
+            </div>
+
+            <div id="lugares-carousel" class="carousel-horizontal"></div>
+        </section>
+
+        <div class="dual-panel-grid">
+            <section id="day-section" class="tour-panel tour-panel--soft">
+                <div class="section-header">
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Aire libre</span>
+                        <h3>Donde pasar el dia</h3>
+                        <p>Planes largos, naturaleza y experiencias para ir con tiempo.</p>
+                    </div>
+                    <a id="day-directory-link" href="directory.html?search=recreo" class="section-link" data-search="recreo">
+                        <span>Ver mas</span>
+                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+
+                <div id="day-carousel" class="carousel-horizontal"></div>
+            </section>
+
+            <section id="night-section" class="tour-panel">
+                <div class="section-header">
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Modo nocturno</span>
+                        <h3>Donde divertirte</h3>
+                        <p>Opciones para extender la salida cuando el viaje sigue despues del atardecer.</p>
+                    </div>
+                    <a id="night-directory-link" href="directory.html?search=discoteca" class="section-link" data-search="discoteca">
+                        <span>Ver mas</span>
+                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+
+                <div id="nightlife-carousel" class="carousel-horizontal"></div>
+            </section>
+        </div>
+
+        <section class="tour-panel">
+            <div class="section-header">
+                <div class="section-heading-copy">
+                    <span class="section-kicker">Calendario local</span>
+                    <h3>Eventos y fiestas para caer en el momento correcto</h3>
+                    <p>Fechas que ayudan a decidir cuando ir y que ambiente esperar en la ciudad.</p>
+                </div>
+            </div>
+
+            <div id="eventos-list" class="eventos-stack"></div>
+        </section>
+
+        <div class="dual-panel-grid">
+            <section id="food-section" class="tour-panel">
+                <div class="section-header">
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Sabores de ruta</span>
+                        <h3>Donde comer</h3>
+                        <p>Paradas practicas para almorzar, cenar o probar algo muy local en el camino.</p>
+                    </div>
+                    <a id="food-directory-link" href="directory.html" class="section-link" data-search="restaurante">
+                        <span>Ver mas</span>
+                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+
+                <div id="gastro-carousel" class="carousel-horizontal"></div>
+            </section>
+
+            <section id="sleep-section" class="tour-panel tour-panel--soft">
+                <div class="section-header">
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Base del viaje</span>
+                        <h3>Donde dormir</h3>
+                        <p>Hospedajes pensados para que la ruta comience facil desde el primer dia.</p>
+                    </div>
+                    <a id="sleep-directory-link" href="directory.html?cat=hospedaje" class="section-link" data-cat="hospedaje">
+                        <span>Ver mas</span>
+                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+
+                <div id="hospedaje-carousel" class="carousel-horizontal"></div>
+            </section>
+        </div>
+
+        <section class="tour-panel">
+            <div class="section-header">
+                <div class="section-heading-copy">
+                    <span class="section-kicker">Experiencias vivas</span>
+                    <h3>Tours, cultura y compras con acento local</h3>
+                    <p>Negocios que completan el viaje con talleres, artesania, recorridos y hallazgos de la zona.</p>
+                </div>
+                <a id="culture-directory-link" href="directory.html?search=artesania" class="section-link" data-search="artesania">
+                    <span>Ver mas</span>
+                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                </a>
+            </div>
+
+            <div id="culture-business-carousel" class="carousel-horizontal"></div>
+        </section>
+
+        <section id="agencias-shell" class="tour-panel tour-panel--soft">
+            <div class="section-header">
+                <div class="section-heading-copy">
+                    <span class="section-kicker">Viajes guiados</span>
+                    <h3>Agencias de turismo con vitrina propia</h3>
+                    <p>Este espacio esta reservado para agencias, operadores y servicios de viaje que quieran ser vistos primero.</p>
+                </div>
+                <a id="agencies-directory-link" href="directory.html?search=agencia" class="section-link" data-search="agencia">
+                    <span>Ver mas</span>
+                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                </a>
+            </div>
+
+            <div class="agencies-spotlight">
+                <article class="agency-hero-card">
+                    <div class="agency-kicker">
+                        <i data-lucide="map" style="width: 14px; height: 14px;"></i>
+                        Agencias destacadas
+                    </div>
+                    <h3>Tu operador puede aparecer aqui con una presencia mucho mas visible.</h3>
+                    <p>Ideal para tours, paquetes, transporte turistico, full day y experiencias guiadas en Lamas, Tarapoto y alrededores.</p>
+                    <div class="agency-meta-row">
+                        <div class="agency-meta-chip">
+                            <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i>
+                            Mayor visibilidad
+                        </div>
+                        <div class="agency-meta-chip">
+                            <i data-lucide="plane" style="width: 14px; height: 14px;"></i>
+                            Tours y viajes
+                        </div>
+                        <div class="agency-meta-chip">
+                            <i data-lucide="star" style="width: 14px; height: 14px;"></i>
+                            Presencia premium
+                        </div>
+                    </div>
+                </article>
+
+                <article class="agency-note-card">
+                    <div>
+                        <div class="agency-status">
+                            <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
+                            Espacio activo
+                        </div>
+                        <h4>Bloque listo para recibir agencias y tours.</h4>
+                        <p>Aun si todavia no hay agencias cargadas, este apartado ya queda visible para marcar que aqui iran los negocios orientados a viaje y planificacion.</p>
+                    </div>
+                    <div id="agencias-carousel" class="carousel-horizontal"></div>
+                </article>
+            </div>
+        </section>
+
+        <section id="rutas-shell" class="tour-panel tour-panel--soft">
+            <div class="section-header">
+                <div class="section-heading-copy">
+                    <span class="section-kicker">Rutas armadas</span>
+                    <h3>Itinerarios para no empezar desde cero</h3>
+                    <p>Ideas rapidas para ordenar el viaje, aprovechar tiempos y no perderte los puntos fuertes.</p>
+                </div>
+            </div>
+
+            <div id="rutas-container" class="ruta-stack"></div>
+        </section>
+
+        <div class="dual-panel-grid">
+            <section class="tour-panel">
+                <div class="section-header">
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Llegada y acceso</span>
+                        <h3>Como llegar sin vueltas</h3>
+                        <p>Opciones practicas para aterrizar, moverte y calcular el traslado principal.</p>
+                    </div>
+                </div>
+
+                <div id="como-llegar-container" class="info-stack"></div>
+            </section>
+
+            <section class="tour-panel tour-panel--soft">
+                <div class="section-header">
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Textura local</span>
+                        <h3>Cultura y artesania</h3>
+                        <p>Capas de identidad que hacen que el viaje se sienta propio y no intercambiable.</p>
+                    </div>
+                </div>
+
+                <div id="cultura-carousel" class="carousel-horizontal"></div>
+            </section>
+        </div>
+    </main>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+
+
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="turismo.html" class="nav-item active">
+            <i data-lucide="compass" class="nav-icon"></i>
+            <span>Turismo</span>
+        </a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--tour-moss), #2d7c61); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 14px 26px -16px rgba(31, 107, 82, 0.9);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 800; color: var(--tour-deep); margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db } from './assets/js/firebase-init.js';
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        lucide.createIcons();
+        setTimeout(async () => {
+            try {
+                const { initPresence } = await import('./assets/js/presence.js');
+                initPresence();
+            } catch (e) {
+                console.warn("Presence init error", e);
+            }
+        }, 1500);
+
+        let currentCity = window.getStoredCity ? window.getStoredCity() : normalizeLookup(localStorage.getItem('citymart_city') || 'lamas');
+        let tourismBusinesses = [];
+        let tourismBusinessesByCity = Object.create(null);
+        let tourismBusinessesReady = false;
+        let tourismBusinessesPromise = null;
+        let tourismSectionObserver = null;
+        const deferredTourismRenders = new Map();
+        const BUSINESS_CONTAINER_IDS = ['day-carousel', 'nightlife-carousel', 'gastro-carousel', 'hospedaje-carousel', 'culture-business-carousel', 'agencias-carousel'];
+        const TOURISM_NEARBY_CITY_FALLBACKS = {
+            tarapoto: ['lamas'],
+            lamas: []
+        };
+        const TOURISM_DIRECTORY_LINK_IDS = [
+            'day-directory-link',
+            'night-directory-link',
+            'food-directory-link',
+            'sleep-directory-link',
+            'culture-directory-link',
+            'agencies-directory-link'
+        ];
+
+        const cityData = {
+            lamas: {
+                heroImg: 'https://commons.wikimedia.org/wiki/Special:FilePath/Plaza%20de%20Armas%20de%20Lamas,%20Tarapoto,%20San%20Mart%C3%ADn,%20Per%C3%BA.%2003%20%28cropped%29.jpg',
+                heroTitle: 'Lamas',
+                heroSubtitle: 'Ciudad de los tres pisos naturales, a unos 20 km de Tarapoto, con plaza historica, castillo y cultura Kichwa Lamista viva.',
+                heroKicker: '',
+                noteTitle: 'Ruta corta con identidad',
+                quickNote: 'La ciudad combina patrimonio urbano, cultura viva y una subida breve desde Tarapoto, por eso funciona muy bien para una escapada de un dia.',
+                tags: ['Plaza de Armas', 'Castillo de Lamas', 'Kichwa Lamista'],
+                lugares: [
+                    { name: 'Plaza de Armas de Lamas', desc: 'El centro monumental de la ciudad y uno de los puntos mas fotografiados del casco urbano lamista.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Plaza%20de%20Armas%20de%20Lamas,%20Tarapoto,%20San%20Mart%C3%ADn,%20Per%C3%BA.%2001.jpg', tag: 'Centro historico' },
+                    { name: 'Castillo de Lamas', desc: 'Edificio iconico levantado en la ciudad de Lamas, hoy convertido en uno de sus atractivos mas reconocibles.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Castillo%20de%20Lamas.jpg', tag: 'Monumento' },
+                    { name: 'Museo Chanka y de la Diversidad Lamista', desc: 'Museo de Lamas dedicado a fotografias antiguas, ceramica, textiles y memoria folklorica de la zona.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Plaza%20de%20Armas%20de%20Lamas,%20Tarapoto,%20San%20Mart%C3%ADn,%20Per%C3%BA.%2008.jpg', tag: 'Museo' },
+                    { name: 'Cultura Kichwa Lamista', desc: 'Lamas conserva poblacion quechuahablante y expresiones culturales visibles en su vestimenta, musica y danzas.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Hombres%20Kichwa%20lamistas%20en%20traje%20t%C3%ADpico.jpg', tag: 'Cultura viva' },
+                    { name: 'Danzas tipicas lamistas', desc: 'Las danzas y la musica tradicional forman parte de la identidad con la que Lamas fue reconocida como capital folklorica regional.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Danzas%20t%C3%ADpicas%20Kichwa%20lamistas.jpg', tag: 'Folklore' }
+                ],
+                eventos: [
+                    { day: '24', month: 'JUN', name: 'Fiesta de San Juan', desc: 'La fecha amazonica mas visible en San Martin, con comida tipica, encuentros y fuerte movimiento regional.' },
+                    { day: '30', month: 'AGO', name: 'Santa Rosa de Lima', desc: 'El museo local destaca este festival entre las referencias tradicionales de la zona lamista.' },
+                    { day: '10', month: 'OCT', name: 'Aniversario de Lamas', desc: 'La ciudad recuerda su fundacion hispanica de 1656 y su trayectoria como uno de los asentamientos mas antiguos del oriente peruano.' }
+                ],
+                rutas: [
+                    { title: 'Ruta urbana de Lamas', desc: 'Empieza en la Plaza de Armas, sube al Castillo de Lamas y termina en el museo y los espacios donde se siente la herencia Kichwa Lamista.', badge: 'Centro y cultura' },
+                    { title: 'Ruta Lamas desde Tarapoto', desc: 'Aprovecha la cercania entre ambas ciudades: carretera corta, paseo cultural en Lamas y retorno a Tarapoto el mismo dia.', badge: 'Escapada de 1 dia' }
+                ],
+                transporte: [
+                    { icon: 'Av', bg: '#eef5ff', color: '#1f5fb8', title: 'Via Tarapoto', desc: 'La forma mas practica es volar a Tarapoto y desde ahi continuar por carretera hacia Lamas.' },
+                    { icon: '20 km', bg: '#edf8f0', color: '#1b6a45', title: 'Tramo corto', desc: 'Wikipedia ubica a Lamas a unos 20 km de Tarapoto, por lo que la visita funciona bien como salida corta.' },
+                    { icon: 'Auto', bg: '#fff5e9', color: '#a35a1c', title: 'Carretera Tarapoto-Lamas', desc: 'El acceso principal entre ambas ciudades es directo por carretera y es el circuito mas usado por visitantes.' }
+                ],
+                cultura: [
+                    { name: 'Vestimenta Kichwa Lamista', desc: 'Imagen real de la indumentaria tradicional asociada a la identidad local.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mujeres%20Kichwa%20lamistas%20en%20vestimentas%20tradicionales.jpg' },
+                    { name: 'Musicos lamistas', desc: 'La musica tradicional sigue siendo una parte visible del relato cultural de Lamas.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/M%C3%BAsicos%20kichwa%20lamistas.jpg' },
+                    { name: 'Ceremonial y memoria', desc: 'El traje ceremonial y los simbolos locales forman parte del patrimonio vivo de la ciudad.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Traje%20ceremonial%20Kichwa%20lamistas.jpg' },
+                    { name: 'Grafica local', desc: 'Tambien hay expresiones urbanas que representan la vestimenta y los origenes de la poblacion lamista.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Graffiti%20a%20Lamas%20representant%20els%20vestits%20tradicionals%20dels%20originaris%20de%20la%20zona.jpg' }
+                ]
+            },
+            tarapoto: {
+                heroImg: 'https://commons.wikimedia.org/wiki/Special:FilePath/Tarapoto.jpg',
+                heroTitle: 'Tarapoto',
+                heroSubtitle: 'Principal eje turistico y comercial de San Martin, con acceso a cataratas, lagunas y corredores naturales alrededor de la ciudad.',
+                heroKicker: '',
+                noteTitle: 'Puerta de entrada a San Martin',
+                quickNote: 'La ciudad funciona como nodo de llegada y salida para rutas cortas hacia Ahuashiyacu, Sauce y Lamas.',
+                tags: ['Ahuashiyacu', 'Laguna Azul', 'Boulevard de Lamas'],
+                lugares: [
+                    { name: 'Catarata de Ahuashiyacu', desc: 'Serie de caidas dentro del area de conservacion Cordillera Escalera, a unos 14 km del centro de Tarapoto.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cataras%20de%20Ahuashiyacu.jpg', tag: 'Cascada' },
+                    { name: 'Laguna Azul en Sauce', desc: 'Uno de los paseos mas conocidos desde Tarapoto, con espejo de agua amplio y paisaje abierto.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Laguna%20de%20Sauce,%20San%20Mart%C3%ADn.jpg', tag: 'Laguna' },
+                    { name: 'Boulevard de Lamas', desc: 'Eje urbano real del centro tarapotino, usado como referencia visual del movimiento comercial de la ciudad.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Boulevard%20Lamas%20Tarapoto%20Per%C3%BA.jpg', tag: 'Centro urbano' },
+                    { name: 'Panorama de Tarapoto', desc: 'Vista urbana real de la ciudad que resume su papel como nucleo comercial y turistico regional.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Tarapoto.jpg', tag: 'Ciudad' }
+                ],
+                eventos: [
+                    { day: '24', month: 'JUN', name: 'Fiesta de San Juan', desc: 'Tarapoto vive con mucha fuerza esta fecha regional, una de las mas visibles del calendario amazonico.' },
+                    { day: '20', month: 'AGO', name: 'Conmemoracion de Tarapoto', desc: 'La ciudad suele usar esta fecha como referencia historica y civica dentro de su calendario local.' },
+                    { day: '18', month: 'JUL', name: 'Fiestas patronales urbanas', desc: 'El Boulevard de Lamas registra fotografias tomadas durante las festividades patronales celebradas en el centro de Tarapoto.' }
+                ],
+                rutas: [
+                    { title: 'Ruta Ahuashiyacu', desc: 'Salida corta desde Tarapoto hacia la catarata y regreso a la ciudad el mismo dia, ideal para una manana o tarde.', badge: 'Naturaleza cercana' },
+                    { title: 'Ruta Sauce', desc: 'Tarapoto como base y luego traslado hacia Sauce para visitar la Laguna Azul con mas tiempo y ritmo pausado.', badge: 'Laguna y paisaje' }
+                ],
+                transporte: [
+                    { icon: 'Avion', bg: '#eef5ff', color: '#1f5fb8', title: 'Llegada principal', desc: 'Tarapoto es la llegada aerea mas usada para visitar el corredor turistico de San Martin.' },
+                    { icon: '14 km', bg: '#edf8f0', color: '#1b6a45', title: 'Hacia Ahuashiyacu', desc: 'La catarata esta a unos 14 km del centro de Tarapoto y se alcanza por carretera rumbo a Yurimaguas.' },
+                    { icon: 'Nodo', bg: '#fff5e9', color: '#a35a1c', title: 'Conexion regional', desc: 'Desde Tarapoto salen rutas cortas hacia Lamas, Sauce y otros puntos del valle del Mayo.' }
+                ],
+                cultura: [
+                    { name: 'Boulevard de Lamas', desc: 'Imagen urbana real del eje peatonal y comercial mas reconocible del centro de Tarapoto.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Boulevard%20Lamas%20Tarapoto%20Per%C3%BA.jpg' },
+                    { name: 'Tarapoto panoramico', desc: 'Montaje fotografico real de la ciudad usado en Commons para representar su imagen urbana.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Tarapoto.jpg' },
+                    { name: 'Ahuashiyacu', desc: 'La catarata es una de las postales mas repetidas cuando se habla del entorno natural de Tarapoto.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cataras%20de%20Ahuashiyacu.jpg' },
+                    { name: 'Laguna Azul', desc: 'Sauce sigue siendo una de las extensiones mas buscadas por quienes llegan a Tarapoto.', img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Laguna%20de%20Sauce,%20San%20Mart%C3%ADn.jpg' }
+                ]
+            }
+        };
+
+        function capitalize(str = '') {
+            return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+        }
+
+        function escapeHtml(str = '') {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function normalizeLookup(value = '') {
+            return String(value)
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .trim();
+        }
+
+        function formatCategoryLabel(category) {
+            const labels = {
+                restaurantes: 'Restaurante',
+                restaurante: 'Restaurante',
+                cafeteria: 'Cafeteria',
+                cafe: 'Cafe',
+                bar: 'Bar o karaoke',
+                panaderia: 'Panaderia',
+                comida_rapida: 'Comida rapida',
+                hospedaje: 'Hospedaje',
+                alquiler: 'Alojamiento',
+                discoteca: 'Discoteca',
+                night_club: 'Night club',
+                turismo: 'Tour o agencia',
+                recreo_turistico: 'Recreo turistico',
+                artesania: 'Artesania',
+                arte_cultura: 'Cultura local',
+                transporte: 'Movilidad',
+                agro: 'Experiencia natural'
+            };
+            return labels[category] || capitalize((category || 'local').replace(/_/g, ' '));
+        }
+
+        function formatCityLabel(city) {
+            const safeCity = normalizeLookup(city);
+            return safeCity ? capitalize(safeCity) : '';
+        }
+
+        function getBusinessSearchText(item = {}) {
+            return normalizeLookup([
+                item.categoria,
+                item.nombre,
+                item.descripcion,
+                item.resumen
+            ].filter(Boolean).join(' '));
+        }
+
+        function escapeRegex(str = '') {
+            return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function matchesKeyword(text, keyword) {
+            const safeText = normalizeLookup(text);
+            const safeKeyword = normalizeLookup(keyword);
+            if (!safeText || !safeKeyword) return false;
+
+            const pattern = safeKeyword
+                .split(/\s+/)
+                .map(part => escapeRegex(part))
+                .join('[\\s_-]+');
+
+            const useStrictBoundary = safeKeyword.length <= 4 || safeKeyword.includes(' ');
+            const regex = useStrictBoundary
+                ? new RegExp(`(^|[^a-z0-9])${pattern}($|[^a-z0-9])`, 'i')
+                : new RegExp(`(^|[^a-z0-9])${pattern}`, 'i');
+
+            return regex.test(safeText);
+        }
+
+        function matchesAnyKeyword(text, keywords = []) {
+            return keywords.some(keyword => matchesKeyword(text, keyword));
+        }
+
+        function getKeywordHitCount(text, keywords = []) {
+            return keywords.reduce((count, keyword) => count + (matchesKeyword(text, keyword) ? 1 : 0), 0);
+        }
+
+        function getTourismBusinessSummary(item) {
+            const rawText = (item?.descripcion || '').replace(/\s+/g, ' ').trim();
+            if (!rawText) return 'Un punto util dentro de la ruta para sumar una parada con contexto local.';
+            if (rawText.length <= 108) return rawText;
+            return `${rawText.slice(0, 105).trimEnd()}...`;
+        }
+
+        function createTourismRailScorer({
+            exactCategories = [],
+            categoryContains = [],
+            strongKeywords = [],
+            supportKeywords = [],
+            penaltyKeywords = []
+        }) {
+            return function scoreItem(item = {}) {
+                const safeCategory = normalizeLookup(item.categoria || '');
+                const searchText = getBusinessSearchText(item);
+                let score = 0;
+
+                if (exactCategories.includes(safeCategory)) score += 120;
+                if (categoryContains.some(part => safeCategory.includes(part))) score += 80;
+
+                score += getKeywordHitCount(searchText, strongKeywords) * 18;
+                score += getKeywordHitCount(searchText, supportKeywords) * 8;
+                score -= getKeywordHitCount(searchText, penaltyKeywords) * 12;
+
+                if (item.premium) score += 4;
+                return score;
+            };
+        }
+
+        function collectTourismRailItems(city, scorer, minScore = 18) {
+            const mapCityItems = (sourceCity, isNearbyFallback) => {
+                return (tourismBusinessesByCity[sourceCity] || [])
+                    .map(item => ({
+                        ...item,
+                        railCity: sourceCity,
+                        isNearbyFallback,
+                        relevanceScore: scorer(item)
+                    }))
+                    .filter(item => item.relevanceScore >= minScore)
+                    .sort((a, b) => {
+                        if (b.relevanceScore !== a.relevanceScore) return b.relevanceScore - a.relevanceScore;
+                        return a.nombre.localeCompare(b.nombre);
+                    });
+            };
+
+            const primaryItems = mapCityItems(city, false);
+            const results = [...primaryItems];
+            const seenIds = new Set(primaryItems.map(item => item.id));
+            const fallbackCities = TOURISM_NEARBY_CITY_FALLBACKS[city] || [];
+
+            fallbackCities.forEach((fallbackCity) => {
+                const fallbackItems = mapCityItems(fallbackCity, true);
+                fallbackItems.forEach((item) => {
+                    if (results.length >= 8 || seenIds.has(item.id)) return;
+                    results.push(item);
+                    seenIds.add(item.id);
+                });
+            });
+
+            return results;
+        }
+
+        function getOptimizedTourismImage(url, width = 960) {
+            const rawUrl = String(url || '').trim();
+            if (!rawUrl) return 'assets/placeholder.svg';
+
+            const filePathPrefix = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
+            if (rawUrl.startsWith(filePathPrefix)) {
+                const fileName = rawUrl.slice(filePathPrefix.length);
+                return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${fileName}?width=${width}`;
+            }
+
+            return rawUrl;
+        }
+
+        function setRailContent(containerId, html, emptyText) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = html || `<p class="empty-tourism">${escapeHtml(emptyText)}</p>`;
+        }
+
+        function clearTourismBusinessRails() {
+            setRailContent('day-carousel', '', 'Pronto apareceran recreos turisticos y planes de dia en esta ciudad.');
+            setRailContent('nightlife-carousel', '', 'Aun no hay bares o discotecas destacadas publicadas aqui.');
+            setRailContent('gastro-carousel', '', 'Todavia no hay lugares para comer publicados en esta ciudad.');
+            setRailContent('hospedaje-carousel', '', 'Proximamente se habilitaran hospedajes para turistas.');
+            setRailContent('culture-business-carousel', '', 'Aqui veras artesanias, tours y experiencias locales destacadas.');
+            setRailContent('agencias-carousel', '', 'Este bloque mostrara agencias de turismo, operadores y servicios de viaje apenas sean publicados.');
+        }
+
+        function updateTourismDirectoryLinks(city) {
+            TOURISM_DIRECTORY_LINK_IDS.forEach((linkId) => {
+                const link = document.getElementById(linkId);
+                if (!link) return;
+
+                const params = new URLSearchParams();
+                params.set('city', city);
+
+                const cat = link.dataset.cat;
+                const search = link.dataset.search;
+
+                if (cat) params.set('cat', cat);
+                if (search) params.set('search', search);
+
+                link.href = `directory.html?${params.toString()}`;
+            });
+        }
+
+        function syncCityPills(city) {
+            document.querySelectorAll('#turismo-city-switcher .city-pill').forEach(pill => {
+                const label = normalizeLookup(pill.textContent);
+                pill.classList.toggle('active', label.includes(city));
+            });
+        }
+
+        function groupBusinessesByCity(items = []) {
+            return items.reduce((grouped, item) => {
+                if (!item?.visible) return grouped;
+
+                const cityKey = normalizeLookup(item.ciudad || 'lamas') || 'lamas';
+                if (!grouped[cityKey]) grouped[cityKey] = [];
+                grouped[cityKey].push(item);
+                return grouped;
+            }, Object.create(null));
+        }
+
+        function buildTourismPlaceholder(label, variant = '') {
+            const variantClass = variant ? ` tour-deferred-placeholder--${variant}` : '';
+            return `
+                <div class="tour-deferred-placeholder${variantClass}">
+                    <span class="tour-deferred-label">${escapeHtml(label)}</span>
+                </div>
+            `;
+        }
+
+        function getTourismSectionObserver() {
+            if (tourismSectionObserver) return tourismSectionObserver;
+            if (typeof IntersectionObserver !== 'function') return null;
+
+            tourismSectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+
+                    const renderFn = deferredTourismRenders.get(entry.target.id);
+                    if (!renderFn) return;
+
+                    deferredTourismRenders.delete(entry.target.id);
+                    tourismSectionObserver.unobserve(entry.target);
+                    renderFn();
+                });
+            }, {
+                rootMargin: '260px 0px'
+            });
+
+            return tourismSectionObserver;
+        }
+
+        function queueDeferredRender(containerId, renderFn, placeholderHtml) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = placeholderHtml;
+            deferredTourismRenders.set(containerId, renderFn);
+
+            const observer = getTourismSectionObserver();
+            if (!observer) {
+                deferredTourismRenders.delete(containerId);
+                renderFn();
+                return;
+            }
+
+            observer.unobserve(container);
+            observer.observe(container);
+        }
+
+        function renderStaticSectionHtml(containerId, html) {
+            const container = document.getElementById(containerId);
+            if (container) container.innerHTML = html;
+        }
+
+        function queueBusinessSectionRender() {
+            BUSINESS_CONTAINER_IDS.forEach((id) => {
+                deferredTourismRenders.delete(id);
+                if (tourismSectionObserver) {
+                    const container = document.getElementById(id);
+                    if (container) tourismSectionObserver.unobserve(container);
+                }
+            });
+
+            renderTourismBusinesses();
+        }
+
+        function renderBusinessRail(containerId, items, emptyText) {
+            const html = items.slice(0, 8).map(item => `
+                <article class="business-card" onclick="window.location.href='business_detail.html?id=${item.id}'">
+                    <img src="${item.foto || 'assets/placeholder.svg'}" alt="${escapeHtml(item.nombre)}" loading="lazy" decoding="async">
+                    <div class="business-card-body">
+                        <div class="business-card-type">
+                            <i data-lucide="map" style="width: 12px; height: 12px;"></i>
+                            <span>${escapeHtml([
+                                item.premium ? 'Premium' : '',
+                                formatCategoryLabel(item.categoria),
+                                item.railCity && item.railCity !== currentCity ? formatCityLabel(item.railCity) : ''
+                            ].filter(Boolean).join(' · '))}</span>
+                        </div>
+                        <h4>${escapeHtml(item.nombre)}</h4>
+                        <p>${escapeHtml(getTourismBusinessSummary(item))}</p>
+                        <div class="business-card-footer">
+                            <span>Ver detalle</span>
+                            <i data-lucide="arrow-up-right" style="width: 16px; height: 16px;"></i>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+
+            setRailContent(containerId, html, emptyText);
+        }
+
+        window.switchTurismoCity = function (city) {
+            city = window.setStoredCity ? window.setStoredCity(city) : normalizeLookup(city);
+            if (currentCity === city) return;
+            currentCity = city;
+            syncCityPills(city);
+            renderAll();
+        };
+
+        syncCityPills(currentCity);
+
+        function renderAll() {
+            const data = cityData[currentCity] || cityData.lamas;
+            const cityName = capitalize(currentCity);
+
+            document.title = `${cityName} | Turismo | CityMart`;
+            updateTourismDirectoryLinks(currentCity);
+            document.getElementById('hero-img').src = getOptimizedTourismImage(data.heroImg, 1280);
+            document.getElementById('hero-title').textContent = data.heroTitle;
+            document.getElementById('hero-subtitle').textContent = data.heroSubtitle;
+            document.getElementById('hero-city-name').textContent = cityName;
+            const heroKickerWrap = document.getElementById('hero-kicker-wrap');
+            const heroKicker = document.getElementById('hero-kicker');
+            heroKicker.textContent = data.heroKicker || '';
+            heroKickerWrap.hidden = !data.heroKicker;
+            document.getElementById('hero-note-title').textContent = data.noteTitle;
+            document.getElementById('hero-note').textContent = data.quickNote;
+            document.getElementById('stat-lugares').textContent = data.lugares.length;
+            document.getElementById('stat-eventos').textContent = data.eventos.length;
+            document.getElementById('stat-rutas').textContent = data.rutas.length;
+
+            document.getElementById('hero-tags').innerHTML = data.tags.map(tag => `
+                <span class="hero-tag">
+                    <i data-lucide="leaf" style="width: 12px; height: 12px;"></i>
+                    <span>${escapeHtml(tag)}</span>
+                </span>
+            `).join('');
+
+            queueDeferredRender('lugares-carousel', () => {
+                renderStaticSectionHtml('lugares-carousel', data.lugares.map(lugar => `
+                    <article class="lugar-card">
+                        <img src="${getOptimizedTourismImage(lugar.img, 960)}" alt="${escapeHtml(lugar.name)}" loading="lazy" decoding="async">
+                        <div class="lugar-card-body">
+                            <div class="lugar-tag">
+                                <i data-lucide="map-pin" style="width: 12px; height: 12px;"></i>
+                                <span>${escapeHtml(lugar.tag)}</span>
+                            </div>
+                            <h4>${escapeHtml(lugar.name)}</h4>
+                            <p>${escapeHtml(lugar.desc)}</p>
+                        </div>
+                    </article>
+                `).join(''));
+                lucide.createIcons();
+            }, buildTourismPlaceholder('Cargando lugares clave...'));
+
+            queueDeferredRender('eventos-list', () => {
+                renderStaticSectionHtml('eventos-list', data.eventos.map(evento => `
+                    <article class="evento-card">
+                        <div class="evento-date-box">
+                            <div class="day">${escapeHtml(evento.day)}</div>
+                            <div class="month">${escapeHtml(evento.month)}</div>
+                        </div>
+                        <div>
+                            <h4>${escapeHtml(evento.name)}</h4>
+                            <p>${escapeHtml(evento.desc)}</p>
+                        </div>
+                        <i data-lucide="arrow-right" style="width: 18px; height: 18px; color: rgba(23, 50, 40, 0.36);"></i>
+                    </article>
+                `).join(''));
+                lucide.createIcons();
+            }, buildTourismPlaceholder('Cargando calendario local...', 'list'));
+
+            queueDeferredRender('rutas-container', () => {
+                renderStaticSectionHtml('rutas-container', data.rutas.map(ruta => `
+                    <article class="ruta-card">
+                        <h4>${escapeHtml(ruta.title)}</h4>
+                        <p>${escapeHtml(ruta.desc)}</p>
+                        <div class="ruta-badge">
+                            <i data-lucide="route" style="width: 14px; height: 14px;"></i>
+                            <span>${escapeHtml(ruta.badge)}</span>
+                        </div>
+                    </article>
+                `).join(''));
+                lucide.createIcons();
+            }, buildTourismPlaceholder('Armando rutas sugeridas...', 'list'));
+
+            queueDeferredRender('como-llegar-container', () => {
+                renderStaticSectionHtml('como-llegar-container', data.transporte.map(item => `
+                    <article class="info-card">
+                        <div class="info-icon-box" style="background:${item.bg}; color:${item.color};">
+                            <span>${escapeHtml(item.icon)}</span>
+                        </div>
+                        <div>
+                            <h4>${escapeHtml(item.title)}</h4>
+                            <p>${escapeHtml(item.desc)}</p>
+                        </div>
+                    </article>
+                `).join(''));
+            }, buildTourismPlaceholder('Preparando la llegada...', 'compact'));
+
+            queueDeferredRender('cultura-carousel', () => {
+                renderStaticSectionHtml('cultura-carousel', data.cultura.map(item => `
+                    <article class="culture-card">
+                        <img src="${getOptimizedTourismImage(item.img, 960)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">
+                        <div class="culture-card-body">
+                            <h4>${escapeHtml(item.name)}</h4>
+                            <p>${escapeHtml(item.desc)}</p>
+                        </div>
+                    </article>
+                `).join(''));
+            }, buildTourismPlaceholder('Cargando cultura local...', 'compact'));
+
+            if (tourismBusinessesReady || tourismBusinesses.length) {
+                queueBusinessSectionRender();
+            } else {
+                const placeholder = buildTourismPlaceholder('Cargando negocios y experiencias...', 'compact');
+                BUSINESS_CONTAINER_IDS.forEach((id) => {
+                    const container = document.getElementById(id);
+                    if (container) container.innerHTML = placeholder;
+                });
+            }
+
+            lucide.createIcons();
+        }
+
+        function renderTourismBusinesses() {
+            const dayPlans = collectTourismRailItems(currentCity, createTourismRailScorer({
+                exactCategories: ['recreo_turistico', 'deportes y recreacion', 'deporte y recreacion', 'turismo'],
+                categoryContains: ['recreacion', 'recreo', 'turismo'],
+                strongKeywords: ['recreo', 'campestre', 'esparcimiento', 'piscina', 'resort', 'laguna', 'mirador', 'ecologico', 'aventura', 'deportes', 'futbol', 'full day', 'day pass', 'tour', 'tours', 'paseo'],
+                supportKeywords: ['familia', 'campo', 'naturaleza', 'parque', 'aire libre'],
+                penaltyKeywords: ['habitacion', 'cuarto', 'ropa', 'moda']
+            }));
+
+            const nightlife = collectTourismRailItems(currentCity, createTourismRailScorer({
+                exactCategories: ['discoteca', 'night_club', 'bar'],
+                categoryContains: ['discoteca', 'bar'],
+                strongKeywords: ['discoteca', 'night club', 'bar', 'karaoke', 'pub', 'restobar', 'tragos', 'coctel', 'cocktel', 'cerveza', 'cervezas', 'musica en vivo', 'vida nocturna'],
+                supportKeywords: ['fiesta', 'salida', 'copas'],
+                penaltyKeywords: ['habitacion', 'hospedaje', 'consultoria']
+            }));
+
+            const restaurants = collectTourismRailItems(currentCity, createTourismRailScorer({
+                exactCategories: ['restaurantes', 'restaurante', 'alimentacion y restaurantes', 'cafeteria', 'cafe', 'panaderia', 'comida_rapida'],
+                categoryContains: ['restaurant', 'restaurante', 'alimentacion', 'cafeteria', 'cafe'],
+                strongKeywords: ['restaurante', 'restaurantes', 'restaurant', 'alimentacion', 'comida', 'chifa', 'cafe', 'cafeteria', 'almuerzo', 'cevicheria', 'polleria', 'menu', 'piqueos', 'postres', 'broaster', 'salchipolleria'],
+                supportKeywords: ['desayuno', 'cena', 'cocina', 'sazon', 'comedor'],
+                penaltyKeywords: ['habitacion', 'transporte', 'abogado', 'contable']
+            }));
+
+            const hotels = collectTourismRailItems(currentCity, createTourismRailScorer({
+                exactCategories: ['hospedaje', 'alquiler', 'alquileres'],
+                categoryContains: ['hosped', 'alquiler'],
+                strongKeywords: ['hospedaje', 'hotel', 'hostal', 'albergue', 'bungalow', 'bungalows', 'alojamiento', 'habitacion', 'habitaciones', 'cuarto', 'cuartos', 'suite', 'pernocte'],
+                supportKeywords: ['dormir', 'alojarse', 'reserva'],
+                penaltyKeywords: ['menu', 'comida', 'restaurante']
+            }));
+
+            const cultureAndTours = collectTourismRailItems(currentCity, createTourismRailScorer({
+                exactCategories: ['artesania', 'arte_cultura', 'artes y cultura', 'agro'],
+                categoryContains: ['arte', 'cultura', 'artesania'],
+                strongKeywords: ['artesania', 'artesanias', 'souvenir', 'arte', 'museo', 'textileria', 'ceramica', 'bisuteria', 'tradicional', 'kichwa', 'folklor', 'cultural', 'ancestral'],
+                supportKeywords: ['manualidades', 'identidad', 'historia', 'comunidad'],
+                penaltyKeywords: ['habitacion', 'discoteca']
+            }));
+
+            const agencies = collectTourismRailItems(currentCity, createTourismRailScorer({
+                exactCategories: ['turismo', 'transporte'],
+                categoryContains: ['turismo', 'tour', 'transporte'],
+                strongKeywords: ['agencia', 'tour', 'tours', 'travel', 'operador', 'paquete turistico', 'paquetes turisticos', 'full day', 'excursion', 'traslado'],
+                supportKeywords: ['ruta', 'viaje', 'visita', 'guia'],
+                penaltyKeywords: ['restaurante', 'menu', 'polleria']
+            }));
+
+            renderBusinessRail('day-carousel', dayPlans, 'Pronto apareceran recreos turisticos y planes de dia en esta ciudad.');
+            renderBusinessRail('nightlife-carousel', nightlife, 'Aun no hay bares o discotecas destacadas publicadas aqui.');
+            renderBusinessRail('gastro-carousel', restaurants, 'Todavia no hay lugares para comer publicados en esta ciudad.');
+            renderBusinessRail('hospedaje-carousel', hotels, 'Proximamente se habilitaran hospedajes para turistas.');
+            renderBusinessRail('culture-business-carousel', cultureAndTours, 'Aqui veras artesanias, tours y experiencias locales destacadas.');
+            renderBusinessRail('agencias-carousel', agencies, 'Este bloque mostrara agencias de turismo, operadores y servicios de viaje apenas sean publicados.');
+
+            lucide.createIcons();
+        }
+
+        async function loadBusinessesByCategory() {
+            if (tourismBusinessesReady) {
+                queueBusinessSectionRender();
+                return tourismBusinesses;
+            }
+
+            if (tourismBusinessesPromise) {
+                return tourismBusinessesPromise;
+            }
+
+            try {
+                tourismBusinessesPromise = CityCache.loadWithCache('negocios_turismo',
+                    async () => {
+                        const snap = await getDocs(collection(db, "negocio"));
+                        return snap.docs.map(doc => {
+                            const raw = doc.data();
+                            return {
+                                id: doc.id,
+                                nombre: raw.nombre || 'Sin nombre',
+                                categoria: normalizeLookup(raw.categoria || ''),
+                                descripcion: normalizeLookup(raw.descripcion || ''),
+                                premium: raw.promocionanuncio === true,
+                                foto: raw.foto_thumb || raw.imagen_thumb || raw.foto || raw.imagen || 'assets/placeholder.svg',
+                                ciudad: normalizeLookup(raw.ciudad || raw.provincia || raw.ubicacion || 'lamas') || 'lamas',
+                                visible: raw.negociovisible !== false
+                            };
+                        });
+                    },
+                    (items) => {
+                        tourismBusinesses = items || [];
+                        tourismBusinessesByCity = groupBusinessesByCity(tourismBusinesses);
+                        tourismBusinessesReady = true;
+                        queueBusinessSectionRender();
+                    }
+                );
+
+                const resolvedBusinesses = await tourismBusinessesPromise;
+                tourismBusinesses = resolvedBusinesses || tourismBusinesses;
+                tourismBusinessesByCity = groupBusinessesByCity(tourismBusinesses);
+                tourismBusinessesReady = true;
+                queueBusinessSectionRender();
+                return tourismBusinesses;
+            } catch (e) {
+                console.warn("Error loading businesses for turismo:", e);
+                clearTourismBusinessRails();
+                return [];
+            } finally {
+                tourismBusinessesPromise = null;
+            }
+        }
+
+        renderAll();
+        loadBusinessesByCategory();
+    </script>
+
+        <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
+</body>
+
+</html>
+
+
+

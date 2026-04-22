@@ -1,0 +1,918 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityMart Lamas | Todo en tus manos</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@400;700;900&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3594/3594363.png">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6211692359872996"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header class="section" style="padding-top: 16px; padding-bottom: 8px;">
+    <div class="container">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div id="logo-container" style="display: flex; align-items: center; gap: 4px; cursor: pointer;"
+          onclick="window.location.href='./'">
+          <img src="assets/logo.png" alt="Logo CityMart" style="height: 80px; width: auto; margin-left: -15px;">
+          <div style="margin-left: -5px;">
+            <h1
+              style="font-family: 'Outfit'; font-weight: 900; color: #111; font-size: 1.6rem; line-height: 1; letter-spacing: -0.01em;">
+              CityMart<span style="color: var(--secondary-color);">Lamas</span> <small
+                style="font-size: 0.5rem; opacity: 0.3; vertical-align: middle;">v1.2</small>
+            </h1>
+          </div>
+        </div>
+        <div id="auth-btn" onclick="window.location.href='login.html'"
+          style="cursor: pointer; display: flex; align-items: center; gap: 8px; background: var(--primary-color); color: white; padding: 8px 16px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; box-shadow: 0 4px 12px rgba(11, 89, 242, 0.2); transition: all 0.2s;">
+          INGRESAR
+        </div>
+      </div>
+      <div style="position: relative;">
+        <i data-lucide="search" id="search-icon"
+          style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #9ca3af; width: 18px; cursor: pointer;"></i>
+        <input type="text" id="main-search" placeholder="Encuentra lo que buscas en Lamas..."
+          style="width: 100%; padding: 12px 12px 12px 44px; border-radius: 10px; border: 1px solid #eee; background: #fcfcfc; outline: none; font-size: 0.95rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 0;">
+    <!-- Resultados de B├║squeda (Oculto por defecto) -->
+    <div id="search-results"
+      style="display: none; flex-direction: column; gap: 16px; padding-top: 20px; padding-bottom: 100px;">
+      <!-- Se puebla din├ímicamente -->
+    </div>
+
+    <div id="home-content">
+      <!-- NEGOCIOS PREMIUM -->
+      <section class="section" style="padding-top: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h2 class="section-title" style="margin-bottom: 0;">­ƒææ Negocios Premium</h2>
+          <a href="premium_list.html"
+            style="font-size: 0.75rem; font-weight: 800; color: var(--primary-color); text-decoration: none; text-transform: uppercase;">Ver
+            todos ></a>
+        </div>
+        <div id="carousel-premium-1" class="carousel-track" style="margin-bottom: 8px;">
+          <!-- Cargado din├ímicamente -->
+        </div>
+        <div id="carousel-premium-2" class="carousel-track">
+          <!-- Cargado din├ímicamente -->
+        </div>
+        <div class="carousel-dots" id="dots-premium">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </section>
+
+      <!-- PUBLICIDAD ADMOB -->
+      <section class="section">
+        <div id="ad-banner-container" style="padding: 0 4px;">
+          <!-- AdSense Horizontal Auto-Banner -->
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6211692359872996" data-ad-slot="auto"
+            data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+          <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+      </section>
+
+      <!-- PROMOS EXPRESS (24h) -->
+      <section class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h2 class="section-title" style="margin-bottom: 0;">­ƒöÑ Promos Express <span
+              style="font-size: 0.8rem; color: #6b7280; text-transform: none;">(24h)</span></h2>
+          <a href="promos_list.html"
+            style="font-size: 0.75rem; font-weight: 800; color: var(--primary-color); text-decoration: none; text-transform: uppercase;">Ver
+            todos ></a>
+        </div>
+        <div id="carousel-express-24h" class="carousel-track">
+          <!-- Cargado din├ímicamente con timers -->
+        </div>
+        <div class="carousel-dots" id="dots-24h">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </section>
+
+      <!-- PROMOS EXPRESS (3 D├ìAS) -->
+      <section class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h2 class="section-title" style="margin-bottom: 0;">­ƒöÑ Promos Express <span
+              style="font-size: 0.8rem; color: #6b7280; text-transform: none;">(3 D├¡as)</span></h2>
+          <a href="promos_list.html"
+            style="font-size: 0.75rem; font-weight: 800; color: var(--primary-color); text-decoration: none; text-transform: uppercase;">Ver
+            todos ></a>
+        </div>
+        <div id="carousel-express-3dias" class="carousel-track">
+          <!-- Cargado din├ímicamente -->
+        </div>
+        <div class="carousel-dots" id="dots-3dias">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </section>
+
+      <!-- Ranking del Mes (Compacto) -->
+      <section class="section">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+          <h2 class="section-title" style="margin-bottom: 0;">­ƒÅå Top del Mes</h2>
+          <span
+            style="font-size: 0.65rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Basado
+            en Rese├▒as</span>
+        </div>
+        <div id="ranking-container"
+          style="display: flex; flex-direction: column; gap: 8px; background: #f9fafb; padding: 12px; border-radius: 16px; border: 1px solid #f3f4f6;">
+          <!-- Cargado din├ímicamente como lista -->
+        </div>
+      </section>
+
+      <!-- 1. Categor├¡as Populares -->
+      <section class="section">
+        <h2 class="section-title">Explora por Categor├¡a</h2>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <a href="directory.html?cat=Comida" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒì¢´©Å</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #c53030; text-transform: uppercase; letter-spacing: 0.03em;">Restaurantes</span>
+            </div>
+          </a>
+          <a href="directory.html?cat=Hoteles" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒÅ¿</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #2b6cb0; text-transform: uppercase; letter-spacing: 0.03em;">Hospedaje</span>
+            </div>
+          </a>
+          <a href="directory.html?cat=Artesan├¡as" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #fefcbf 0%, #fefcbf 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒÄ¿</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #975a16; text-transform: uppercase; letter-spacing: 0.03em;">Artesan├¡as</span>
+            </div>
+          </a>
+          <a href="directory.html?cat=salud" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒÆå</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #276749; text-transform: uppercase; letter-spacing: 0.03em;">Salud</span>
+            </div>
+          </a>
+          <a href="directory.html?cat=Servicios" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒöº</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #6b46c1; text-transform: uppercase; letter-spacing: 0.03em;">Servicios</span>
+            </div>
+          </a>
+          <a href="directory.html?cat=tiendas" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒøÆ</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #c05621; text-transform: uppercase; letter-spacing: 0.03em;">Tiendas</span>
+            </div>
+          </a>
+          <a href="directory.html?cat=transporte" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒÜÉ</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #285e61; text-transform: uppercase; letter-spacing: 0.03em;">Transporte</span>
+            </div>
+          </a>
+          <a href="all_categories.html" style="text-decoration: none;">
+            <div
+              style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 16px; padding: 16px 8px; text-align: center; transition: all 0.2s;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">­ƒôï</div>
+              <span
+                style="font-size: 0.65rem; font-weight: 800; color: #4a5568; text-transform: uppercase; letter-spacing: 0.03em;">Ver
+                Todo</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- 2. Noticias de Lamas -->
+      <section class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h2 class="section-title" style="margin-bottom: 0;">Noticias de <span
+              style="color: var(--primary-color);">Lamas</span></h2>
+          <a href="news.html"
+            style="font-size: 0.75rem; font-weight: 800; color: var(--primary-color); text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;">Ver
+            todas</a>
+        </div>
+        <div id="carousel-news" class="carousel-track">
+          <!-- Din├ímico: se carga desde Firestore -->
+        </div>
+      </section>
+
+      <!-- 3. Banner para Anunciantes -->
+      <section class="section">
+        <div
+          style="position: relative; overflow: hidden; border-radius: 20px; background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%); padding: 28px 24px; color: white;">
+          <div
+            style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(251, 191, 36, 0.15); border-radius: 50%;">
+          </div>
+          <div
+            style="position: absolute; bottom: -20px; left: -20px; width: 80px; height: 80px; background: rgba(11, 89, 242, 0.1); border-radius: 50%;">
+          </div>
+          <div style="position: relative; z-index: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <i data-lucide="store" style="width: 22px; height: 22px; color: #fbbf24;"></i>
+              <span
+                style="font-size: 0.7rem; font-weight: 800; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.1em;">Para
+                negocios</span>
+            </div>
+            <h3
+              style="font-family: 'Outfit'; font-size: 1.3rem; font-weight: 900; margin-bottom: 6px; line-height: 1.2;">
+              ┬┐Tienes un negocio en Lamas?</h3>
+            <p style="font-size: 0.85rem; opacity: 0.75; margin-bottom: 16px; line-height: 1.4;">Reg├¡stralo GRATIS y
+              llega a cientos de clientes. Miles de personas buscan servicios en Lamas cada d├¡a.</p>
+            <div style="display: flex; gap: 10px;">
+              <button onclick="window.location.href='register_business.html'"
+                style="background: #fbbf24; color: #000; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 800; font-size: 0.8rem; cursor: pointer; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);">REGISTRAR
+                GRATIS</button>
+              <button onclick="window.location.href='request_premium.html'"
+                style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 16px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; cursor: pointer; backdrop-filter: blur(4px);">Ser
+                Premium Ô¡É</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Reci├®n Llegados -->
+      <section class="section" style="padding-bottom: 100px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+          <h2 class="section-title" style="margin-bottom: 0;">Nuevos en CityMart</h2>
+          <span
+            style="background: #dcfce7; color: #166534; font-size: 0.6rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; text-transform: uppercase;">Nuevo</span>
+        </div>
+        <div id="new-businesses" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Din├ímico: ├║ltimos negocios registrados -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="./" class="nav-item active">
+      <i data-lucide="home" class="nav-icon"></i>
+      <span>Inicio</span>
+    </a>
+    <a href="directory.html" class="nav-item">
+      <i data-lucide="layout-grid" class="nav-icon"></i>
+      <span>Directorio</span>
+    </a>
+    <!-- Bot├│n Publicar Central -->
+    <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+      <div
+        style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+        <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+      </div>
+      <span style="font-weight: 800; color: #1f2937; margin-top: 2px;">Publicar</span>
+    </a>
+    <a href="news.html" class="nav-item">
+      <i data-lucide="bell" class="nav-icon"></i>
+      <span>Noticias</span>
+    </a>
+    <a href="profile.html" class="nav-item" id="auth-btn">
+      <i data-lucide="user-circle" class="nav-icon"></i>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { db, auth } from './assets/js/firebase-init.js';
+    import { collection, onSnapshot, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    lucide.createIcons();
+
+    const searchInput = document.getElementById('main-search');
+    const searchResults = document.getElementById('search-results');
+    const homeContent = document.getElementById('home-content');
+    const premiumTrack1 = document.getElementById('carousel-premium-1');
+    const premiumTrack2 = document.getElementById('carousel-premium-2');
+    const express24hTrack = document.getElementById('carousel-express-24h');
+    const express3diasTrack = document.getElementById('carousel-express-3dias');
+    const newsTrack = document.getElementById('carousel-news');
+    const newBizContainer = document.getElementById('new-businesses');
+
+    let allBusinesses = [];
+    let reviewStats = {}; // { negocio_id: { total, count } }
+
+    // Cargar datos iniciales
+    function init() {
+      try {
+        // 1. Cargar todas las rese├▒as reales para el ranking
+        loadReviewStats();
+
+        // 2. Cargar negocios
+        onSnapshot(collection(db, "negocio"), (snap) => {
+          allBusinesses = snap.docs.map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              nombre: data.nombre || "Sin nombre",
+              categoria: data.categoria || "Otros",
+              descripcion: data.descripcion || "",
+              foto: data.foto || data.imagen || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600",
+              tipo: data.negocio_o_servicio === 'servicio' ? 'service' : 'biz',
+              telefono: data.numerodecontacto || data.telefono || "",
+              premium: data.promocionanuncio === true,
+              visible: data.negociovisible !== false,
+              fecha_registro: data.fecha_registro || null
+            };
+          }).filter(b => b.visible);
+
+          renderCarousels();
+          renderNewBusinesses();
+          renderRanking();
+        });
+        loadNews();
+      } catch (e) {
+        console.error("Error init:", e);
+      }
+    }
+
+    // Cargar estad├¡sticas de rese├▒as REALES desde la colecci├│n 'resenas'
+    function loadReviewStats() {
+      onSnapshot(collection(db, "resenas"), (snap) => {
+        reviewStats = {};
+        snap.forEach(doc => {
+          const d = doc.data();
+          const bizId = d.negocio_id;
+          if (!bizId) return;
+          if (!reviewStats[bizId]) {
+            reviewStats[bizId] = { total: 0, count: 0 };
+          }
+          reviewStats[bizId].total += Number(d.puntuacion || 0);
+          reviewStats[bizId].count += 1;
+        });
+        // Re-renderizar ranking cuando las rese├▒as cambian
+        if (allBusinesses.length > 0) {
+          renderRanking();
+        }
+      });
+    }
+
+    function renderRanking() {
+      const rankingContainer = document.getElementById('ranking-container');
+
+      // Calcular score real por negocio usando datos de rese├▒as
+      const rankedData = allBusinesses.map(b => {
+        const stats = reviewStats[b.id];
+        const avgScore = stats ? (stats.total / stats.count) : 0;
+        const reviewCount = stats ? stats.count : 0;
+        // Score combinado: (avgScore * 1000) + reviewCount
+        // Esto garantiza que CADA D├ëCIMA de estrella pese m├ís que much├¡simas rese├▒as.
+        const combinedScore = (avgScore * 1000) + reviewCount;
+        return { ...b, avgScore, reviewCount, combinedScore };
+      });
+
+      // Solo mostrar negocios que tienen al menos 1 rese├▒a
+      const ranked = rankedData
+        .filter(b => b.reviewCount > 0)
+        .sort((a, b) => b.combinedScore - a.combinedScore)
+        .slice(0, 5);
+
+      if (ranked.length === 0) {
+        rankingContainer.innerHTML = '<p style="text-align: center; padding: 10px; color: #999; font-size: 0.8rem;">A├║n no hay negocios con rese├▒as. ┬íS├® el primero en calificar!</p>';
+        return;
+      }
+
+      rankingContainer.innerHTML = ranked.map((b, i) => {
+        const score = b.avgScore.toFixed(1);
+        const starsFull = Math.round(b.avgScore);
+        const medals = ['­ƒÑç', '­ƒÑê', '­ƒÑë', '4', '5'];
+
+        return `
+          <div onclick="window.location.href='business_detail.html?id=${b.id}'"
+            style="display: flex; align-items: center; justify-content: space-between; padding: 6px 4px; border-bottom: ${i < ranked.length - 1 ? '1px solid #eee' : 'none'}; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+              <span style="font-family: 'Outfit'; font-weight: 900; font-size: 0.95rem; width: 24px; color: ${i < 3 ? 'var(--primary-color)' : '#9ca3af'};">
+                ${medals[i]}
+              </span>
+              <h3 style="font-size: 0.85rem; font-weight: 700; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;">${b.nombre}</h3>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
+              <span style="color: #fbbf24; font-size: 0.8rem;">Ôÿà</span>
+              <span style="font-weight: 800; font-size: 0.8rem; color: #1f2937;">${score}</span>
+              <span style="font-size: 0.65rem; color: #9ca3af; margin-left: 2px;">(${b.reviewCount})</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // Fisher-Yates shuffle para mezclar arrays
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function renderCarousels() {
+      // Tomar negocios premium, mezclarlos y dividir en 2 filas
+      const premium = shuffle(allBusinesses.filter(b => b.premium));
+      const half = Math.ceil(premium.length / 2);
+      const row1 = premium.slice(0, half);
+      const row2 = premium.slice(half);
+
+      if (row1.length > 0) {
+        let html1 = '';
+        row1.forEach((b, i) => {
+          html1 += `
+            <div class="card card-premium-square" onclick="window.location.href='business_detail.html?id=${b.id}'">
+              <img src="${b.foto}" class="img-full" loading="lazy">
+              <div class="badge-premium-star">Ô¡É</div>
+              <div class="overlay-text">
+                <h3 style="font-size: 0.6rem; margin-bottom: 1px; font-family: 'Outfit'; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${b.nombre}</h3>
+                <p style="font-size: 0.45rem; opacity: 0.9;">${b.categoria}</p>
+              </div>
+            </div>
+          `;
+          if ((i + 1) % 5 === 0) {
+            html1 += `
+              <div class="card card-premium-square" style="background: #f3f4f6; display: flex; align-items: center; justify-content: center;">
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:100px;height:100px"
+                     data-ad-client="ca-pub-6211692359872996"
+                     data-ad-slot="premium_carousel"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});<\/script>
+              </div>
+            `;
+          }
+        });
+        premiumTrack1.innerHTML = html1;
+        autoScroll(premiumTrack1);
+      }
+
+      if (row2.length > 0) {
+        let html2 = '';
+        row2.forEach((b, i) => {
+          html2 += `
+            <div class="card card-premium-square" onclick="window.location.href='business_detail.html?id=${b.id}'">
+              <img src="${b.foto}" class="img-full" loading="lazy">
+              <div class="badge-premium-star">Ô¡É</div>
+              <div class="overlay-text">
+                <h3 style="font-size: 0.6rem; margin-bottom: 1px; font-family: 'Outfit'; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${b.nombre}</h3>
+                <p style="font-size: 0.45rem; opacity: 0.9;">${b.categoria}</p>
+              </div>
+            </div>
+          `;
+          if ((i + 1) % 5 === 0) {
+            html2 += `
+              <div class="card card-premium-square" style="background: #f3f4f6; display: flex; align-items: center; justify-content: center;">
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:100px;height:100px"
+                     data-ad-client="ca-pub-6211692359872996"
+                     data-ad-slot="premium_carousel_2"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});<\/script>
+              </div>
+            `;
+          }
+        });
+        premiumTrack2.innerHTML = html2;
+        autoScroll(premiumTrack2);
+      } else if (row1.length > 0) {
+        // Fallback or duplicate some if only one row? No, better just leave it.
+      }
+
+      loadPromos();
+    }
+
+    function loadPromos() {
+      onSnapshot(collection(db, "promociones"), (snap) => {
+        // Filtrar SOLO las aprobadas
+        const promos = snap.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .filter(p => p.estado === 'aprobado');
+
+        // Filtrar con soporte para nuevos campos (duracion_dias) y legados (duracion/tipo)
+        const p24h = promos.filter(p => p.duracion_dias === 1 || p.duracion === '24h' || (!p.duracion_dias && !p.duracion));
+        const p3d = promos.filter(p => p.duracion_dias >= 2 || p.duracion === '3dias' || p.tipo === '3dias');
+
+        renderExpressPromos(p24h, express24hTrack, 'expira');
+        renderExpressPromos(p3d, express3diasTrack, 'activa');
+      });
+    }
+
+    function renderExpressPromos(list, container, type) {
+      if (list.length === 0) {
+        container.innerHTML = '<p style="padding: 20px; opacity: 0.5; font-size: 0.8rem;">Pr├│ximamente m├ís ofertas.</p>';
+        return;
+      }
+
+      list = shuffle(list);
+      let html = '';
+      list.forEach((p, i) => {
+        const d = p.duracion_dias || (p.duracion === '3dias' ? 3 : 1);
+        const statusText = d === 1 ? 'EXPIRA 24H' : `ACTIVA ${d} D├ìAS`;
+        const timerClass = d === 1 ? 'promo-timer' : '';
+
+        html += `
+          <div class="card card-promo-express" onclick="window.location.href='promo_detail.html?id=${p.id}'">
+            <img src="${p.imagen}" class="img-full" loading="lazy">
+            <div class="badge-status ${type} ${timerClass}" data-expire="${p.fechaExpiracion ? p.fechaExpiracion.seconds : ''}">${statusText}</div>
+            <div class="overlay-text">
+              <h3 style="font-size: 0.6rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Outfit'; margin-bottom: 1px;">${p.precio_oferta ? 'S/ ' + p.precio_oferta.toString().replace(/^S\/\s*/i, '') + ' - ' : ''}${p.titulo}</h3>
+              <p style="font-size: 0.45rem; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.nombre_negocio || 'Oferta'}</p>
+            </div>
+          </div>`;
+
+        if ((i + 1) % 5 === 0) {
+          html += `
+            <div class="card card-promo-express" style="background: #f3f4f6; display: flex; align-items: center; justify-content: center;">
+              <ins class="adsbygoogle"
+                   style="display:inline-block;width:110px;height:150px"
+                   data-ad-client="ca-pub-6211692359872996"
+                   data-ad-slot="promo_carousel"></ins>
+              <script>(adsbygoogle = window.adsbygoogle || []).push({});<\/script>
+            </div>
+          `;
+        }
+      });
+      container.innerHTML = html;
+      autoScroll(container);
+      if (type === 'expira') startTimers();
+    }
+
+    function startTimers() {
+      const timers = document.querySelectorAll('.badge-status[data-expire]');
+      if (timers.length === 0) return;
+
+      const update = () => {
+        const now = new Date().getTime();
+        timers.forEach(t => {
+          const expireSeconds = parseInt(t.getAttribute('data-expire'));
+          if (!expireSeconds) return;
+
+          const expireTime = expireSeconds * 1000;
+          const diff = expireTime - now;
+
+          if (diff <= 0) {
+            t.innerText = 'EXPIRADO';
+            t.style.background = '#6b7280';
+            return;
+          }
+
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+
+          if (diff > 86400000) {
+            const days = Math.floor(diff / 86400000);
+            t.innerText = `ACTIVA ${days}D ${hours}H`;
+          } else {
+            const hStr = hours.toString().padStart(2, '0');
+            const mStr = minutes.toString().padStart(2, '0');
+            const sStr = seconds.toString().padStart(2, '0');
+            t.innerText = `EXPIRA ${hStr}:${mStr}:${sStr}`;
+
+            // Efecto de urgencia en la ├║ltima hora
+            if (diff < 3600000) {
+              t.style.background = (seconds % 2 === 0) ? '#ef4444' : '#b91c1c';
+            }
+          }
+        });
+      };
+
+      update();
+      setInterval(update, 1000);
+    }
+
+    function renderPromoFallbacks() {
+      const examples = [
+        { id: 'ex1', titulo: "2x1 Almuerzos", negocio: "La Casona", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=400" },
+        { id: 'ex2', titulo: "20% en Caf├®s", negocio: "Kawsay Coffee", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=400" }
+      ];
+      promosTrack.innerHTML = examples.map(ex => `
+        <div class="card" style="width: 260px; height: 160px;" onclick="window.location.href='promo_detail.html?id=${ex.id}'">
+          <img src="${ex.img}" class="img-full" loading="lazy">
+          <div class="overlay-text" style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+              <h3 style="font-size: 0.9rem;">S/ 15.00 - ${ex.titulo}</h3>
+              <p style="font-size: 0.7rem;">${ex.negocio}</p>
+            </div>
+            <div style="background: var(--secondary-color); color: #fff; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.65rem;">
+              OFERTA
+            </div>
+          </div>
+        </div>
+      `).join('');
+      autoScroll(promosTrack);
+    }
+
+    function performSearch(term) {
+      if (!term || term.trim() === "") {
+        searchResults.style.display = 'none';
+        homeContent.style.display = 'block';
+        return;
+      }
+
+      homeContent.style.display = 'none';
+      searchResults.style.display = 'flex';
+
+      const filtered = allBusinesses.filter(b =>
+        b.nombre.toLowerCase().includes(term.toLowerCase()) ||
+        b.categoria.toLowerCase().includes(term.toLowerCase()) ||
+        b.descripcion.toLowerCase().includes(term.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        searchResults.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No se encontraron resultados.</p>';
+      } else {
+        searchResults.innerHTML = filtered.map(b => {
+          const btn = b.tipo === 'service'
+            ? `<button onclick="event.stopPropagation(); window.location.href='tel:${b.telefono}'" style="background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 800; font-size: 0.75rem;">Llamar</button>`
+            : `<button onclick="event.stopPropagation(); window.location.href='https://wa.me/51${b.telefono}'" style="background: #25d366; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 800; font-size: 0.75rem;">WhatsApp</button>`;
+
+          return `
+            <div class="card" style="height: 240px; flex-shrink: 0;" onclick="window.location.href='business_detail.html?id=${b.id}'">
+              <img src="${b.foto}" class="img-full">
+              <div class="overlay-text" style="display: flex; justify-content: space-between; align-items: flex-end; padding: 15px;">
+                <div style="text-align: left;">
+                  <h3 style="font-size: 1.1rem;">${b.nombre}</h3>
+                  <p style="font-size: 0.8rem; opacity: 0.9;">${b.descripcion}</p>
+                </div>
+                ${btn}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      lucide.createIcons();
+    }
+
+    // Listeners
+    searchInput.oninput = (e) => performSearch(e.target.value);
+
+    // Al presionar Enter, tambi├®n buscar (por si acaso)
+    searchInput.onkeypress = (e) => {
+      if (e.key === 'Enter') performSearch(e.target.value);
+    };
+    // --- Noticias de Lamas ---
+    function loadNews() {
+      try {
+        onSnapshot(collection(db, "noticias"), (snap) => {
+          // Filtrar SOLO las aprobadas
+          const approvedNews = snap.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .filter(n => n.estado === 'aprobado');
+
+          if (approvedNews.length > 0) {
+            const shuffledNews = shuffle(approvedNews).slice(0, 6);
+            newsTrack.innerHTML = shuffledNews.map(n => {
+              return `
+                <div class="card card-news" onclick="window.location.href='news_detail.html?id=${n.id}'">
+                  <img src="${n.imagen || 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?auto=format&fit=crop&q=80&w=400'}" class="img-full" loading="lazy">
+                  <div class="overlay-text">
+                    <span style="background: var(--primary-color); color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">${n.categoria || 'Lamas'}</span>
+                    <h3 style="font-size: 0.9rem; line-height: 1.25; margin-top: 6px;">${n.titulo || 'Noticia'}</h3>
+                  </div>
+                </div>`;
+            }).join('');
+            autoScroll(newsTrack);
+          } else {
+            renderNewsFallback();
+          }
+        }, (error) => {
+          renderNewsFallback();
+        });
+      } catch (e) {
+        renderNewsFallback();
+      }
+    }
+
+    function renderNewsFallback() {
+      const fallback = [
+        { titulo: "Feria Artesanal de Lamas este fin de semana", categoria: "Eventos", img: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=400" },
+        { titulo: "Nuevo mirador tur├¡stico inaugura en la Provincia", categoria: "Turismo", img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=400" },
+        { titulo: "CityMart Lamas supera los 100 negocios registrados", categoria: "Comunidad", img: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=400" }
+      ];
+      newsTrack.innerHTML = fallback.map((n, i) => `
+        <div class="card" style="width: 280px; height: 180px;" onclick="window.location.href='news.html'">
+          <img src="${n.img}" class="img-full" loading="lazy">
+          <div class="overlay-text">
+            <span style="background: var(--primary-color); color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">${n.categoria}</span>
+            <h3 style="font-size: 0.9rem; line-height: 1.25; margin-top: 6px;">${n.titulo}</h3>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --- Reci├®n Llegados (├║ltimos 4 negocios) ---
+    function renderNewBusinesses() {
+      // Ordenar por fecha_registro (m├ís reciente primero) y tomar los 5 m├ís nuevos
+      const recent = [...allBusinesses]
+        .sort((a, b) => {
+          const dateA = a.fecha_registro?.seconds || 0;
+          const dateB = b.fecha_registro?.seconds || 0;
+          return dateB - dateA;
+        })
+        .slice(0, 5);
+
+      if (recent.length === 0) {
+        newBizContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: #999; font-size: 0.9rem;">Pronto ver├ís negocios nuevos aqu├¡.</p>';
+        return;
+      }
+      newBizContainer.innerHTML = recent.map(b => {
+        // Calcular hace cu├ínto se registr├│
+        let tiempoTexto = 'Nuevo';
+        if (b.fecha_registro?.seconds) {
+          const ahora = Date.now();
+          const registro = b.fecha_registro.seconds * 1000;
+          const diffHoras = Math.floor((ahora - registro) / (1000 * 60 * 60));
+          if (diffHoras < 1) tiempoTexto = 'Hace minutos';
+          else if (diffHoras < 24) tiempoTexto = `Hace ${diffHoras}h`;
+          else if (diffHoras < 48) tiempoTexto = 'Ayer';
+          else {
+            const diffDias = Math.floor(diffHoras / 24);
+            tiempoTexto = diffDias <= 30 ? `Hace ${diffDias} d├¡as` : 'Nuevo';
+          }
+        }
+        return `
+        <div onclick="window.location.href='business_detail.html?id=${b.id}'" 
+          style="display: flex; align-items: center; gap: 14px; background: #fff; padding: 12px; border-radius: 16px; border: 1px solid #f0f0f0; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="width: 65px; height: 65px; border-radius: 14px; overflow: hidden; flex-shrink: 0;">
+            <img src="${b.foto}" alt="${b.nombre}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <h4 style="font-family: 'Outfit'; font-weight: 800; font-size: 0.95rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${b.nombre}</h4>
+            <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">${b.categoria}</p>
+            <span style="background: #dcfce7; color: #166534; font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">${tiempoTexto.toUpperCase()}</span>
+          </div>
+          <i data-lucide="chevron-right" style="color: #d1d5db; width: 20px; flex-shrink: 0;"></i>
+        </div>
+      `}).join('');
+      lucide.createIcons();
+    }
+
+    function autoScroll(el) {
+      if (!el) return;
+      const section = el.closest('section');
+      const dotsContainer = section ? section.querySelector('.carousel-dots') : null;
+
+      setTimeout(() => {
+        if (el.scrollWidth <= el.clientWidth) {
+          if (dotsContainer) dotsContainer.style.display = 'none';
+          return;
+        }
+
+        // Forzar que NO tenga -webkit-overflow-scrolling (iOS lo hereda a veces)
+        el.style.webkitOverflowScrolling = 'auto';
+
+        // Comenzar desde un punto aleatorio
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        const randomStart = Math.floor(Math.random() * maxScroll);
+        el.scrollLeft = randomStart;
+
+        let paused = false;
+        let scrollPos = el.scrollLeft;
+        const SPEED = 0.8;
+
+        // Usar setInterval ÔÇö m├ís confiable en iOS que requestAnimationFrame
+        const interval = setInterval(() => {
+          if (paused) return;
+
+          scrollPos += SPEED;
+
+          // Reset al inicio cuando llega al final
+          if (scrollPos >= maxScroll) {
+            scrollPos = 0;
+          }
+
+          // Escribir directamente scrollLeft (sin scrollTo para evitar throttling de iOS)
+          el.scrollLeft = scrollPos;
+
+          // Actualizar dots cada ~500ms
+          if (dotsContainer) {
+            const dots = dotsContainer.querySelectorAll('.dot');
+            if (dots.length > 0) {
+              const idx = Math.min(
+                Math.floor((scrollPos / maxScroll) * dots.length),
+                dots.length - 1
+              );
+              dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+            }
+          }
+        }, 20);
+
+        // Detectar si iOS est├í bloqueando el scroll (despu├®s de 2s verificar)
+        setTimeout(() => {
+          const testBefore = el.scrollLeft;
+          el.scrollLeft = testBefore + 5;
+          requestAnimationFrame(() => {
+            if (Math.abs(el.scrollLeft - testBefore) < 1 && !paused) {
+              // iOS est├í bloqueando scrollLeft ÔÇö usar alternativa con scrollTo
+              console.warn('iOS scroll bloqueado, usando scrollTo alternativo');
+              clearInterval(interval);
+
+              let pos = el.scrollLeft;
+              const altInterval = setInterval(() => {
+                if (paused) return;
+                pos += SPEED;
+                if (pos >= maxScroll) pos = 0;
+                try {
+                  el.scrollTo(pos, 0);
+                } catch (e) {
+                  el.scrollLeft = pos;
+                }
+              }, 20);
+
+              el._altInterval = altInterval;
+            }
+          });
+        }, 2000);
+
+        el.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+        el.addEventListener('touchend', () => {
+          setTimeout(() => {
+            paused = false;
+            scrollPos = el.scrollLeft; // Sincronizar posici├│n despu├®s del touch
+          }, 2500);
+        }, { passive: true });
+        el.addEventListener('mouseenter', () => { paused = true; });
+        el.addEventListener('mouseleave', () => {
+          paused = false;
+          scrollPos = el.scrollLeft;
+        });
+      }, 1500);
+    }
+
+    init();
+
+    auth.onAuthStateChanged((user) => {
+      const btn = document.getElementById('auth-btn');
+      if (btn) {
+        if (user) {
+          btn.style.background = '#f3f4f6';
+          btn.style.color = '#4b5563';
+          btn.style.padding = '4px 10px';
+          btn.style.border = '1px solid #e5e7eb';
+          btn.style.boxShadow = 'none';
+
+          btn.innerHTML = `
+            <span style="font-size: 0.6rem; font-weight: 900; letter-spacing: 0.02em;">MI PERFIL</span>
+            <div style="width: 24px; height: 24px; border-radius: 50%; overflow: hidden; background: #ddd; display: flex; align-items: center; justify-content: center;">
+              ${user.photoURL ?
+              `<img src="${user.photoURL}" style="width: 100%; height: 100%; object-fit: cover;">` :
+              `<i data-lucide="user" style="width: 12px; height: 12px; color: #9ca3af;"></i>`}
+            </div>
+          `;
+          btn.onclick = () => window.location.href = 'profile.html';
+          lucide.createIcons();
+        } else {
+          btn.style.background = 'var(--primary-color)';
+          btn.style.color = 'white';
+          btn.style.padding = '8px 16px';
+          btn.style.border = 'none';
+          btn.style.boxShadow = '0 4px 12px rgba(11, 89, 242, 0.2)';
+          btn.innerHTML = 'INGRESAR';
+          btn.onclick = () => window.location.href = 'login.html';
+        }
+      }
+    });
+
+    // Service Worker - registro normal
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => { });
+      });
+    }
+  </script>
+</body>
+
+</html>

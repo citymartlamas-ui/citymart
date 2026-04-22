@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Municipio | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .coming-soon-hero {
+            background: linear-gradient(135deg, var(--jungle-green), #0a7e4b);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coming-soon-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .soon-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
+        }
+
+        .muni-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin: 0 16px 20px;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            gap: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .muni-icon-box {
+            background: #f3f4f6;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--primary-color);
+        }
+
+        .muni-card h3 {
+            font-family: 'Inter';
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #111;
+        }
+
+        .muni-card p {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .muni-status {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="section" style="padding-top: 16px; padding-bottom: 16px;">
+        <div class="container">
+                <div style="display: flex; align-items: center; cursor: pointer; gap: 8px;"
+                    onclick="window.location.href='./'">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 42px; width: auto; margin-left: -10px;">
+                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 5px;">Municipio</h1>
+                </div>
+        </div>
+    </header>
+
+    <div class="coming-soon-hero">
+        <div class="soon-badge">ESTAMOS TRABAJANDO</div>
+        <h2 style="font-family: 'Inter'; font-size: 2rem; font-weight: 700; line-height: 1.1; margin-bottom: 20px;">Próximamente Disponible</h2>
+        <p style="font-size: 0.95rem; opacity: 0.9; max-width: 300px; margin: 0 auto;">Uniendo esfuerzos para digitalizar los servicios municipales de nuestra ciudad.</p>
+    </div>
+
+    <main style="padding-bottom: 100px;">
+        <!-- Fila 1 -->
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="file-digit"></i></div>
+            <div>
+                <h3>Gestión de Licencias</h3>
+                <p>Digitalizamos los requisitos y procesos para que formalizar tu negocio sea más rápido y sencillo.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="clipboard-list"></i></div>
+            <div>
+                <h3>Trámites y Formularios</h3>
+                <p>Descarga directa de solicitudes, permisos de construcción y formatos oficiales (PDF) sin colas.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="calendar"></i></div>
+            <div>
+                <h3>Calendario Tributario</h3>
+                <p>Mantente al día con los pagos de arbitrios e impuesto predial, con avisos de descuentos exclusivos.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="message-square"></i></div>
+            <div>
+                <h3>Buzón Ciudadano</h3>
+                <p>Envía reportes sobre baches, iluminación o limpieza pública directo a la gestión municipal.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="megaphone"></i></div>
+            <div>
+                <h3>El Municipio Informa</h3>
+                <p>Canal oficial de noticias, campañas de salud y avisos de servicio público directo a tu celular.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="users"></i></div>
+            <div>
+                <h3>Directorio Institucional</h3>
+                <p>Conoce quién es quién en el municipio. Datos de contacto y funciones de tus autoridades de Lamas.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="map"></i></div>
+            <div>
+                <h3>Guía de Turismo Local</h3>
+                <p>Horarios, precios y rutas de los atractivos turísticos gestionados por la municipalidad.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="scroll"></i></div>
+            <div>
+                <h3>Normativas y Ordenanzas</h3>
+                <p>Acceso rápido a las leyes municipales vigentes sobre comercio, transporte y convivencia social.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+
+        <div class="muni-card">
+            <div class="muni-icon-box"><i data-lucide="hard-hat"></i></div>
+            <div>
+                <h3>Obras y Proyectos</h3>
+                <p>Transparencia total sobre los avances de las obras públicas y el presupuesto participativo.</p>
+                <div class="muni-status"><i data-lucide="lock" style="width:12px;"></i> Próximamente</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="turismo.html" class="nav-item active">
+            <i data-lucide="compass" class="nav-icon"></i>
+            <span>Turismo</span>
+        </a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { initPresence } from './assets/js/presence.js';
+        lucide.createIcons();
+        // Carga de presencia diferida
+        setTimeout(() => {
+            try { initPresence(); } catch(e) { console.warn("Presence init error", e); }
+        }, 1500);
+    </script>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer></body>
+
+</html>
+

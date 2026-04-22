@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Registrar Negocio o Servicio | CityMart</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <style>
+        body {
+            background-color: var(--bg-main);
+            background-image: radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 0%, rgba(5, 150, 105, 0.03) 0px, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .premium-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.08em;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-soft);
+            width: 18px;
+            height: 18px;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 14px 14px 44px;
+            border-radius: 16px;
+            border: 1.5px solid rgba(0, 0, 0, 0.03);
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        select { padding-left: 14px; } /* Selects usually don't have interior icons easily */
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-color);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+        }
+
+        input:focus + i, .input-wrapper:focus-within i {
+            color: var(--primary-color);
+        }
+
+        .upload-area {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed rgba(5, 150, 105, 0.2);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-soft);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(5, 150, 105, 0.05);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-submit:active { transform: scale(0.98); }
+
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+
+<body>
+    <header class="section modern-glass" style="padding-top: 10px; padding-bottom: 12px; position: sticky; top: 0; z-index: 100;">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.location.href='./'">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <img src="assets/logo.png" alt="CityMart" style="height: 50px; width: auto; margin-left: -5px;">
+                    <span style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 2px;">CityMart</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="loader-overlay" class="loader-overlay">
+        <div class="loader"></div>
+        <p style="margin-top: 20px; font-weight: 700; color: var(--primary-color); font-size: 1.1rem;">Publicando tu negocio...</p>
+    </div>
+
+    <main class="container" style="padding-top: 20px; padding-bottom: 40px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button onclick="window.history.back()" style="background: white; border: 1px solid rgba(0,0,0,0.05); color: var(--text-main); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm);">
+                <i data-lucide="chevron-left" style="width: 24px; height: 24px;"></i>
+            </button>
+            <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.2rem; color: var(--text-main);">Registrar Negocio o Servicio</h2>
+        </div>
+
+        <form id="register-form" class="premium-card">
+            <div class="form-group">
+                <label><i data-lucide="image" style="width: 14px;"></i> Foto Principal</label>
+                <div class="upload-area" id="image-upload-container">
+                    <div id="default-upload-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;">
+                        <i data-lucide="camera" style="width: 40px; height: 40px; margin-bottom: 10px;"></i>
+                        <p style="font-weight: 700; font-size: 0.9rem;">Toca para subir la foto principal</p>
+                        <p style="font-size: 0.75rem; color: var(--text-soft);">Esta imagen es obligatoria</p>
+                    </div>
+                    <img id="image-preview" style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" />
+                    <input type="file" id="business-image" accept="image/*" style="opacity: 0; position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer;" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><i data-lucide="images" style="width: 14px;"></i> Fotos de Galeria (Opcional)</label>
+                <div class="upload-area" id="gallery-upload-container" style="height: auto; min-height: 120px; padding: 20px;">
+                    <div id="gallery-default-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;">
+                        <i data-lucide="plus-circle" style="width: 32px; height: 32px; margin-bottom: 8px; color: var(--text-soft);"></i>
+                        <p style="font-weight: 700; font-size: 0.85rem;">Toca para subir hasta 10 fotos</p>
+                    </div>
+                    <div id="gallery-preview" style="display: flex; flex-wrap: wrap; gap: 8px; width: 100%; justify-content: center;"></div>
+                    <input type="file" id="business-gallery" accept="image/*" multiple style="opacity: 0; position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer;">
+                </div>
+            </div>
+
+            <div style="height: 1px; background: rgba(0,0,0,0.05); margin: 24px 0;"></div>
+
+            <!-- Datos Generales -->
+            <div class="form-group">
+                <label for="name"><i data-lucide="store" style="width: 14px;"></i> Nombre del Negocio</label>
+                <div class="input-wrapper">
+                    <i data-lucide="type"></i>
+                    <input type="text" id="name" placeholder="Ej. Restaurante La Casona" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="category"><i data-lucide="tags" style="width: 14px;"></i> Categoria</label>
+                <select id="category" required>
+                    <option value="">Selecciona una categoria</option>
+                    <optgroup label="Comida y Bebidas">
+                        <option value="restaurantes">Restaurantes</option>
+                        <option value="cafeteria">Cafeterias</option>
+                        <option value="bar">Bares y Karaokes</option>
+                        <option value="discoteca">Discotecas</option>
+                        <option value="night_club">Night Clubs</option>
+                        <option value="panaderia">Panaderias y Pastelerias</option>
+                        <option value="comida_rapida">Comida Rapida / Snacks</option>
+                    </optgroup>
+                    <optgroup label="Hospedaje">
+                        <option value="hospedaje">Hoteles / Hospedaje</option>
+                        <option value="alquiler">Alquileres / Inmobiliaria</option>
+                    </optgroup>
+                    <optgroup label="Arte y Cultura">
+                        <option value="artesania">Artesanias y Souvenirs</option>
+                        <option value="arte_cultura">Arte y Cultura</option>
+                    </optgroup>
+                    <optgroup label="Comercio">
+                        <option value="tiendas">Tiendas / Bodegas</option>
+                        <option value="moda">Moda y Ropa</option>
+                        <option value="tecnologia">Tecnologia y Celulares</option>
+                        <option value="ferreteria">Ferreterias</option>
+                        <option value="libreria">Librerias y Papelerias</option>
+                    </optgroup>
+                    <optgroup label="Salud y Bienestar">
+                        <option value="salud">Farmacias y Boticas</option>
+                        <option value="clinica">Clinicas y Consultorios</option>
+                        <option value="spa">Spa y Bienestar</option>
+                        <option value="gimnasio">Gimnasios y Deportes</option>
+                    </optgroup>
+                    <optgroup label="Servicios Profesionales">
+                        <option value="servicios">Servicios Generales</option>
+                        <option value="construccion">Construccion</option>
+                        <option value="carpinteria">Carpinteria</option>
+                        <option value="gasfiteria">Gasfiteria / Plomeria</option>
+                        <option value="electricista">Electricistas</option>
+                        <option value="peluqueria">Peluquerias y Barberias</option>
+                        <option value="sastreria">Sastreria y Costura</option>
+                        <option value="lavanderia">Lavanderias</option>
+                        <option value="contabilidad">Contabilidad y Abogados</option>
+                        <option value="mecanica">Mecanica Automotriz</option>
+                    </optgroup>
+                    <optgroup label="Transporte y Turismo">
+                        <option value="transporte">Transporte</option>
+                        <option value="turismo">Agencias de Turismo</option>
+                        <option value="recreo_turistico">Recreos Turisticos / Centros de Esparcimiento</option>
+                    </optgroup>
+                    <optgroup label="Educacion">
+                        <option value="educacion">Academias e Institutos</option>
+                    </optgroup>
+                    <optgroup label="Agro y Naturaleza">
+                        <option value="agro">Agricultura y Ganaderia</option>
+                        <option value="veterinaria">Veterinarias</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="city"><i data-lucide="map" style="width: 14px;"></i> Ciudad</label>
+                <select id="city" required>
+                    <option value="lamas">Lamas</option>
+                    <option value="tarapoto">Tarapoto</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description"><i data-lucide="align-left" style="width: 14px;"></i> Descripcion</label>
+                <div class="input-wrapper">
+                    <i data-lucide="file-text"></i>
+                    <textarea id="description" rows="4" placeholder="Cuentales a tus clientes que ofreces, que te diferencia y por que deberian visitarte." required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="open">Abre a las:</label>
+                    <input type="time" id="open" required>
+                </div>
+                <div class="form-group">
+                    <label for="close">Cierra a las:</label>
+                    <input type="time" id="close" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp de Contacto</label>
+                <div style="position: relative;">
+                    <span
+                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #666;">+51</span>
+                    <input type="tel" id="whatsapp" placeholder="999 999 999" style="padding-left: 50px;" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Direccion / Ubicacion</label>
+                <div style="position: relative;">
+                    <i data-lucide="map-pin"
+                        style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; width: 18px;"></i>
+                    <input type="text" id="address" placeholder="Ej. Jr. Comercio 123, Lamas" required>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-submit"
+                style="margin-top: 20px;">ENVIAR
+                SOLICITUD</button>
+        </form>
+    </main>
+
+    <script type="module">
+        import { app, auth, db, storage } from './assets/js/firebase-init.js';
+        import { collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { awardCityCashAction, showCityCashRewardToast } from './assets/js/citycash.js';
+        import { linkLegacyBusinessesByEmail } from './assets/js/legacy-business-link.js';
+
+        lucide.createIcons();
+
+        // Helper function for image compression
+        async function compressImage(file, { maxWidth = 1200, maxHeight = 1200, quality = 0.8 } = {}) {
+            if (window.optimizeUploadImage) {
+                const preset = quality <= 0.7 ? 'gallery' : 'business';
+                return window.optimizeUploadImage(file, preset);
+            }
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
+                            } else {
+                                reject(new Error('Fallo al comprimir la imagen.'));
+                            }
+                        }, 'image/jpeg', quality);
+                    };
+                    img.onerror = () => reject(new Error('Fallo al cargar la imagen para compresión.'));
+                };
+                reader.onerror = () => reject(new Error('Fallo al leer el archivo.'));
+            });
+        }
+
+        let currentUser = null;
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+            } else {
+                alert("Debes iniciar sesion para registrar un negocio.");
+                window.location.href = 'login.html';
+            }
+        });
+
+        const inputContainer = document.getElementById('image-upload-container');
+        const fileInput = document.getElementById('business-image');
+        const previewEl = document.getElementById('image-preview');
+        const defaultContent = document.getElementById('default-upload-content');
+
+        const galleryInput = document.getElementById('business-gallery');
+        const galleryPreview = document.getElementById('gallery-preview');
+        const galleryDefault = document.getElementById('gallery-default-content');
+        let selectedGalleryFiles = [];
+
+        // Pre-select current city
+        const savedCity = window.getStoredCity ? window.getStoredCity() : 'lamas';
+        const businessCityEl = document.getElementById('city');
+        if (businessCityEl) businessCityEl.value = savedCity;
+
+        // Previsualizar la imagen seleccionada
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewEl.src = e.target.result;
+                    previewEl.style.display = 'block';
+                    defaultContent.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewEl.src = '';
+                previewEl.style.display = 'none';
+                defaultContent.style.display = 'flex';
+            }
+        });
+
+        // Previsualizar la galeria
+        galleryInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length > 10) {
+                alert("Por favor, selecciona como maximo 10 fotos para la galeria.");
+                galleryInput.value = "";
+                return;
+            }
+            selectedGalleryFiles = files;
+            galleryPreview.innerHTML = '';
+
+            if (files.length > 0) {
+                galleryDefault.style.display = 'none';
+                files.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '70px';
+                        img.style.height = '70px';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '10px';
+                        img.style.border = '1px solid #e5e7eb';
+                        img.style.cursor = 'default';
+                        // Keep images above the input for visibility but let input catch clicks behind it
+                        img.style.position = 'relative';
+                        img.style.zIndex = '5';
+                        galleryPreview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                galleryDefault.style.display = 'flex';
+            }
+        });
+
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!currentUser) {
+                alert("Debes iniciar sesion primero.");
+                return;
+            }
+
+            try {
+                await linkLegacyBusinessesByEmail({ app, authUser: currentUser });
+                const querySnap = await getDocs(query(collection(db, "negocio"), where("uid", "==", currentUser.uid)));
+                if (querySnap.size >= 5) {
+                    alert("Has alcanzado el limite maximo de 5 negocios o servicios por usuario.");
+                    window.location.href = 'profile.html';
+                    return;
+                }
+            } catch (e) {
+                console.warn("No se pudo verificar el limite de negocios", e);
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            const readValue = (id, fallback = '') => {
+                const el = document.getElementById(id);
+                return el ? el.value : fallback;
+            };
+            const setStatus = (text) => {
+                submitBtn.innerHTML = `<div class="loader-small" style="display:inline-block; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite;"></div> ${text}`;
+            };
+
+            try {
+                setStatus('Consultando limite...');
+                await linkLegacyBusinessesByEmail({ app, authUser: currentUser });
+                const querySnap = await getDocs(query(collection(db, "negocio"), where("uid", "==", currentUser.uid)));
+                if (querySnap.size >= 5) {
+                    alert("Has alcanzado el limite maximo de 5 negocios o servicios por usuario.");
+                    window.location.href = 'profile.html';
+                    return;
+                }
+            } catch (e) {
+                console.warn("No se pudo verificar el limite de negocios", e);
+            }
+
+            try {
+                const name = readValue('name');
+                const category = readValue('category');
+                const city = readValue('city', savedCity);
+                const description = readValue('description');
+                const openTime = readValue('open');
+                const closeTime = readValue('close');
+                const whatsapp = readValue('whatsapp');
+                const address = readValue('address');
+
+                let imageUrl = "";
+                let imagePath = "";
+
+                // 1. Subir imagen principal
+                if (fileInput.files.length > 0) {
+                    setStatus('Procesando foto principal...');
+                    const file = fileInput.files[0];
+                    const compressed = await compressImage(file, { quality: 0.8 });
+                    
+                    setStatus('Subiendo foto principal...');
+                    const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
+                    const filePath = `negocios/${Date.now()}_${sanitizeName}`;
+                    const storageRef = ref(storage, filePath);
+
+                    await uploadBytes(storageRef, compressed);
+                    imageUrl = await getDownloadURL(storageRef);
+                    imagePath = filePath;
+                } else {
+                    alert("Por favor sube la foto principal del negocio o servicio.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'ENVIAR SOLICITUD';
+                    return;
+                }
+
+                // 2. Subir galeria
+                let galleryUrls = [];
+                let galleryPaths = [];
+                if (selectedGalleryFiles.length > 0) {
+                    setStatus(`Procesando galeria (0/${selectedGalleryFiles.length})...`);
+                    
+                    const uploadPromises = selectedGalleryFiles.map(async (file, i) => {
+                        const compressed = await compressImage(file, { quality: 0.7 });
+                        const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
+                        const filePath = `negocios/galeria/${Date.now()}_${i}_${sanitizeName}`;
+                        const storageRef = ref(storage, filePath);
+                        
+                        await uploadBytes(storageRef, compressed);
+                        const url = await getDownloadURL(storageRef);
+                        galleryPaths[i] = filePath;
+                        
+                        // Not really easy to update button text inside Promise.all but it's parallel now
+                        return url;
+                    });
+
+                    setStatus(`Subiendo ${selectedGalleryFiles.length} fotos de galeria...`);
+                    galleryUrls = await Promise.all(uploadPromises);
+                }
+
+                // 3. Guardar en Firestore
+                setStatus('Guardando datos...');
+                const businessRef = await addDoc(collection(db, "negocio"), {
+                    nombre: name,
+                    categoria: category,
+                    ciudad: city,
+                    provincia: city,
+                    descripcion: description,
+                    horario: `${openTime} - ${closeTime}`,
+                    telefono: whatsapp,
+                    numerodecontacto: whatsapp,
+                    direccion: address,
+                    foto: imageUrl,
+                    imagen: imageUrl,
+                    foto_path: imagePath,
+                    imagen_path: imagePath,
+                    fotosnegocio: galleryUrls,
+                    fotosnegocio_paths: galleryPaths,
+                    negocio_o_servicio: category === 'servicios' ? 'servicio' : 'negocio',
+                    estado: 'aprobado',
+                    negociovisible: true,
+                    uid: currentUser.uid,
+                    email_propietario: currentUser.email,
+                    ownerUid: currentUser.uid,
+                    owner_email_normalized: (currentUser.email || '').trim().toLowerCase(),
+                    owner_link_status: 'linked',
+                    owner_link_source: 'register_business',
+                    fecha_registro: serverTimestamp()
+                });
+
+                try {
+                    const reward = await awardCityCashAction('register_business', businessRef.id);
+                    showCityCashRewardToast(reward);
+                    if (reward?.awarded) {
+                        await new Promise((resolve) => setTimeout(resolve, 900));
+                    }
+                } catch (rewardError) {
+                    if (rewardError?.message !== 'already-claimed') {
+                        console.warn('CityCash business reward error:', rewardError);
+                    }
+                }
+
+                alert('Tu negocio o servicio ha sido registrado con exito. Ya puedes verlo en el directorio.');
+                window.location.href = 'profile.html';
+
+            } catch (error) {
+                console.error("Error al registrar:", error);
+                alert("Hubo un error al enviar la solicitud: " + error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'ENVIAR SOLICITUD';
+            }
+        });
+    </script>
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directory.html" class="nav-item">
+            <i data-lucide="layout-grid" class="nav-icon"></i>
+            <span>Directorio</span>
+        </a>
+        <!-- Botón Publicar Central -->
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+    <script src="assets/js/pwa-init.js"></script>
+</body>
+
+</html>
+
+
+

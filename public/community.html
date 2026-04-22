@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Comunidad | CityMart</title>
+    <meta name="description" content="Comunidad local de CityMart con publicaciones, objetos perdidos, directorio de vecinos y conversaciones entre Lamas y Tarapoto.">
+    <link rel="canonical" href="https://citymart.vip/community">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CityMart">
+    <meta property="og:title" content="Comunidad | CityMart">
+    <meta property="og:description" content="Comunidad local de CityMart con publicaciones, objetos perdidos, directorio de vecinos y conversaciones entre Lamas y Tarapoto.">
+    <meta property="og:url" content="https://citymart.vip/community">
+    <meta property="og:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Comunidad | CityMart">
+    <meta name="twitter:description" content="Comunidad local de CityMart con publicaciones, objetos perdidos, directorio de vecinos y conversaciones entre Lamas y Tarapoto.">
+    <meta name="twitter:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
+    <meta name="application-name" content="CityMart">
+    <meta name="apple-mobile-web-app-title" content="CityMart">
+    <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
+    <link rel="stylesheet" href="assets/style.css?v=20260411-premium-fix-1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script defer src="assets/js/utils.js?v=20260402-community-photo-2"></script>
+    <script defer src="assets/js/cache.js?v=20260402-community-photo-2"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6211692359872996"
+        crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        .community-tabs {
+            display: flex;
+            gap: 12px;
+            margin: 8px 16px 0;
+            overflow-x: auto;
+            padding: 4px 4px 10px;
+            scroll-behavior: smooth;
+        }
+
+        /* Ocultar scrollbar */
+        .community-tabs::-webkit-scrollbar { display: none; }
+
+        .community-main {
+            padding-top: 8px;
+            padding-bottom: 100px;
+            min-height: calc(100vh - 260px);
+        }
+
+        .community-panel {
+            min-height: clamp(520px, 62vh, 760px);
+        }
+
+        .community-loading-state {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .community-help-note {
+            margin: 0 16px 12px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(5, 150, 105, 0.06);
+            border: 1px solid rgba(5, 150, 105, 0.12);
+            color: #5f6b7a;
+            font-size: 0.72rem;
+            line-height: 1.35;
+            font-weight: 600;
+        }
+
+        .community-tab {
+            background: white;
+            color: var(--text-soft);
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .community-tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 16px rgba(5, 150, 105, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .compact-topbar {
+            padding-top: 8px !important;
+            padding-bottom: 10px !important;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .compact-topbar .container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .compact-topbar__brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .compact-topbar__title {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .compact-topbar__title img {
+            height: 44px;
+            width: auto;
+            margin-left: -5px;
+        }
+
+        .compact-topbar__meta {
+            color: #6b7280;
+            font-size: 0.78rem;
+            margin-top: 0;
+            font-weight: 600;
+        }
+
+        .compact-topbar__stats {
+            display: flex;
+            gap: 12px;
+            margin-top: 2px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #6b7280;
+            padding-left: 2px;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin: 0 16px 12px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: var(--transition);
+            content-visibility: auto;
+            contain-intrinsic-size: 240px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .type-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid transparent;
+        }
+
+        .badge-busco {
+            background: #f1f5f9;
+            color: #475569;
+            border-color: #e2e8f0;
+        }
+
+        .badge-ofrezco {
+            background: rgba(5, 150, 105, 0.08);
+            color: var(--primary-color);
+            border-color: rgba(5, 150, 105, 0.15);
+        }
+
+        .post-category {
+            font-size: 0.7rem;
+            color: var(--text-soft);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .post-title {
+            font-family: 'Inter';
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.25;
+        }
+
+        .post-desc {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            line-height: 1.4;
+            margin: 2px 0;
+            font-weight: 500;
+        }
+
+        .post-body {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .post-copy {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .post-thumb {
+            width: 84px;
+            height: 84px;
+            flex: 0 0 84px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #f3f4f6;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        }
+
+        .mini-photo-picker {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px dashed #e5e7eb;
+        }
+
+        .mini-photo-preview {
+            display: none;
+            width: 100%;
+            max-height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 380px) {
+            .post-thumb {
+                width: 72px;
+                height: 72px;
+                flex-basis: 72px;
+                border-radius: 12px;
+            }
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            padding-top: 10px;
+            margin-top: 6px;
+        }
+
+        .timer-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-soft);
+            font-weight: 700;
+        }
+
+        .btn-whatsapp {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #25d366;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+            transition: var(--transition);
+        }
+
+        .btn-whatsapp:active { transform: scale(0.95); }
+
+        .btn-report {
+            color: #e2e8f0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            transition: var(--transition);
+        }
+
+        .btn-report:hover { color: #f43f5e; }
+
+        .floating-add {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.35);
+            cursor: pointer;
+            z-index: 100;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .floating-add:active { transform: scale(0.9); }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-height: calc(100vh - 24px);
+            border-radius: 24px 24px 0 0;
+            padding: 24px 24px calc(120px + env(safe-area-inset-bottom, 0px));
+            position: relative;
+            overflow-y: auto;
+            text-align: left;
+            overscroll-behavior: contain;
+        }
+
+        .btn-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #f3f4f6;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #4b5563;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: #f9fafb;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            background: white;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(11, 89, 242, 0.2);
+            position: sticky;
+            bottom: 0;
+            z-index: 2;
+        }
+
+        .type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .type-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .type-option.busco.selected {
+            border-color: #1d4ed8;
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .type-option.ofrezco.selected {
+            border-color: #15803d;
+            background: #f0fdf4;
+            color: #15803d;
+        }
+        .community-tab.active {
+            background: #fff;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(11, 89, 242, 0.1);
+        }
+
+        /* Forum Styles */
+        .forum-card {
+            background: white;
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin: 0 16px 8px;
+            border: 1px solid #f1f5f9;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            content-visibility: auto;
+            contain-intrinsic-size: 140px;
+        }
+        .forum-card:active { transform: translateY(1px); }
+        .forum-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: #e5e7eb;
+        }
+        
+        /* Category specific accent colors */
+        .forum-card.category-Historias::before { background: #3b82f6; }
+        .forum-card.category-Datos::before { background: #f59e0b; }
+        .forum-card.category-Propuestas::before { background: #8b5cf6; }
+        .forum-card.category-Talento::before { background: #ec4899; }
+
+        .forum-category-tag {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+            display: inline-block;
+        }
+        
+        .tag-Historias { background: #eff6ff; color: #1d4ed8; }
+        .tag-Datos { background: #fff7ed; color: #c2410c; }
+        .tag-Propuestas { background: #faf5ff; color: #7e22ce; }
+        .tag-Talento { background: #fdf2f8; color: #be185d; }
+
+        .forum-meta {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px solid #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .forum-card__layout {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .forum-card__copy {
+            flex: 1;
+            min-width: 0;
+        }
+        .forum-card__thumb {
+            width: 78px;
+            height: 78px;
+            flex: 0 0 78px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #f1f5f9;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        }
+        .reply-card {
+            background: #f8fafc;
+            padding: 6px 12px;
+            border-radius: 10px 14px 14px 4px;
+            margin-bottom: 6px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.01);
+            position: relative;
+            margin-left: 10px;
+            max-width: 96%;
+        }
+        .main-post-hero {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            position: relative;
+        }
+        .reply-user-icon {
+            width: 20px;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+        }
+        .vote-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid #f3f4f6;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .vote-btn:hover { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+        .vote-btn.active { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+
+        /* Yellow Pages Styles */
+        .yellow-search-container {
+            padding: 14px;
+            background: white;
+            border-radius: 20px;
+            margin: 0 16px 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #f1f5f9;
+        }
+        .yellow-search-bar {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        .yellow-search-bar:focus-within {
+            border-color: var(--jungle-green);
+            box-shadow: 0 0 0 3px rgba(0, 168, 89, 0.1);
+        }
+        .yellow-search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            font-size: 0.9rem;
+            color: #1e293b;
+            font-weight: 500;
+            outline: none;
+        }
+        .yellow-card {
+            background: white;
+            padding: 14px 16px;
+            margin: 0 16px 10px;
+            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+            content-visibility: auto;
+            contain-intrinsic-size: 96px;
+        }
+        .yellow-card:active { transform: scale(0.98); }
+        .yellow-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="section modern-glass compact-topbar">
+        <div class="container">
+            <div class="compact-topbar__brand" onclick="window.location.href='./'">
+                <div class="compact-topbar__title">
+                    <img src="assets/logo.png" alt="CityMart">
+                    <span style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 2px;">Comunidad</span>
+                </div>
+                <div id="city-badge" style="background: rgba(5, 150, 105, 0.1); color: var(--primary-color); padding: 4px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Lamas</div>
+            </div>
+            <p class="compact-topbar__meta">Conecta rapido, sin
+                complicaciones.</p>
+            <div id="community-city-switcher" class="city-switcher-container">
+                <div class="city-pill active" onclick="switchCommunityCity('lamas')">Lamas</div>
+                <div class="city-pill" onclick="switchCommunityCity('tarapoto')">Tarapoto</div>
+            </div>
+            <div id="site-stats-counter" class="compact-topbar__stats">
+                <span style="display: flex; align-items: center; gap: 4px;">
+                    <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;"></span>
+                    <b id="online-count">1</b> en línea
+                </span>
+                <span style="display: flex; align-items: center; gap: 4px;">
+                    <b id="total-visits">--</b> visitas
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <div class="community-tabs" style="overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+        <div class="community-tab active" onclick="switchTab('comunidad')">Marketplace 6H</div>
+        <div class="community-tab" onclick="switchTab('objetos')">Objetos Perdidos</div>
+        <div class="community-tab" onclick="switchTab('foro')">Muro Social</div>
+        <div class="community-tab" onclick="switchTab('directorio')">Directorio</div>
+    </div>
+
+    <main class="community-main">
+        <!-- Container for Busco/Ofrezco -->
+        <div id="posts-container" class="community-panel" style="display: flex; flex-direction: column; gap: 0;">
+            <div class="community-help-note">
+                Marketplace 6H sirve para pedir u ofrecer algo rapido en tu ciudad. Cada aviso dura 6 horas y cada usuario puede publicar hasta 5 veces por dia.
+            </div>
+            <div class="community-loading-state" style="text-align:center; padding: 40px;">
+                <div class="loader"></div>
+                <p style="margin-top:10px; color:#6b7280; font-size: 0.85rem; font-weight: 600;">Cargando publicaciones...</p>
+            </div>
+        </div>
+
+        <!-- Container for Objetos Perdidos (Hidden by default) -->
+        <div id="lost-found-container" class="community-panel" style="display: none; flex-direction: column; gap: 0;">
+            <div class="community-loading-state" style="text-align:center; padding: 40px;">
+                <div class="loader"></div>
+                <p style="margin-top:10px; color:#6b7280; font-size: 0.85rem; font-weight: 600;">Cargando objetos perdidos...</p>
+            </div>
+        </div>
+
+        <!-- Container for Muro Social -->
+        <div id="forum-container" class="community-panel" style="display: none; flex-direction: column; gap: 0;">
+            <!-- Threads List -->
+            <div id="forum-list"></div>
+            <!-- Thread Details (Overlays the list when active) -->
+            <div id="thread-details" style="display: none; padding: 0 16px;">
+                <button onclick="closeThread()" style="background: none; border: none; color: var(--primary-color); font-weight: 700; display: flex; align-items: center; gap: 4px; margin-bottom: 16px; padding: 0;">
+                    <i data-lucide="arrow-left" style="width: 18px;"></i> Volver a Muro Social
+                </button>
+                <div id="active-thread-content"></div>
+                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+                <h4 style="font-family: 'Inter'; margin-bottom: 12px;">Respuestas</h4>
+                <div id="replies-container"></div>
+                <div style="margin-top: 20px;">
+                    <textarea id="reply-text" class="form-control" placeholder="Escribe tu respuesta..." rows="2" style="margin-bottom: 10px;"></textarea>
+                    <button class="btn-submit" onclick="submitReply()">Comentar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container for Directorio (Yellow Pages) -->
+        <div id="yellow-pages-container" class="community-panel" style="display: none; flex-direction: column; gap: 0;">
+            <div class="yellow-search-container">
+                <div class="yellow-search-bar">
+                    <i data-lucide="search" style="width: 18px; color: #94a3b8;"></i>
+                    <input type="text" id="yellow-search" placeholder="Buscar vecino o servicio..." oninput="filterYellow()">
+                </div>
+            </div>
+            <div id="yellow-list" style="display: flex; flex-direction: column; gap: 0;">
+                <!-- List of public users -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FAB -->
+    <button class="floating-add" onclick="openCreateModal()">
+        <i data-lucide="plus" style="width: 28px; height: 28px;"></i>
+    </button>
+
+    <!-- Create Modal -->
+    <div id="create-modal" class="modal-overlay" onclick="if(event.target===this) closeCreateModal()">
+        <div class="modal-content">
+            <button class="btn-close" onclick="closeCreateModal()"><i data-lucide="x" style="width: 18px;"></i></button>
+            <h2 style="font-family: 'Inter'; font-size: 1.4rem; font-weight: 700; margin-bottom: 6px;">Nueva publicacion</h2>
+            <div id="promo-info" style="font-size: 0.8rem; color: #6b7280; margin-bottom: 20px;">Tu aviso durara <strong style="color: #ef4444;">6 horas</strong>. Puedes publicar hasta <strong>5 veces por dia</strong>.</div>
+            <div id="promo-help" style="font-size: 0.7rem; color: #94a3b8; margin-top: -12px; margin-bottom: 18px; line-height: 1.35;">Usa este espacio para pedidos u ofrecimientos rapidos. Es un marketplace temporal pensado para resolver algo urgente cerca de ti.</div>
+
+            <div class="type-selector" id="type-selector-container">
+                <div class="type-option busco selected" onclick="selectType('busco')">BUSCO</div>
+                <div class="type-option ofrezco" onclick="selectType('ofrezco')">OFREZCO</div>
+            </div>
+
+            <div id="form-comunidad">
+                <div class="form-group">
+                    <label class="form-label">Categoria</label>
+                    <select id="post-category" class="form-control">
+                        <option value="Trabajo">Trabajo</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Servicios">Servicios</option>
+                        <option value="Eventos">Eventos</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Titulo <span style="color:#9ca3af; font-weight:normal;">(Max 60 caracteres)</span></label>
+                    <input type="text" id="post-title" class="form-control" placeholder="Ej. Busco plomero urgente" maxlength="60">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descripcion <span style="color:#9ca3af; font-weight:normal;">(Max 200 caracteres)</span></label>
+                    <textarea id="post-desc" class="form-control" rows="3" placeholder="Detalles de lo que buscas u ofreces..." maxlength="200" style="resize: none;"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Ubicacion <span style="color:#9ca3af; font-weight:normal;">(Opcional)</span></label>
+                    <input type="text" id="post-location" class="form-control" placeholder="Ej. Barrio Zaragoza, Lamas" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Foto <span style="color:#9ca3af; font-weight:normal;">(Opcional)</span></label>
+                    <div class="mini-photo-picker">
+                        <input type="file" id="post-photo" accept="image/*" style="display: none;"
+                            onchange="previewImage(this, 'post-photo-preview', 'post-photo-preview-container')">
+                        <div id="post-photo-preview-container" onclick="document.getElementById('post-photo').click()"
+                            style="cursor: pointer; text-align: center;">
+                            <i data-lucide="image-plus" style="width: 40px; height: 40px; color: #9ca3af;"></i>
+                            <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir una foto</p>
+                            <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">Se reducira automaticamente y solo se vera pequena en la tarjeta.</p>
+                        </div>
+                        <img id="post-photo-preview" class="mini-photo-preview">
+                    </div>
+                </div>
+            </div>
+
+            <div id="form-objetos" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Foto del Objeto</label>
+                    <div class="mini-photo-picker" style="padding: 20px;">
+                        <input type="file" id="lost-photo" accept="image/*" style="display: none;"
+                            onchange="previewImage(this)">
+                        <div id="photo-preview-container" onclick="document.getElementById('lost-photo').click()"
+                            style="cursor: pointer; text-align: center;">
+                            <i data-lucide="camera" style="width: 48px; height: 48px; color: #9ca3af;"></i>
+                            <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir o tomar foto</p>
+                        </div>
+                        <img id="photo-preview" class="mini-photo-preview"
+                            style="max-height: 200px; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descripcion del Objeto</label>
+                    <textarea id="lost-desc" class="form-control" rows="3"
+                        placeholder="Ej. Encontre llaves cerca a la plaza..." maxlength="200"
+                        style="resize: none;"></textarea>
+                </div>
+            </div>
+
+            <div id="form-foro" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Categoria de Muro Social</label>
+                    <select id="forum-category" class="form-control">
+                        <option value="Historias">Historias de Lamas</option>
+                        <option value="Datos">Datos utiles</option>
+                        <option value="Propuestas">Propuestas</option>
+                        <option value="Talento">Talento y pasion</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Titulo del Tema</label>
+                    <input type="text" id="forum-title" class="form-control" placeholder="Titulo de tu publicacion" maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mensaje</label>
+                    <textarea id="forum-content" class="form-control" rows="4" placeholder="¿Qué quieres compartir con Lamas?" maxlength="1000" style="resize: none;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Foto <span style="color:#9ca3af; font-weight:normal;">(Opcional)</span></label>
+                    <div class="mini-photo-picker">
+                        <input type="file" id="forum-photo" accept="image/*" style="display: none;"
+                            onchange="previewImage(this, 'forum-photo-preview', 'forum-photo-preview-container')">
+                        <div id="forum-photo-preview-container" onclick="document.getElementById('forum-photo').click()"
+                            style="cursor: pointer; text-align: center;">
+                            <i data-lucide="image-plus" style="width: 40px; height: 40px; color: #9ca3af;"></i>
+                            <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir una foto</p>
+                            <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">Se comprimira mucho y solo se vera pequena en la tarjeta.</p>
+                        </div>
+                        <img id="forum-photo-preview" class="mini-photo-preview">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="phone-group">
+                <label class="form-label">WhatsApp de Contacto</label>
+                <input type="tel" id="post-phone" class="form-control" placeholder="Numero de celular">
+            </div>
+
+            <button class="btn-submit" onclick="submitAny()" id="btn-submit-post">PUBLICAR AHORA</button>
+        </div>
+    </div>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="turismo.html" class="nav-item">
+            <i data-lucide="compass" class="nav-icon"></i>
+            <span>Turismo</span>
+        </a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item active">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { db, auth } from './assets/js/firebase-init.js';
+        import { collection, onSnapshot, addDoc, query, orderBy, serverTimestamp, getDocs, where, limit, startAfter, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { awardCityCashAction, showCityCashRewardToast } from './assets/js/citycash.js';
+
+        lucide.createIcons();
+        let storageDepsPromise = null;
+
+        async function getStorageDeps() {
+            if (!storageDepsPromise) {
+                storageDepsPromise = Promise.all([
+                    import('./assets/js/firebase-init.js'),
+                    import("https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js")
+                ]).then(([firebaseInit, firebaseStorage]) => ({
+                    storage: firebaseInit.storage,
+                    ref: firebaseStorage.ref,
+                    uploadBytes: firebaseStorage.uploadBytes,
+                    getDownloadURL: firebaseStorage.getDownloadURL,
+                    deleteObject: firebaseStorage.deleteObject
+                }));
+            }
+
+            return storageDepsPromise;
+        }
+
+        // Carga de presencia diferida
+        setTimeout(async () => {
+            try {
+                const { initPresence } = await import('./assets/js/presence.js');
+                initPresence();
+            } catch(e) {
+                console.warn("Presence init error", e);
+            }
+        }, 1500);
+
+        const postsContainer = document.getElementById('posts-container');
+        const lostContainer = document.getElementById('lost-found-container');
+        const forumContainer = document.getElementById('forum-container');
+        const yellowContainer = document.getElementById('yellow-pages-container');
+        const forumList = document.getElementById('forum-list');
+        const threadDetails = document.getElementById('thread-details');
+        const fab = document.querySelector('.floating-add');
+
+        let unsubscribe = null;
+        let unsubscribeLost = null;
+        let unsubscribeForum = null;
+        let unsubscribeYellow = null;
+        let unsubscribeReplies = null;
+        let selectedType = 'busco'; // busco | ofrezco
+        const COMUNIDAD_DAILY_POST_LIMIT = 5;
+        const COMMUNITY_PAGE_SIZE = 10;
+        const FORUM_PAGE_LIMIT = 20;
+        let currUser = null;
+        let activeTab = 'comunidad'; // comunidad | objetos | foro | directorio
+        let activeThreadId = null;
+        let allYellowUsers = [];
+        let allCommunityPosts = [];
+        let allLostItems = [];
+        let allForumTopics = [];
+        let communityPostsCursor = null;
+        let communityPostsHasMore = true;
+        let communityPostsLoading = false;
+        let communityPostsObserver = null;
+        let communityPostsLoadedCity = '';
+        let communityExpiryTimeout = null;
+        const COMMUNITY_POSTS_CACHE_VERSION = 'v2';
+        let currentCity = window.getStoredCity ? window.getStoredCity() : normalizeLookup(localStorage.getItem('citymart_city') || 'lamas');
+        let yellowSearchDebounceId = null;
+        let lostLoaded = false;
+        let forumLoaded = false;
+        let yellowLoaded = false;
+        const COMMUNITY_MARKETPLACE_NOTE = `<div class="community-help-note">Marketplace 6H sirve para pedir u ofrecer algo rapido en tu ciudad. Cada aviso dura 6 horas y cada usuario puede publicar hasta 5 veces por dia.</div>`;
+
+        function normalizeLookup(value = '') {
+            return String(value)
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .trim();
+        }
+
+        function getRecordCity(data = {}, fallback = '') {
+            return normalizeLookup(
+                data.ciudad ||
+                data.ciudadActual ||
+                data.ciudad_actual ||
+                data.provincia ||
+                data.ubicacion ||
+                data.location ||
+                fallback
+            );
+        }
+
+        function matchesCurrentCity(data = {}, fallback = 'lamas') {
+            return getRecordCity(data, fallback) === currentCity;
+        }
+
+        function getDateValue(value) {
+            if (!value) return null;
+            if (typeof value.toDate === 'function') return value.toDate();
+            if (typeof value.seconds === 'number') return new Date(value.seconds * 1000);
+            if (value instanceof Date) return value;
+
+            const parsed = Date.parse(value);
+            return Number.isNaN(parsed) ? null : new Date(parsed);
+        }
+
+        function syncCommunityCityPills() {
+            document.querySelectorAll('#community-city-switcher .city-pill').forEach(pill => {
+                const pillText = normalizeLookup(pill.textContent);
+                pill.classList.toggle('active', pillText.includes(currentCity));
+            });
+        }
+
+        function getCurrentCityLabel() {
+            if (currentCity === 'lamas') return 'Lamas';
+            if (currentCity === 'tarapoto') return 'Tarapoto';
+            return currentCity ? currentCity.charAt(0).toUpperCase() + currentCity.slice(1) : 'tu ciudad';
+        }
+
+        function getCommunityPostsCacheKey(city = currentCity) {
+            return `comunidad_posts_${COMMUNITY_POSTS_CACHE_VERSION}_${city}`;
+        }
+
+        function sanitizeCommunityPosts(items = []) {
+            return filterCommunityPosts(items).sort((a, b) => {
+                const aCreatedAt = getDateValue(a?.data?.createdAt)?.getTime() || 0;
+                const bCreatedAt = getDateValue(b?.data?.createdAt)?.getTime() || 0;
+                return bCreatedAt - aCreatedAt;
+            });
+        }
+
+        function persistCommunityPostsCache() {
+            if (!window.CityCache?.set) return;
+            allCommunityPosts = sanitizeCommunityPosts(allCommunityPosts);
+            CityCache.set(getCommunityPostsCacheKey(), allCommunityPosts);
+        }
+
+        function scheduleCommunityExpiryRefresh(posts = allCommunityPosts) {
+            if (communityExpiryTimeout) {
+                clearTimeout(communityExpiryTimeout);
+                communityExpiryTimeout = null;
+            }
+
+            const nextExpiryMs = sanitizeCommunityPosts(posts)
+                .map((item) => getDateValue(item?.expiredTime || item?.data?.expiresAt)?.getTime() || null)
+                .filter(Boolean)
+                .sort((a, b) => a - b)[0];
+
+            if (!nextExpiryMs) return;
+
+            const delay = Math.max(250, nextExpiryMs - Date.now() + 250);
+            communityExpiryTimeout = setTimeout(() => {
+                const filteredPosts = sanitizeCommunityPosts(allCommunityPosts);
+                if (filteredPosts.length !== allCommunityPosts.length) {
+                    allCommunityPosts = filteredPosts;
+                    persistCommunityPostsCache();
+                    renderPosts(allCommunityPosts);
+                    return;
+                }
+
+                updateTimers();
+            }, delay);
+        }
+
+        function setupCommunityPostsLoadMore() {
+            if (communityPostsObserver) {
+                communityPostsObserver.disconnect();
+                communityPostsObserver = null;
+            }
+
+            const sentinel = document.getElementById('community-load-more');
+            if (!sentinel || !communityPostsHasMore) return;
+
+            communityPostsObserver = new IntersectionObserver((entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    loadCommunityPosts();
+                }
+            }, {
+                rootMargin: '220px 0px'
+            });
+
+            communityPostsObserver.observe(sentinel);
+        }
+
+        function filterCommunityPosts(items = []) {
+            const now = Date.now();
+
+            return items.reduce((posts, item) => {
+                const data = item?.data || {};
+                if (!matchesCurrentCity(data) || !data.expiresAt) return posts;
+
+                const expiresAt = getDateValue(data.expiresAt);
+                if (expiresAt && expiresAt.getTime() > now) {
+                    posts.push({ id: item.id, data, expiredTime: expiresAt });
+                }
+
+                return posts;
+            }, []);
+        }
+
+        function filterLostItemsByCity(items = []) {
+            const now = Date.now();
+
+            return items.filter(item => {
+                const data = item?.data || {};
+                if (!matchesCurrentCity(data)) return false;
+
+                const expiresAt = getDateValue(data.expiresAt);
+                return !expiresAt || expiresAt.getTime() > now;
+            });
+        }
+
+        function filterForumTopicsByCity(items = []) {
+            return items.filter(item => matchesCurrentCity(item?.data || {}));
+        }
+
+        function filterYellowUsersByCity(users = []) {
+            return users.filter(user => {
+                const city = getRecordCity(user, '');
+                return !city || city === currentCity;
+            });
+        }
+
+        function applyYellowFilter() {
+            const term = normalizeLookup(document.getElementById('yellow-search')?.value || '');
+            const filtered = filterYellowUsersByCity(allYellowUsers).filter(u => {
+                const name = normalizeLookup(u.nombre || u.displayName || u.display_name || '');
+                const bio = normalizeLookup(u.bio || u.descripcion || '');
+                return !term || name.includes(term) || bio.includes(term);
+            });
+            const ranked = window.rankCityMartResults
+                ? window.rankCityMartResults(filtered, {
+                    query: term,
+                    city: currentCity,
+                    scope: 'community-yellow-pages',
+                    getId: (item) => item.id,
+                    getTitle: (item) => item.nombre || item.displayName || item.display_name || '',
+                    getCategory: (item) => item.oficio || item.rubro || item.categoria || '',
+                    getDescription: (item) => item.bio || item.descripcion || '',
+                    getExtraText: (item) => [item.telefono, item.phone, item.phone_number].filter(Boolean).join(' '),
+                    getTimestamp: (item) => window.getEntityTimestamp ? window.getEntityTimestamp(item) : 0
+                })
+                : filtered;
+
+            renderYellow(ranked);
+
+            if (window.recordCityMartSearchExposure) {
+                window.recordCityMartSearchExposure(ranked, {
+                    query: term,
+                    city: currentCity,
+                    scope: 'community-yellow-pages',
+                    limit: 5
+                });
+            }
+        }
+
+        function closeThreadView() {
+            activeThreadId = null;
+            forumList.style.display = 'block';
+            threadDetails.style.display = 'none';
+
+            if (unsubscribeReplies) {
+                unsubscribeReplies();
+                unsubscribeReplies = null;
+            }
+
+            if (unsubscribeThread) {
+                unsubscribeThread();
+                unsubscribeThread = null;
+            }
+        }
+
+        function rerenderCommunityData() {
+            renderPosts(filterCommunityPosts(allCommunityPosts));
+
+            if (lostLoaded) {
+                renderLostFound(filterLostItemsByCity(allLostItems));
+            }
+
+            if (forumLoaded) {
+                renderForum(filterForumTopicsByCity(allForumTopics));
+            }
+
+            if (yellowLoaded) {
+                applyYellowFilter();
+            }
+        }
+
+        // City switcher for community
+        window.switchCommunityCity = function(city) {
+            city = window.setStoredCity ? window.setStoredCity(city) : normalizeLookup(city);
+            if (currentCity === city) return;
+            currentCity = city;
+            communityPostsCursor = null;
+            communityPostsHasMore = true;
+            allCommunityPosts = [];
+            communityPostsLoadedCity = '';
+
+            syncCommunityCityPills();
+            closeThreadView();
+            updateCommunityPlaceholders();
+
+            if (activeTab === 'comunidad') {
+                loadCommunityPosts({ reset: true });
+            } else {
+                rerenderCommunityData();
+            }
+        };
+
+        // Initialize city pills on load
+        syncCommunityCityPills();
+
+        function updateCommunityPlaceholders() {
+            const cityName = getCurrentCityLabel();
+            const forumOption = document.querySelector('option[value="Historias"]');
+            if (forumOption) forumOption.innerText = `Historias de ${cityName}`;
+            
+            const forumTextarea = document.getElementById('forum-content');
+            if (forumTextarea) forumTextarea.placeholder = `¿Qué quieres compartir con ${cityName}?`;
+            
+            const yellowSearch = document.getElementById('yellow-search');
+            if (yellowSearch) yellowSearch.placeholder = `Busca a un vecino de ${cityName}...`;
+
+            const yellowFiltro = document.querySelector('.yellow-filter p');
+            if (yellowFiltro) yellowFiltro.innerText = `Descubre y contacta con el talento de ${cityName}.`;
+        }
+        updateCommunityPlaceholders();
+
+        auth.onAuthStateChanged(user => {
+            currUser = user;
+            rerenderCommunityData();
+        });
+
+        // Basic bad words filter
+        const badWords = ['mierda', 'puta', 'carajo', 'verga', 'pene', 'culo', 'sexo'];
+        function hasBadWords(text) {
+            const lower = text.toLowerCase();
+            return badWords.some(w => lower.includes(w));
+        }
+
+        window.selectType = function (type) {
+            selectedType = type;
+            document.querySelectorAll('.type-option').forEach(el => el.classList.remove('selected'));
+            document.querySelector('.type-option.' + type).classList.add('selected');
+        };
+
+        window.switchTab = function (tab) {
+            activeTab = tab;
+            document.querySelectorAll('.community-tab').forEach(el => el.classList.remove('active'));
+            postsContainer.style.display = 'none';
+            lostContainer.style.display = 'none';
+            forumContainer.style.display = 'none';
+            yellowContainer.style.display = 'none';
+            fab.style.display = 'flex';
+
+            if (tab === 'comunidad') {
+                document.querySelector('.community-tab:nth-child(1)').classList.add('active');
+                postsContainer.style.display = 'flex';
+                if (communityPostsLoadedCity !== currentCity || !allCommunityPosts.length) {
+                    loadCommunityPosts({ reset: true });
+                } else {
+                    renderPosts(allCommunityPosts);
+                }
+            } else if (tab === 'objetos') {
+                document.querySelector('.community-tab:nth-child(2)').classList.add('active');
+                lostContainer.style.display = 'flex';
+                if (!unsubscribeLost) subscribeLost();
+                else if (lostLoaded) renderLostFound(filterLostItemsByCity(allLostItems));
+            } else if (tab === 'foro') {
+                document.querySelector('.community-tab:nth-child(3)').classList.add('active');
+                forumContainer.style.display = 'flex';
+                if (!unsubscribeForum) subscribeForum();
+                else if (forumLoaded) renderForum(filterForumTopicsByCity(allForumTopics));
+            } else if (tab === 'directorio') {
+                document.querySelector('.community-tab:nth-child(4)').classList.add('active');
+                yellowContainer.style.display = 'flex';
+                fab.style.display = 'none';
+                if (!unsubscribeYellow) subscribeYellowPages();
+                else if (yellowLoaded) applyYellowFilter();
+            }
+        };
+
+        function resetImagePicker(inputId, previewId, placeholderId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const placeholder = document.getElementById(placeholderId);
+
+            if (preview) {
+                preview.removeAttribute('src');
+                preview.style.display = 'none';
+            }
+
+            if (placeholder) {
+                placeholder.style.display = 'block';
+            }
+
+            if (input) {
+                input.value = '';
+            }
+        }
+
+        window.previewImage = function (input, previewId = 'photo-preview', placeholderId = 'photo-preview-container') {
+            const preview = document.getElementById(previewId);
+            const placeholder = document.getElementById(placeholderId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        window.openCreateModal = function () {
+            if (!currUser) {
+                alert("Debes iniciar sesion para participar.");
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            document.getElementById('promo-info').style.display = 'none';
+            document.getElementById('promo-help').style.display = 'none';
+            document.getElementById('type-selector-container').style.display = 'none';
+            document.getElementById('form-comunidad').style.display = 'none';
+            document.getElementById('form-objetos').style.display = 'none';
+            document.getElementById('form-foro').style.display = 'none';
+            document.getElementById('phone-group').style.display = 'block';
+
+            if (activeTab === 'comunidad') {
+                document.getElementById('promo-info').style.display = 'block';
+                document.getElementById('promo-help').style.display = 'block';
+                document.getElementById('type-selector-container').style.display = 'flex';
+                document.getElementById('form-comunidad').style.display = 'block';
+            } else if (activeTab === 'objetos') {
+                document.getElementById('form-objetos').style.display = 'block';
+            } else {
+                document.getElementById('form-foro').style.display = 'block';
+                document.getElementById('phone-group').style.display = 'none';
+            }
+
+            document.getElementById('create-modal').style.display = 'flex';
+        };
+
+        window.closeCreateModal = function () {
+            document.getElementById('create-modal').style.display = 'none';
+            // Reset fields
+            resetImagePicker('lost-photo', 'photo-preview', 'photo-preview-container');
+            resetImagePicker('post-photo', 'post-photo-preview', 'post-photo-preview-container');
+            resetImagePicker('forum-photo', 'forum-photo-preview', 'forum-photo-preview-container');
+            document.getElementById('lost-desc').value = '';
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-desc').value = '';
+            document.getElementById('post-location').value = '';
+            document.getElementById('post-phone').value = '';
+            document.getElementById('forum-title').value = '';
+            document.getElementById('forum-content').value = '';
+        };
+
+        window.reportPost = function (id, collectionName = 'comunidad_posts') {
+            if (confirm('¿Seguro que deseas reportar esta publicación? Nuestro equipo la revisará.')) {
+                alert('Publicacion reportada. Gracias por cuidarnos.');
+            }
+        };
+
+        window.submitAny = async function () {
+            if (activeTab === 'comunidad') {
+                await submitPost();
+            } else if (activeTab === 'objetos') {
+                await submitLostFound();
+            } else {
+                await submitForum();
+            }
+        };
+
+        window.submitPost = async function () {
+            if (!currUser) return;
+
+            const btn = document.getElementById('btn-submit-post');
+            const category = document.getElementById('post-category').value;
+            const title = document.getElementById('post-title').value.trim();
+            const desc = document.getElementById('post-desc').value.trim();
+            const location = document.getElementById('post-location').value.trim();
+            const phone = document.getElementById('post-phone').value.trim();
+            const photoFile = document.getElementById('post-photo').files[0];
+
+            if (!title || !desc || !phone) {
+                alert('Titulo, descripcion y WhatsApp son obligatorios.');
+                return;
+            }
+            if (hasBadWords(title) || hasBadWords(desc)) {
+                alert('Tu publicacion contiene palabras no permitidas.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'PUBLICANDO...';
+
+            try {
+                // Check daily limit
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const qLimit = query(
+                    collection(db, "comunidad_posts"),
+                    where("userId", "==", currUser.uid),
+                    limit(COMUNIDAD_DAILY_POST_LIMIT * 4)
+                );
+                const snap = await getDocs(qLimit);
+                let todayCount = 0;
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    if (data.createdAt) {
+                        const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt.seconds * 1000);
+                        if (date >= today) todayCount++;
+                    }
+                });
+
+                if (todayCount >= COMUNIDAD_DAILY_POST_LIMIT) {
+                    alert(`Limite de ${COMUNIDAD_DAILY_POST_LIMIT} publicaciones diarias alcanzado.`);
+                    return;
+                }
+
+                const expireDate = new Date();
+                expireDate.setHours(expireDate.getHours() + 6);
+
+                let photoPayload = {};
+                if (photoFile) {
+                    btn.innerText = 'CARGANDO FOTO...';
+                    const { storage, ref, uploadBytes, getDownloadURL } = await getStorageDeps();
+                    const optimizedPhoto = window.optimizeUploadImage
+                        ? await window.optimizeUploadImage(photoFile, 'communityPost')
+                        : (window.compressImage ? await window.compressImage(photoFile, { maxWidth: 420, maxHeight: 420, quality: 0.6 }) : photoFile);
+                    const fileExtension = (optimizedPhoto.type || '').includes('png') ? 'png' : 'jpg';
+                    const safeName = (photoFile.name || 'foto')
+                        .replace(/\.[^/.]+$/, '')
+                        .replace(/[^\w-]+/g, '_')
+                        .slice(0, 40) || 'foto';
+                    const filePath = `community_posts/${Date.now()}_${safeName}.${fileExtension}`;
+                    const storageRef = ref(storage, filePath);
+                    const snapshot = await uploadBytes(storageRef, optimizedPhoto);
+                    const photoUrl = await getDownloadURL(snapshot.ref);
+                    photoPayload = {
+                        photo: photoUrl,
+                        photo_path: filePath
+                    };
+                }
+
+                btn.innerText = 'PUBLICANDO...';
+
+                const postPayload = {
+                    userId: currUser.uid,
+                    type: selectedType,
+                    category: category,
+                    title: title,
+                    description: desc,
+                    location: location,
+                    phone: phone.replace(/\D/g, ''),
+                    ...photoPayload,
+                    ciudad: currentCity,
+                    createdAt: serverTimestamp(),
+                    expiresAt: expireDate
+                };
+                const postRef = await addDoc(collection(db, "comunidad_posts"), postPayload);
+
+                const localPost = {
+                    id: postRef.id,
+                    data: {
+                        ...postPayload,
+                        createdAt: new Date(),
+                        expiresAt: expireDate
+                    },
+                    expiredTime: expireDate
+                };
+                allCommunityPosts = [localPost, ...allCommunityPosts.filter((item) => item.id !== postRef.id)];
+                persistCommunityPostsCache();
+                if (activeTab === 'comunidad' && currentCity === localPost.data.ciudad) {
+                    renderPosts(allCommunityPosts);
+                }
+
+                try {
+                    const reward = await awardCityCashAction('marketplace_post', postRef.id);
+                    showCityCashRewardToast(reward);
+                    if (reward?.awarded) {
+                        await new Promise((resolve) => setTimeout(resolve, 900));
+                    }
+                } catch (rewardError) {
+                    if (rewardError?.message !== 'already-claimed') {
+                        console.warn('CityCash marketplace reward error:', rewardError);
+                    }
+                }
+
+                closeCreateModal();
+                alert('Publicado con exito. Durara 6 horas.');
+            } catch (error) {
+                console.error("Error added post:", error);
+                alert('Ocurrio un error.');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'PUBLICAR AHORA';
+            }
+        };
+
+        window.submitLostFound = async function () {
+            if (!currUser) return;
+
+            const btn = document.getElementById('btn-submit-post');
+            const desc = document.getElementById('lost-desc').value.trim();
+            const phone = document.getElementById('post-phone').value.trim();
+            const photoFile = document.getElementById('lost-photo').files[0];
+
+            if (!desc || !phone) {
+                alert('Descripcion y WhatsApp son obligatorios.');
+                return;
+            }
+            if (!photoFile) {
+                alert('Una foto del objeto es obligatoria.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'CARGANDO FOTO...';
+
+            try {
+                const { storage, ref, uploadBytes, getDownloadURL } = await getStorageDeps();
+                const optimizedPhoto = window.optimizeUploadImage
+                    ? await window.optimizeUploadImage(photoFile, 'lostfound')
+                    : (window.compressImage ? await window.compressImage(photoFile) : photoFile);
+                const filePath = `lost_found/${Date.now()}_${photoFile.name}`;
+                const storageRef = ref(storage, filePath);
+                const snapshot = await uploadBytes(storageRef, optimizedPhoto);
+                const photoUrl = await getDownloadURL(snapshot.ref);
+
+                btn.innerText = 'PUBLICANDO...';
+
+                const expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + 30);
+
+                await addDoc(collection(db, "comunidad_lostfound"), {
+                    userId: currUser.uid,
+                    description: desc,
+                    photo: photoUrl,
+                    photo_path: filePath,
+                    phone: phone.replace(/\D/g, ''),
+                    ciudad: currentCity,
+                    createdAt: serverTimestamp(),
+                    expiresAt: expireDate
+                });
+
+                closeCreateModal();
+                alert('Publicado en Objetos Perdidos.');
+            } catch (error) {
+                console.error("Error adding lost found:", error);
+                alert('Ocurrio un error.');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'PUBLICAR AHORA';
+            }
+        };
+
+        async function loadCommunityPosts({ reset = false } = {}) {
+            if (communityPostsLoading) return;
+
+            const cacheKey = getCommunityPostsCacheKey();
+            if (reset) {
+                communityPostsCursor = null;
+                communityPostsHasMore = true;
+                communityPostsLoadedCity = currentCity;
+                allCommunityPosts = [];
+
+                const cached = CityCache.getStale ? CityCache.getStale(cacheKey) : null;
+                if (cached?.data?.length) {
+                    allCommunityPosts = sanitizeCommunityPosts(cached.data);
+                    persistCommunityPostsCache();
+                    renderPosts(allCommunityPosts);
+                    if (cached.fresh) return;
+                }
+            }
+
+            if (!communityPostsHasMore) {
+                renderPosts(allCommunityPosts);
+                return;
+            }
+
+            communityPostsLoading = true;
+            renderPosts(allCommunityPosts);
+
+            try {
+                const previousVisibleCount = allCommunityPosts.length;
+                const targetVisibleCount = reset ? COMMUNITY_PAGE_SIZE : previousVisibleCount + COMMUNITY_PAGE_SIZE;
+
+                while (communityPostsHasMore && allCommunityPosts.length < targetVisibleCount) {
+                    const constraints = [orderBy("createdAt", "desc"), limit(COMMUNITY_PAGE_SIZE)];
+                    if (communityPostsCursor) {
+                        constraints.splice(1, 0, startAfter(communityPostsCursor));
+                    }
+
+                    const snapshot = await getDocs(query(collection(db, "comunidad_posts"), ...constraints));
+                    if (snapshot.empty) {
+                        communityPostsHasMore = false;
+                        break;
+                    }
+
+                    communityPostsCursor = snapshot.docs[snapshot.docs.length - 1] || communityPostsCursor;
+                    if (snapshot.size < COMMUNITY_PAGE_SIZE) {
+                        communityPostsHasMore = false;
+                    }
+
+                    const freshItems = filterCommunityPosts(
+                        snapshot.docs.map((docSnap) => ({ id: docSnap.id, data: docSnap.data() }))
+                    );
+                    const seenIds = new Set(allCommunityPosts.map((item) => item.id));
+                    freshItems.forEach((item) => {
+                        if (!seenIds.has(item.id)) {
+                            allCommunityPosts.push(item);
+                            seenIds.add(item.id);
+                        }
+                    });
+                }
+
+                allCommunityPosts = sanitizeCommunityPosts(allCommunityPosts);
+                persistCommunityPostsCache();
+            } catch (error) {
+                console.error("Error loading community posts:", error);
+            } finally {
+                communityPostsLoading = false;
+                renderPosts(allCommunityPosts);
+            }
+        }
+
+        function renderPosts(posts) {
+            const visiblePosts = sanitizeCommunityPosts(posts);
+
+            if (communityPostsObserver) {
+                communityPostsObserver.disconnect();
+                communityPostsObserver = null;
+            }
+
+            if (visiblePosts.length !== allCommunityPosts.length && posts === allCommunityPosts) {
+                allCommunityPosts = visiblePosts;
+                persistCommunityPostsCache();
+            }
+
+            scheduleCommunityExpiryRefresh(visiblePosts);
+
+            if (visiblePosts.length === 0) {
+                const loadingCopy = communityPostsLoading
+                    ? '<p style="font-size: 0.82rem; color: #64748b; margin-top: 12px;">Cargando avisos recientes...</p>'
+                    : '';
+                postsContainer.innerHTML = `${COMMUNITY_MARKETPLACE_NOTE}<div style="text-align:center; padding: 60px 20px;"><div style="background: #f3f4f6; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;"><i data-lucide="message-square" style="width: 32px; height: 32px; color: #9ca3af;"></i></div><h3 style="font-size: 1.1rem; color: #374151; font-family: 'Inter'; margin-bottom: 8px;">El muro esta tranquilo</h3><p style="font-size: 0.85rem; color: #6b7280;">Nadie ha publicado en las ultimas 6 horas. Se el primero en pedir u ofrecer algo.</p>${loadingCopy}</div>`;
+                lucide.createIcons();
+                return;
+            }
+
+            const loadMoreHtml = communityPostsHasMore
+                ? `<div id="community-load-more" style="padding: 8px 16px 28px; text-align: center; color: #64748b; font-size: 0.78rem; font-weight: 700;">${communityPostsLoading ? 'Cargando mas avisos...' : 'Desliza para cargar mas publicaciones'}</div>`
+                : `<div style="padding: 8px 16px 28px; text-align: center; color: #94a3b8; font-size: 0.75rem; font-weight: 700;">Ya viste lo mas reciente de ${getCurrentCityLabel()}.</div>`;
+
+            postsContainer.innerHTML = COMMUNITY_MARKETPLACE_NOTE + visiblePosts.map(p => {
+                const isBusco = p.data.type === 'busco';
+                const badgeClass = isBusco ? 'badge-busco' : 'badge-ofrezco';
+                const badgeText = isBusco ? 'BUSCO' : 'OFREZCO';
+                const expireAt = getDateValue(p.expiredTime || p.data.expiresAt) || new Date();
+                const locHTML = p.data.location ? `<div style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:#6b7280; margin-bottom:8px;"><i data-lucide="map-pin" style="width:12px;"></i> ${p.data.location}</div>` : '';
+                const postPhoto = window.pickDisplayImage
+                    ? window.pickDisplayImage([p.data.photo], '', { width: 320 })
+                    : (p.data.photo || '');
+                const photoHTML = postPhoto
+                    ? `<img src="${postPhoto}" alt="${p.data.title || 'Foto del anuncio'}" class="post-thumb" loading="lazy" decoding="async" fetchpriority="low">`
+                    : '';
+
+                return `
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="type-badge ${badgeClass}">${badgeText}</span>
+                                <span class="post-category">${p.data.category}</span>
+                            </div>
+                            <button class="btn-report" onclick="reportPost('${p.id}')"><i data-lucide="flag" style="width: 14px; height: 14px;"></i></button>
+                        </div>
+                        <div class="post-body">
+                            <div class="post-copy">
+                                <h3 class="post-title">${p.data.title}</h3>
+                                <p class="post-desc">${p.data.description}</p>
+                                ${locHTML}
+                            </div>
+                            ${photoHTML}
+                        </div>
+                        <div class="post-footer">
+                            <div class="timer-badge post-timer" data-expire="${expireAt.getTime()}"><i data-lucide="clock" style="width:12px;"></i><span></span></div>
+                            <a href="https://wa.me/51${p.data.phone}?text=Hola,%20vi%20tu%20anuncio%20en%20CityMart%20${encodeURIComponent(getCurrentCityLabel())}:%20${encodeURIComponent(p.data.title)}" target="_blank" class="btn-whatsapp"><i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Contactar</a>
+                        </div>
+                    </div>`;
+            }).join('') + loadMoreHtml;
+            lucide.createIcons();
+            updateTimers();
+            setupCommunityPostsLoadMore();
+        }
+
+        function updateTimers() {
+            const now = Date.now();
+            let removedExpiredPosts = false;
+            postsContainer.querySelectorAll('.post-timer').forEach(el => {
+                const expiredTime = new Date(parseInt(el.getAttribute('data-expire')));
+                const label = el.querySelector('span');
+                const diffMs = expiredTime.getTime() - now;
+                if (diffMs <= 0) {
+                    removedExpiredPosts = true;
+                } else {
+                    const h = Math.floor(diffMs / (1000 * 60 * 60));
+                    const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                    if (label) label.textContent = `Expira en ${h}h ${m}m`;
+                    el.style.color = h === 0 ? '#ef4444' : 'var(--text-soft)';
+                }
+            });
+
+            if (removedExpiredPosts) {
+                const filteredPosts = sanitizeCommunityPosts(allCommunityPosts);
+                if (filteredPosts.length !== allCommunityPosts.length) {
+                    allCommunityPosts = filteredPosts;
+                    persistCommunityPostsCache();
+                    renderPosts(allCommunityPosts);
+                    return;
+                }
+            }
+
+            scheduleCommunityExpiryRefresh(allCommunityPosts);
+        }
+
+        function subscribeLost() {
+            unsubscribeLost = () => {};
+
+            return CityCache.loadWithCache('comunidad_lostfound',
+                async () => {
+                    const q = query(collection(db, "comunidad_lostfound"), orderBy("createdAt", "desc"), limit(50));
+                    const snapshot = await getDocs(q);
+                    return snapshot.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() }));
+                },
+                (items) => {
+                    allLostItems = items || [];
+                    lostLoaded = true;
+                    renderLostFound(filterLostItemsByCity(allLostItems));
+                }
+            );
+        }
+
+        function renderLostFound(items) {
+            if (items.length === 0) {
+                lostContainer.innerHTML = `<div style="text-align:center; padding: 60px 20px;"><div style="background: #f3f4f6; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;"><i data-lucide="camera" style="width: 32px; height: 32px; color: #9ca3af;"></i></div><h3 style="font-size: 1.1rem; color: #374151; font-family: 'Inter'; margin-bottom: 8px;">No hay objetos extraviados</h3><p style="font-size: 0.85rem; color: #6b7280;">Si encontraste algo o perdiste algo, publicalo aqui con una foto.</p></div>`;
+                lucide.createIcons();
+                return;
+            }
+
+            lostContainer.innerHTML = items.map(p => {
+                const canDelete = currUser && p.data.userId === currUser.uid;
+                const expiresLabel = p.data.expiresAt
+                    ? (p.data.expiresAt.toDate ? p.data.expiresAt.toDate().toLocaleDateString() : '30 dias')
+                    : '30 dias';
+                const lostImage = window.pickDisplayImage
+                    ? window.pickDisplayImage([p.data.photo_thumb, p.data.photo], 'assets/placeholder.svg', { width: 960 })
+                    : (p.data.photo_thumb || p.data.photo || 'assets/placeholder.svg');
+                return `
+                    <div class="post-card" style="padding: 0; overflow: hidden;">
+                        <img src="${lostImage}" alt="Objeto extraviado" style="width: 100%; height: 200px; object-fit: cover;" loading="lazy" decoding="async" fetchpriority="low">
+                        <div style="padding: 14px;">
+                            <div class="post-header">
+                                <span class="type-badge badge-busco" style="background: #fef3c7; color: #d97706; border-color: #fcd34d;">OBJETO EXTRAVIADO</span>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    ${canDelete ? `<button class="btn-report" onclick="deleteLostFound('${p.id}', '${p.data.photo_path || ''}')"><i data-lucide="trash-2" style="width: 14px; height: 14px;"></i></button>` : ''}
+                                    <button class="btn-report" onclick="reportPost('${p.id}', 'comunidad_lostfound')"><i data-lucide="flag" style="width: 14px; height: 14px;"></i></button>
+                                </div>
+                            </div>
+                            <p class="post-desc" style="margin-top: 8px; font-size: 0.9rem;">${p.data.description}</p>
+                            <div class="post-footer">
+                                <span style="font-size: 0.7rem; color: #9ca3af; font-weight: 600;">Publicado: ${p.data.createdAt ? (p.data.createdAt.toDate ? p.data.createdAt.toDate().toLocaleDateString() : 'Recientemente') : 'Recientemente'} · Expira: ${expiresLabel}</span>
+                                <a href="https://wa.me/51${p.data.phone}" target="_blank" class="btn-whatsapp"><i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Contactar</a>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.deleteLostFound = async function(id, photoPath) {
+            if (!currUser) {
+                alert("Debes iniciar sesion para eliminar esta publicacion.");
+                return;
+            }
+
+            const confirmed = confirm('¿Eliminar esta publicación de Objetos Perdidos?');
+            if (!confirmed) return;
+
+            try {
+                const { storage, ref, deleteObject } = await getStorageDeps();
+                await deleteDoc(doc(db, "comunidad_lostfound", id));
+                if (photoPath) {
+                    await deleteObject(ref(storage, photoPath)).catch(() => {});
+                }
+                showToast("Publicacion eliminada correctamente.");
+            } catch (error) {
+                console.error("Error deleting lost found:", error);
+                showToast("No se pudo eliminar la publicacion.", "error");
+            }
+        };
+
+        // --- Muro Social LOGIC ---
+
+        function subscribeForum() {
+            unsubscribeForum = () => {};
+
+            return CityCache.loadWithCache(
+                'community_forum_topics',
+                async () => {
+                    const q = query(collection(db, "foro_temas"), orderBy("createdAt", "desc"), limit(FORUM_PAGE_LIMIT));
+                    const snapshot = await getDocs(q);
+                    return snapshot.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() }));
+                },
+                (items) => {
+                    allForumTopics = items || [];
+                    forumLoaded = true;
+                    renderForum(filterForumTopicsByCity(allForumTopics));
+                }
+            );
+        }
+
+        function renderForum(items) {
+            if (activeThreadId) return; // Don't overwrite if viewing a thread
+            
+            if (items.length === 0) {
+                forumList.innerHTML = `<div style="text-align:center; padding: 60px 20px;"><div style="background: #f3f4f6; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;"><i data-lucide="message-square" style="width: 32px; height: 32px; color: #9ca3af;"></i></div><h3 style="font-size: 1.1rem; color: #374151; font-family: 'Inter'; margin-bottom: 8px;">Muro Social vacio</h3><p style="font-size: 0.85rem; color: #6b7280;">Se el primero en iniciar una conversacion con tus vecinos.</p></div>`;
+                lucide.createIcons();
+                return;
+            }
+
+            forumList.innerHTML = items.map(p => {
+                const voters = p.data.voters || [];
+                const votos = voters.length;
+                const hasVoted = currUser && voters.includes(currUser.uid);
+                const catClass = `category-${p.data.category}`;
+                const tagClass = `tag-${p.data.category}`;
+                const forumPhoto = window.pickDisplayImage
+                    ? window.pickDisplayImage([p.data.photo], '', { width: 320 })
+                    : (p.data.photo || '');
+                const photoHTML = forumPhoto
+                    ? `<img src="${forumPhoto}" alt="${p.data.title || 'Foto del tema'}" class="forum-card__thumb" loading="lazy" decoding="async" fetchpriority="low">`
+                    : '';
+                return `
+                    <div class="forum-card ${catClass}" onclick="openThread('${p.id}')">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                            <span class="forum-category-tag ${tagClass}">${p.data.category}</span>
+                            <div class="vote-btn ${hasVoted ? 'active' : ''}" onclick="event.stopPropagation(); votarTema('${p.id}', ${JSON.stringify(voters)})">
+                                <i data-lucide="heart" style="width:14px; fill: ${hasVoted ? '#ef4444' : 'none'}; color: ${hasVoted ? '#ef4444' : 'currentColor'}"></i>
+                                <span>${votos}</span>
+                            </div>
+                        </div>
+                        <div class="forum-card__layout">
+                            <div class="forum-card__copy">
+                                <h3 style="font-family: 'Inter'; font-size: 1.15rem; font-weight: 700; color: #1f2937; margin: 8px 0;">${p.data.title}</h3>
+                                <p style="font-size: 0.9rem; color: #4b5563; line-height:1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${p.data.content}</p>
+                            </div>
+                            ${photoHTML}
+                        </div>
+                        <div class="forum-meta">
+                            <span style="font-weight:700; color:#374151;">${p.data.userName || 'Vecino'}</span>
+                            <span>${p.data.createdAt ? (p.data.createdAt.toDate ? p.data.createdAt.toDate().toLocaleDateString() : 'Recientemente') : 'Recientemente'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.votarTema = async function(id, voters) {
+            if (!currUser) { alert("Inicia sesion para votar"); return; }
+            try {
+                const docRef = doc(db, "foro_temas", id);
+                const hasVoted = voters.includes(currUser.uid);
+                const nextVoters = hasVoted
+                    ? voters.filter((uid) => uid !== currUser.uid)
+                    : [...voters, currUser.uid];
+                await updateDoc(docRef, {
+                    voters: hasVoted ? arrayRemove(currUser.uid) : arrayUnion(currUser.uid)
+                });
+                allForumTopics = allForumTopics.map((item) => item.id === id
+                    ? { ...item, data: { ...item.data, voters: nextVoters } }
+                    : item
+                );
+                CityCache.set('community_forum_topics', allForumTopics);
+                if (!activeThreadId) {
+                    renderForum(filterForumTopicsByCity(allForumTopics));
+                }
+            } catch (e) { console.error(e); }
+        };
+
+        window.submitForum = async function() {
+            const title = document.getElementById('forum-title').value.trim();
+            const content = document.getElementById('forum-content').value.trim();
+            const category = document.getElementById('forum-category').value;
+            const photoFile = document.getElementById('forum-photo').files[0];
+            const btn = document.getElementById('btn-submit-post');
+
+            if (!title || !content) {
+                alert('Titulo y mensaje son obligatorios.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'PUBLICANDO...';
+
+            try {
+                let photoPayload = {};
+                if (photoFile) {
+                    btn.innerText = 'CARGANDO FOTO...';
+                    const { storage, ref, uploadBytes, getDownloadURL } = await getStorageDeps();
+                    const optimizedPhoto = window.optimizeUploadImage
+                        ? await window.optimizeUploadImage(photoFile, 'forumCard')
+                        : (window.compressImage ? await window.compressImage(photoFile, { maxWidth: 420, maxHeight: 420, quality: 0.56 }) : photoFile);
+                    const fileExtension = (optimizedPhoto.type || '').includes('png') ? 'png' : 'jpg';
+                    const safeName = (photoFile.name || 'foto')
+                        .replace(/\.[^/.]+$/, '')
+                        .replace(/[^\w-]+/g, '_')
+                        .slice(0, 40) || 'foto';
+                    const filePath = `foro_temas/${Date.now()}_${safeName}.${fileExtension}`;
+                    const storageRef = ref(storage, filePath);
+                    const snapshot = await uploadBytes(storageRef, optimizedPhoto);
+                    const photoUrl = await getDownloadURL(snapshot.ref);
+                    photoPayload = {
+                        photo: photoUrl,
+                        photo_path: filePath
+                    };
+                }
+
+                btn.innerText = 'PUBLICANDO...';
+
+                const forumPayload = {
+                    userId: currUser.uid,
+                    userName: currUser.displayName || 'Vecino',
+                    title: title,
+                    content: content,
+                    category: category,
+                    ...photoPayload,
+                    ciudad: currentCity,
+                    voters: [],
+                    createdAt: serverTimestamp()
+                };
+                const topicRef = await addDoc(collection(db, "foro_temas"), forumPayload);
+                const localTopic = {
+                    id: topicRef.id,
+                    data: {
+                        ...forumPayload,
+                        createdAt: new Date()
+                    }
+                };
+                allForumTopics = [localTopic, ...allForumTopics.filter((item) => item.id !== topicRef.id)];
+                CityCache.set('community_forum_topics', allForumTopics);
+                if (activeTab === 'foro') {
+                    renderForum(filterForumTopicsByCity(allForumTopics));
+                }
+
+                try {
+                    const reward = await awardCityCashAction('social_wall_post', topicRef.id);
+                    showCityCashRewardToast(reward);
+                    if (reward?.awarded) {
+                        await new Promise((resolve) => setTimeout(resolve, 900));
+                    }
+                } catch (rewardError) {
+                    if (rewardError?.message !== 'already-claimed') {
+                        console.warn('CityCash social wall reward error:', rewardError);
+                    }
+                }
+
+                closeCreateModal();
+                alert('Publicado en Muro Social.');
+            } catch (e) {
+                alert('Error al publicar.');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'PUBLICAR AHORA';
+            }
+        };
+
+        let unsubscribeThread = null;
+        window.openThread = function(id) {
+            activeThreadId = id;
+            forumList.style.display = 'none';
+            threadDetails.style.display = 'block';
+            
+            // Get Thread Content in real-time
+            unsubscribeThread = onSnapshot(doc(db, "foro_temas", id), (docSnap) => {
+                if (!docSnap.exists()) return;
+                const threadData = docSnap.data();
+                const voters = threadData.voters || [];
+                const votos = voters.length;
+                const hasVoted = currUser && voters.includes(currUser.uid);
+
+                document.getElementById('active-thread-content').innerHTML = `
+                    <div style="padding: 0 16px 12px; display:flex; align-items:center; gap:8px; cursor:pointer; color:#64748b;" onclick="closeThread()">
+                        <i data-lucide="arrow-left" style="width:18px;"></i>
+                        <span style="font-size: 0.85rem; font-weight:700;">Volver a Muro Social</span>
+                    </div>
+                    <div class="main-post-hero category-${threadData.category}">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                            <span class="forum-category-tag tag-${threadData.category}" style="font-size: 0.65rem; padding: 4px 10px; border-radius:8px;">${threadData.category}</span>
+                            <div class="vote-btn ${hasVoted ? 'active' : ''}" style="background:white; border-color:#e2e8f0; padding: 6px 10px;" onclick="votarTema('${id}', ${JSON.stringify(voters)})">
+                                <i data-lucide="heart" style="width:14px; fill: ${hasVoted ? '#ef4444' : 'none'}; color: ${hasVoted ? '#ef4444' : 'currentColor'}"></i>
+                                <span style="font-size: 0.85rem;">${votos}</span>
+                            </div>
+                        </div>
+                        <h2 style="font-family: 'Inter'; font-size: 1.3rem; font-weight: 700; line-height: 1.1; margin: 6px 0; color: #111;">${threadData.title}</h2>
+                        <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                            <div class="reply-user-icon" style="width:24px; height:24px; font-size: 0.7rem; background:#f1f5f9;">${threadData.userName?.charAt(0) || 'V'}</div>
+                            <div style="font-size: 0.75rem; color: #64748b; font-weight:600;">Por ${threadData.userName} - <span style="opacity: 0.7;">${threadData.createdAt ? (threadData.createdAt.toDate ? threadData.createdAt.toDate().toLocaleDateString() : 'Hoy') : 'Hoy'}</span></div>
+                        </div>
+                        <p style="font-size: 0.92rem; color: #334155; line-height: 1.5; white-space: pre-wrap; margin: 0;">${threadData.content}</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            });
+
+            subscribeReplies(id);
+        };
+
+        window.closeThread = function() {
+            closeThreadView();
+            if (forumLoaded) {
+                renderForum(filterForumTopicsByCity(allForumTopics));
+            }
+        };
+
+        function subscribeReplies(temaId) {
+            // Using a broader query to avoid index errors initially, sorting client-side
+            const q = query(collection(db, "foro_respuestas"), where("temaId", "==", temaId));
+            unsubscribeReplies = onSnapshot(q, (snapshot) => {
+                const replies = [];
+                snapshot.forEach(doc => replies.push({id: doc.id, data: doc.data()}));
+                // Client-side sort to be safe
+                replies.sort((a,b) => (a.data.createdAt?.seconds || 0) - (b.data.createdAt?.seconds || 0));
+                renderReplies(replies);
+            });
+        }
+
+        function renderReplies(replies) {
+            const container = document.getElementById('replies-container');
+            if (replies.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 40px 20px;"><i data-lucide="message-circle" style="width:32px; color:#d1d5db; margin-bottom:10px;"></i><p style="font-size: 0.9rem; color: #9ca3af;">Aún no hay respuestas. Sé el primero.</p></div>`;
+                lucide.createIcons();
+                return;
+            }
+            container.innerHTML = replies.map(r => {
+                const voters = r.data.voters || [];
+                const votos = voters.length;
+                const hasVoted = currUser && voters.includes(currUser.uid);
+                const inicial = r.data.userName?.charAt(0) || 'V';
+                return `
+                    <div class="reply-card">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <div class="reply-user-icon" style="width:18px; height:18px; font-size:0.55rem;">${inicial}</div>
+                                <div style="font-size: 0.7rem; font-weight: 700; color: #475569;">${r.data.userName}</div>
+                            </div>
+                            <div class="vote-btn ${hasVoted ? 'active' : ''}" style="padding: 1px 6px; font-size: 0.65rem; background:transparent; border-color:transparent;" onclick="votarRespuesta('${r.id}', ${JSON.stringify(voters)})">
+                                <i data-lucide="heart" style="width:10px; fill: ${hasVoted ? '#ef4444' : 'none'}; color: ${hasVoted ? '#ef4444' : 'currentColor'}"></i>
+                                <span>${votos}</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.82rem; color: #334155; line-height: 1.35; white-space: pre-wrap; margin: 0; padding-left: 24px;">${r.data.content}</p>
+                        <div style="font-size: 0.55rem; color: #94a3b8; margin-top: 4px; padding-left: 24px; display:flex; align-items:center; gap:3px;">
+                            <i data-lucide="clock" style="width:8px;"></i>
+                            ${r.data.createdAt ? (r.data.createdAt.toDate ? r.data.createdAt.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Ahora') : 'Ahora'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.votarRespuesta = async function(id, voters) {
+            if (!currUser) { alert("Inicia sesion para votar"); return; }
+            try {
+                const docRef = doc(db, "foro_respuestas", id);
+                const hasVoted = voters.includes(currUser.uid);
+                await updateDoc(docRef, {
+                    voters: hasVoted ? arrayRemove(currUser.uid) : arrayUnion(currUser.uid)
+                });
+            } catch (e) { console.error(e); }
+        };
+
+        window.submitReply = async function() {
+            const text = document.getElementById('reply-text').value.trim();
+            if (!text) return;
+            if (!currUser) { alert("Inicia sesion para comentar"); return; }
+
+            const btn = document.querySelector('button[onclick="submitReply()"]');
+            btn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "foro_respuestas"), {
+                    temaId: activeThreadId,
+                    userId: currUser.uid,
+                    userName: currUser.displayName || 'Vecino',
+                    content: text,
+                    voters: [],
+                    createdAt: serverTimestamp()
+                });
+                document.getElementById('reply-text').value = '';
+            } catch (e) {
+                console.error(e);
+                alert('Error al comentar.');
+            } finally {
+                btn.disabled = false;
+            }
+        };
+
+        function subscribeYellowPages() {
+            unsubscribeYellow = () => {};
+
+            return CityCache.loadWithCache('community_users_directory',
+                async () => {
+                    const snapshot = await getDocs(collection(db, "users"));
+                    return snapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+                },
+                (users) => {
+                    allYellowUsers = (users || []).filter(data => data.displayName || data.display_name || data.nombre);
+                    yellowLoaded = true;
+                    applyYellowFilter();
+                }
+            );
+        }
+
+        function renderYellow(users) {
+            const list = document.getElementById('yellow-list');
+            if (users.length === 0) {
+                list.innerHTML = `<div style="text-align:center; padding: 40px; color:#9c9c9c; font-size:0.9rem;"><i data-lucide="users" style="width:32px; margin-bottom:10px; opacity:0.3;"></i><p>Aún no hay vecinos en el Directorio.</p></div>`;
+                lucide.createIcons();
+                return;
+            }
+            list.innerHTML = users.map(u => {
+                const profileImage = window.pickDisplayImage
+                    ? window.pickDisplayImage([u.photoURL_thumb, u.photo_thumb, u.photo_url, u.photoURL, u.foto], 'assets/default-avatar.svg', { width: 240 })
+                    : (u.photoURL_thumb || u.photo_thumb || u.photo_url || u.photoURL || u.foto || 'assets/default-avatar.svg');
+
+                return `
+                <div class="yellow-card">
+                    <img src="${profileImage}" class="yellow-avatar" onerror="this.src='assets/default-avatar.svg'" loading="lazy" decoding="async" fetchpriority="low" alt="${u.nombre || u.displayName || u.display_name || 'Vecino'}">
+                    <div style="flex:1;">
+                        <h4 style="font-family: 'Inter'; font-weight: 700; font-size:1rem; margin-bottom:1px; color:#1e293b;">${u.nombre || u.displayName || u.display_name || 'Vecino'}</h4>
+                        <p style="font-size:0.75rem; color:#64748b; line-height:1.2; margin-bottom:4px;">${u.bio || u.descripcion || `Vecino de ${getCurrentCityLabel()}`}</p>
+                        <div style="display:flex; align-items:center; gap:4px; font-size:0.8rem; font-weight:700; color: #059669;">
+                            <i data-lucide="phone" style="width:10px;"></i>
+                            <span>${u.telefono || u.phone || u.phone_number || 'S/N'}</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/51${u.phone || u.telefono || u.phone_number}" target="_blank" style="background:#22c55e; color:white; width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);">
+                        <i data-lucide="message-circle" style="width:20px; fill: white;"></i>
+                    </a>
+                </div>
+            `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.filterYellow = function() {
+            if (yellowSearchDebounceId) {
+                clearTimeout(yellowSearchDebounceId);
+            }
+
+            yellowSearchDebounceId = setTimeout(() => {
+                yellowSearchDebounceId = null;
+                applyYellowFilter();
+            }, 120);
+        };
+
+        loadCommunityPosts({ reset: true });
+        setInterval(updateTimers, 60000);
+    </script>
+</body>
+
+</html>
+

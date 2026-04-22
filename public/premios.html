@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Premios CityMart | Próximamente</title>
+    <meta name="description" content="Descubre los premios que podrás canjear próximamente con tu saldo CityCash en CityMart.">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="assets/js/utils.js"></script>
+    <style>
+        :root {
+            --reward-bg: #0f172a;
+            --reward-card: rgba(30, 41, 59, 0.7);
+            --reward-gold: #fbbf24;
+            --reward-gold-dim: #b45309;
+            --reward-accent: #38bdf8;
+            --reward-line: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: 
+                radial-gradient(circle at top right, rgba(56, 189, 248, 0.15), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(251, 191, 36, 0.1), transparent 40%),
+                #020617;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .premios-shell {
+            width: min(600px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 24px 0 120px;
+        }
+
+        .premios-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .premios-eyebrow {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--reward-accent);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .premios-title {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 2.2rem;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 12px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .premios-subtitle {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            max-width: 30ch;
+            margin: 0 auto 24px;
+            line-height: 1.5;
+        }
+
+        /* Coin style from citycash.html */
+        .citycash-coin {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.1em;
+            height: 1.1em;
+            background: linear-gradient(135deg, #fff7ad 0%, #fbbf24 45%, #d97706 100%);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6);
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.4);
+            margin-right: 4px;
+        }
+        .citycash-coin::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 15%;
+            height: 15%;
+            background: white;
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0.8;
+        }
+
+        .reward-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .reward-card {
+            background: var(--reward-card);
+            border: 1px solid var(--reward-line);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: cardScaleIn 0.6s backwards;
+        }
+        
+        @keyframes cardScaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .reward-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .reward-image-wrap {
+            aspect-ratio: 1/1;
+            width: 100%;
+            background: #1e293b;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reward-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.9);
+            transition: transform 0.5s ease;
+        }
+
+        .reward-card:hover .reward-image {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .upcoming-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(4px);
+            color: var(--reward-gold);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            z-index: 2;
+        }
+
+        .reward-info {
+            padding: 16px;
+        }
+
+        .reward-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .reward-price {
+            display: flex;
+            align-items: center;
+            font-family: "Space Grotesk", sans-serif;
+            color: var(--reward-gold);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .motivation-banner {
+            margin-top: 40px;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(251, 191, 36, 0.05));
+            border: 1px solid var(--reward-line);
+            border-radius: 24px;
+            text-align: center;
+        }
+
+        .motivation-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .motivation-phrases {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .phrase-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .phrase-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--reward-gold);
+            border-radius: 50%;
+        }
+
+        /* BACK BUTTON */
+        .page-back-btn {
+            position: sticky;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            .premios-title { font-size: 1.8rem; }
+            .reward-grid { gap: 12px; }
+            .reward-info { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="premios-shell">
+        <a href="citycash.html" class="page-back-btn">
+            <i data-lucide="arrow-left"></i> Volver a Wallet
+        </a>
+
+        <header class="premios-header">
+            <span class="premios-eyebrow">Catálogo Exclusivo</span>
+            <h1 class="premios-title">Premios CityMart</h1>
+            <p class="premios-subtitle">Acumula CityCash y canjea premios próximamente</p>
+        </header>
+
+        <div class="reward-grid">
+            <!-- Card 1: Sandalias -->
+            <div class="reward-card" style="animation-delay: 0.1s;">
+                <span class="upcoming-badge">Próximamente</span>
+                <div class="reward-image-wrap">
+                    <img src="assets/premios/sandalias.png" alt="Sandalias" class="reward-image">
+                </div>
+                <div class="reward-info">
+                    <div class="reward-name">Sandalias Premium</div>
+                    <div class="reward-price"><span class="citycash-coin"></span> 10,000</div>
+                </div>
+            </div>
+
+            <!-- Card 2: Audífonos -->
+            <div class="reward-card" style="animation-delay: 0.2s;">
+                <span class="upcoming-badge">Próximamente</span>
+                <div class="reward-image-wrap">
+                    <img src="assets/premios/audifonos.png" alt="Audífonos" class="reward-image">
+                </div>
+                <div class="reward-info">
+                    <div class="reward-name">Audífonos Pro</div>
+                    <div class="reward-price"><span class="citycash-coin"></span> 15,000</div>
+                </div>
+            </div>
+
+            <!-- Card 3: Reloj -->
+            <div class="reward-card" style="animation-delay: 0.3s;">
+                <span class="upcoming-badge">Próximamente</span>
+                <div class="reward-image-wrap">
+                    <img src="assets/premios/reloj.png" alt="Reloj" class="reward-image">
+                </div>
+                <div class="reward-info">
+                    <div class="reward-name">Reloj Minimal</div>
+                    <div class="reward-price"><span class="citycash-coin"></span> 20,000</div>
+                </div>
+            </div>
+
+            <!-- Card 4: Gift card -->
+            <div class="reward-card" style="animation-delay: 0.4s;">
+                <span class="upcoming-badge">Próximamente</span>
+                <div class="reward-image-wrap">
+                    <img src="assets/premios/giftcard.png" alt="Gift card" class="reward-image">
+                </div>
+                <div class="reward-info">
+                    <div class="reward-name">Gift Card Premium</div>
+                    <div class="reward-price"><span class="citycash-coin"></span> 25,000</div>
+                </div>
+            </div>
+
+            <!-- Card 5: Mochila -->
+            <div class="reward-card" style="animation-delay: 0.5s;">
+                <span class="upcoming-badge">Próximamente</span>
+                <div class="reward-image-wrap">
+                    <img src="assets/premios/collage.png" alt="Mochila" class="reward-image" style="object-position: left center;">
+                </div>
+                <div class="reward-info">
+                    <div class="reward-name">Mochila Urbana</div>
+                    <div class="reward-price"><span class="citycash-coin"></span> 12,000</div>
+                </div>
+            </div>
+
+            <!-- Card 6: Accesorio -->
+            <div class="reward-card" style="animation-delay: 0.6s;">
+                <span class="upcoming-badge">Próximamente</span>
+                <div class="reward-image-wrap">
+                    <img src="assets/premios/collage.png" alt="Accesorio" class="reward-image" style="object-position: right center;">
+                </div>
+                <div class="reward-info">
+                    <div class="reward-name">Accesorio Lujo</div>
+                    <div class="reward-price"><span class="citycash-coin"></span> 8,000</div>
+                </div>
+            </div>
+        </div>
+
+        <section class="motivation-banner">
+            <h3 class="motivation-title">¡Sigue acumulando!</h3>
+            <div class="motivation-phrases">
+                <div class="phrase-item"><span class="phrase-dot"></span> Mientras más participas, más ganas</div>
+                <div class="phrase-item"><span class="phrase-dot"></span> Pronto podrás canjear tus CityCash</div>
+                <div class="phrase-item"><span class="phrase-dot"></span> Cada acción te acerca al premio</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="directorio.html" class="nav-item">
+            <i data-lucide="search" class="nav-icon"></i>
+            <span>Buscar</span>
+        </a>
+        <a href="citycash.html" class="nav-item active">
+            <i data-lucide="coins" class="nav-icon"></i>
+            <span>CityCash</span>
+        </a>
+        <a href="comunidad.html" class="nav-item">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Gente</span>
+        </a>
+        <a id="nav-auth-link" href="login.html" class="nav-item">
+            <i data-lucide="user" class="nav-icon"></i>
+            <span>Ingresar</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            // Sync auth state for nav
+            const user = JSON.parse(localStorage.getItem('user_data') || 'null');
+            const navAuth = document.getElementById('nav-auth-link');
+            if (user && navAuth) {
+                navAuth.href = 'profile.html';
+                navAuth.querySelector('span').textContent = 'Perfil';
+            }
+        });
+    </script>
+</body>
+</html>
