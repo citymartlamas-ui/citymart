@@ -309,7 +309,8 @@
                 if (fileInput.files.length > 0) {
                     const file = fileInput.files[0];
                     const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
-                    const filePath = `promociones/${Date.now()}_${sanitizeName}`;
+                    const ownerUid = auth.currentUser?.uid || currentPromoData.uid_propietario;
+                    const filePath = `promociones/${ownerUid}/${Date.now()}_${sanitizeName}`;
                     const storageRef = ref(storage, filePath);
 
                     if (file.type.startsWith('image/')) {

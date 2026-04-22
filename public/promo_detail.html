@@ -282,7 +282,7 @@
             titleHTML.innerText = data.titulo || data.nombre || "Oferta Especial";
             bizHTML.innerText = `Por ${data.nombre_negocio || data.negocio || 'Negocio Local'}`;
 
-            const mediaSource = data.imagen || data.foto || DEFAULT_PROMO_IMAGE;
+            const mediaSource = window.sanitizeUrl ? window.sanitizeUrl(data.imagen || data.foto || DEFAULT_PROMO_IMAGE, DEFAULT_PROMO_IMAGE) : (data.imagen || data.foto || DEFAULT_PROMO_IMAGE);
             const isVideo = mediaSource.includes('.mp4') || mediaSource.includes('video/') || mediaSource.includes('.mov') || mediaSource.includes('.webm') || data.tipo === 'video';
             if (isVideo) {
                 promoVid.src = mediaSource;
@@ -290,7 +290,7 @@
                 promoVid.style.display = 'block';
                 imgHTML.style.display = 'none';
             } else {
-                imgHTML.src = data.imagen_thumb || data.foto_thumb || mediaSource;
+                imgHTML.src = window.sanitizeUrl ? window.sanitizeUrl(data.imagen_thumb || data.foto_thumb || mediaSource, DEFAULT_PROMO_IMAGE) : (data.imagen_thumb || data.foto_thumb || mediaSource);
                 imgHTML.dataset.fullsrc = mediaSource;
                 imgHTML.style.display = 'block';
                 promoVid.style.display = 'none';
@@ -309,8 +309,7 @@
 
             const phone = data.telefono_contacto || data.telefono || data.numerodecontacto || "";
             if (phone) {
-                let cleanPhone = phone.replace(/\s/g, '');
-                if (cleanPhone.startsWith('+')) cleanPhone = cleanPhone.substring(1);
+                let cleanPhone = window.sanitizePhone ? window.sanitizePhone(phone) : phone.replace(/\D/g, '').slice(0, 20);
                 if (cleanPhone.length === 9) cleanPhone = '51' + cleanPhone;
 
                 const waMsg = encodeURIComponent(`¡Hola! Vi tu oferta "${data.titulo || data.nombre || "en CityMart"}" en CityMart y me interesa.`);

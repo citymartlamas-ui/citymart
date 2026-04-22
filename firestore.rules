@@ -8,11 +8,52 @@ service cloud.firestore {
 
     function isAdmin() {
       return signedIn()
-        && request.auth.token.email == "admin@gmail.com";
+        && (request.auth.token.admin == true || request.auth.token.email == "admin@gmail.com");
     }
 
     function unchangedKeys(allowed) {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
+    }
+
+    function optionalString(field, maxSize) {
+      return !request.resource.data.keys().hasAny([field])
+        || (request.resource.data[field] is string
+          && request.resource.data[field].size() <= maxSize);
+    }
+
+    function optionalBool(field) {
+      return !request.resource.data.keys().hasAny([field])
+        || request.resource.data[field] is bool;
+    }
+
+    function profileCreateKeys() {
+      return [
+        "nombre", "displayName", "email", "telefono", "phone", "direccion", "bio",
+        "publicContact", "photoURL", "photo_path", "fechaRegistro"
+      ];
+    }
+
+    function profileUpdateKeys() {
+      return [
+        "nombre", "displayName", "email", "telefono", "phone", "direccion", "bio",
+        "publicContact", "photoURL", "photo_path"
+      ];
+    }
+
+    function validProfileFields() {
+      return optionalString("nombre", 80)
+        && optionalString("displayName", 80)
+        && optionalString("telefono", 30)
+        && optionalString("phone", 30)
+        && optionalString("direccion", 160)
+        && optionalString("bio", 500)
+        && optionalString("photoURL", 1200)
+        && optionalString("photo_path", 300)
+        && optionalBool("publicContact")
+        && (!request.resource.data.keys().hasAny(["email"])
+          || request.resource.data.email == request.auth.token.email)
+        && (!request.resource.data.keys().hasAny(["fechaRegistro"])
+          || request.resource.data.fechaRegistro is timestamp);
     }
 
     function isOwnerCreate(field) {
@@ -29,28 +70,98 @@ service cloud.firestore {
         && request.resource.data.vistas >= (resource.data.vistas is int ? resource.data.vistas : 0);
     }
 
-    function canUpdateOnlyReviewStats() {
-      return unchangedKeys(["rating_promedio", "total_resenas"])
-        && request.resource.data.total_resenas is int
-        && request.resource.data.total_resenas >= 0;
-    }
-
     function canUpdateOnlySurveyVotes() {
       return unchangedKeys(["opciones", "total_votos"])
         && request.resource.data.total_votos is int
-        && request.resource.data.total_votos >= (resource.data.total_votos is int ? resource.data.total_votos : 0);
+        && request.resource.data.total_votos == ((resource.data.total_votos is int ? resource.data.total_votos : 0) + 1);
     }
 
     function canUpdateOnlyVoters() {
       return signedIn() && unchangedKeys(["voters"]);
     }
 
+    function ownerBusinessCreateKeys() {
+      return [
+        "nombre", "categoria", "ciudad", "provincia", "descripcion", "horario",
+        "telefono", "numerodecontacto", "direccion", "foto", "imagen", "foto_path",
+        "imagen_path", "fotosnegocio", "fotosnegocio_paths", "negocio_o_servicio",
+        "estado", "negociovisible", "uid", "email_propietario", "ownerUid",
+        "owner_email_normalized", "owner_link_status", "owner_link_source",
+        "fecha_registro"
+      ];
+    }
+
+    function ownerBusinessUpdateKeys() {
+      return [
+        "nombre", "categoria", "ciudad", "provincia", "descripcion", "horario",
+        "telefono", "numerodecontacto", "direccion", "foto", "imagen", "foto_path",
+        "imagen_path", "negocio_o_servicio"
+      ];
+    }
+
+    function canOwnerCreateBusiness() {
+      return isOwnerCreate("uid")
+        && request.resource.data.keys().hasOnly(ownerBusinessCreateKeys())
+        && (!request.resource.data.keys().hasAny(["ownerUid"])
+          || request.resource.data.ownerUid == request.auth.uid)
+        && (!request.resource.data.keys().hasAny(["promocionanuncio"])
+          || request.resource.data.promocionanuncio == false)
+        && (!request.resource.data.keys().hasAny(["estado"])
+          || request.resource.data.estado == "aprobado"
+          || request.resource.data.estado == "pendiente")
+        && optionalBool("negociovisible")
+        && optionalString("nombre", 120)
+        && optionalString("descripcion", 2000)
+        && optionalString("telefono", 30)
+        && optionalString("numerodecontacto", 30);
+    }
+
+    function canOwnerUpdateBusiness() {
+      return isOwnerExisting("uid")
+        && unchangedKeys(ownerBusinessUpdateKeys())
+        && optionalString("nombre", 120)
+        && optionalString("descripcion", 2000)
+        && optionalString("telefono", 30)
+        && optionalString("numerodecontacto", 30);
+    }
+
+    function canOwnerCreatePromo() {
+      return isOwnerCreate("uid_propietario")
+        && request.resource.data.estado == "pendiente"
+        && !request.resource.data.keys().hasAny(["fechaExpiracion"]);
+    }
+
+    function canOwnerUpdatePromo() {
+      return isOwnerExisting("uid_propietario")
+        && unchangedKeys([
+          "titulo", "descripcion", "imagen_path", "precio_anterior", "precio_oferta",
+          "duracion_dias", "imagen", "telefono_contacto", "estado"
+        ])
+        && request.resource.data.estado == "pendiente"
+        && optionalString("titulo", 140)
+        && optionalString("descripcion", 2000)
+        && optionalString("telefono_contacto", 30);
+    }
+
+    function validReviewWrite(document) {
+      return signedIn()
+        && request.resource.data.usuario_id == request.auth.uid
+        && request.resource.data.negocio_id is string
+        && document == request.auth.uid + "_" + request.resource.data.negocio_id
+        && request.resource.data.puntuacion is int
+        && request.resource.data.puntuacion >= 1
+        && request.resource.data.puntuacion <= 5
+        && optionalString("usuario_nombre", 80)
+        && optionalString("usuario_foto", 1200)
+        && optionalString("comentario", 800);
+    }
+
     match /CHATS/{document} {
-      allow read, create, update, delete: if signedIn();
+      allow read, create, update, delete: if false;
     }
 
     match /CHATS/{parent}/chatsmensajes/{document} {
-      allow read, create, update, delete: if signedIn();
+      allow read, create, update, delete: if false;
     }
 
     match /{path=**}/chatsmensajes/{document} {
@@ -89,33 +200,46 @@ service cloud.firestore {
 
     match /users/{document} {
       allow read: if true;
-      allow create: if isAdmin() || (signedIn() && request.auth.uid == document);
-      allow update, delete: if isAdmin() || (signedIn() && request.auth.uid == document);
+      allow create: if isAdmin()
+        || (signedIn()
+          && request.auth.uid == document
+          && request.resource.data.keys().hasOnly(profileCreateKeys())
+          && validProfileFields());
+      allow update: if isAdmin()
+        || (signedIn()
+          && request.auth.uid == document
+          && unchangedKeys(profileUpdateKeys())
+          && validProfileFields());
+      allow delete: if isAdmin();
     }
 
     match /negocio/{document} {
       allow read: if true;
-      allow create: if isAdmin() || isOwnerCreate("uid");
-      allow update: if isAdmin() || isOwnerExisting("uid") || canUpdateOnlyReviewStats();
+      allow create: if isAdmin() || canOwnerCreateBusiness();
+      allow update: if isAdmin() || canOwnerUpdateBusiness();
       allow delete: if isAdmin() || isOwnerExisting("uid");
     }
 
     match /promociones/{document} {
       allow read: if true;
-      allow create: if isAdmin() || isOwnerCreate("uid_propietario");
-      allow update, delete: if isAdmin() || isOwnerExisting("uid_propietario");
+      allow create: if isAdmin() || canOwnerCreatePromo();
+      allow update: if isAdmin() || canOwnerUpdatePromo();
+      allow delete: if isAdmin() || isOwnerExisting("uid_propietario");
     }
 
     match /noticias/{document} {
       allow read: if true;
-      allow create: if signedIn();
+      allow create: if isAdmin()
+        || (signedIn()
+          && request.resource.data.uid_creador == request.auth.uid
+          && request.resource.data.estado == "pendiente");
       allow update: if isAdmin() || canUpdateOnlyNewsViews();
       allow delete: if isAdmin();
     }
 
     match /resenas/{document} {
       allow read: if true;
-      allow create, update: if signedIn() && request.resource.data.usuario_id == request.auth.uid;
+      allow create, update: if validReviewWrite(document);
       allow delete: if isAdmin() || (signedIn() && resource.data.usuario_id == request.auth.uid);
     }
 
@@ -132,8 +256,9 @@ service cloud.firestore {
 
     match /encuestas_diarias/{document} {
       allow read: if true;
-      allow create: if isAdmin() || isOwnerCreate("uid_creador");
-      allow update: if isAdmin() || isOwnerExisting("uid_creador") || canUpdateOnlySurveyVotes();
+      allow create: if isAdmin()
+        || (isOwnerCreate("uid_creador") && request.resource.data.estado == "pendiente");
+      allow update: if isAdmin() || canUpdateOnlySurveyVotes();
       allow delete: if isAdmin() || isOwnerExisting("uid_creador");
     }
 

@@ -21,6 +21,7 @@
     <meta name="apple-mobile-web-app-title" content="CityMart">
     <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
     <link rel="stylesheet" href="assets/style.css?v=20260411-premium-fix-1">
+    <link rel="stylesheet" href="assets/css/global-chat.css?v=20260422-chat-1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -928,19 +929,206 @@
             <i data-lucide="user-circle" class="nav-icon"></i>
             <span>Perfil</span>
         </a>
+        </div>
+
+        <!-- Container for Directorio (Yellow Pages) -->
+        <div id="yellow-pages-container" class="community-panel" style="display: none; flex-direction: column; gap: 0;">
+            <div class="yellow-search-container">
+                <div class="yellow-search-bar">
+                    <i data-lucide="search" style="width: 18px; color: #94a3b8;"></i>
+                    <input type="text" id="yellow-search" placeholder="Buscar vecino o servicio..." oninput="filterYellow()">
+                </div>
+            </div>
+            <div id="yellow-list" style="display: flex; flex-direction: column; gap: 0;">
+                <!-- List of public users -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FAB -->
+    <button class="floating-add" onclick="openCreateModal()">
+        <i data-lucide="plus" style="width: 28px; height: 28px;"></i>
+    </button>
+
+    <!-- Create Modal -->
+    <div id="create-modal" class="modal-overlay" onclick="if(event.target===this) closeCreateModal()">
+        <div class="modal-content">
+            <button class="btn-close" onclick="closeCreateModal()"><i data-lucide="x" style="width: 18px;"></i></button>
+            <h2 style="font-family: 'Inter'; font-size: 1.4rem; font-weight: 700; margin-bottom: 6px;">Nueva publicacion</h2>
+            <div id="promo-info" style="font-size: 0.8rem; color: #6b7280; margin-bottom: 20px;">Tu aviso durara <strong style="color: #ef4444;">6 horas</strong>. Puedes publicar hasta <strong>5 veces por dia</strong>.</div>
+            <div id="promo-help" style="font-size: 0.7rem; color: #94a3b8; margin-top: -12px; margin-bottom: 18px; line-height: 1.35;">Usa este espacio para pedidos u ofrecimientos rapidos. Es un marketplace temporal pensado para resolver algo urgente cerca de ti.</div>
+
+            <div class="type-selector" id="type-selector-container">
+                <div class="type-option busco selected" onclick="selectType('busco')">BUSCO</div>
+                <div class="type-option ofrezco" onclick="selectType('ofrezco')">OFREZCO</div>
+            </div>
+
+            <div id="form-comunidad">
+                <div class="form-group">
+                    <label class="form-label">Categoria</label>
+                    <select id="post-category" class="form-control">
+                        <option value="Trabajo">Trabajo</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Servicios">Servicios</option>
+                        <option value="Eventos">Eventos</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Titulo <span style="color:#9ca3af; font-weight:normal;">(Max 60 caracteres)</span></label>
+                    <input type="text" id="post-title" class="form-control" placeholder="Ej. Busco plomero urgente" maxlength="60">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descripcion <span style="color:#9ca3af; font-weight:normal;">(Max 200 caracteres)</span></label>
+                    <textarea id="post-desc" class="form-control" rows="3" placeholder="Detalles de lo que buscas u ofreces..." maxlength="200" style="resize: none;"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Ubicacion <span style="color:#9ca3af; font-weight:normal;">(Opcional)</span></label>
+                    <input type="text" id="post-location" class="form-control" placeholder="Ej. Barrio Zaragoza, Lamas" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Foto <span style="color:#9ca3af; font-weight:normal;">(Opcional)</span></label>
+                    <div class="mini-photo-picker">
+                        <input type="file" id="post-photo" accept="image/*" style="display: none;"
+                            onchange="previewImage(this, 'post-photo-preview', 'post-photo-preview-container')">
+                        <div id="post-photo-preview-container" onclick="document.getElementById('post-photo').click()"
+                            style="cursor: pointer; text-align: center;">
+                            <i data-lucide="image-plus" style="width: 40px; height: 40px; color: #9ca3af;"></i>
+                            <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir una foto</p>
+                            <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">Se reducira automaticamente y solo se vera pequena en la tarjeta.</p>
+                        </div>
+                        <img id="post-photo-preview" class="mini-photo-preview">
+                    </div>
+                </div>
+            </div>
+
+            <div id="form-objetos" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Foto del Objeto</label>
+                    <div class="mini-photo-picker" style="padding: 20px;">
+                        <input type="file" id="lost-photo" accept="image/*" style="display: none;"
+                            onchange="previewImage(this)">
+                        <div id="photo-preview-container" onclick="document.getElementById('lost-photo').click()"
+                            style="cursor: pointer; text-align: center;">
+                            <i data-lucide="camera" style="width: 48px; height: 48px; color: #9ca3af;"></i>
+                            <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir o tomar foto</p>
+                        </div>
+                        <img id="photo-preview" class="mini-photo-preview"
+                            style="max-height: 200px; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descripcion del Objeto</label>
+                    <textarea id="lost-desc" class="form-control" rows="3"
+                        placeholder="Ej. Encontre llaves cerca a la plaza..." maxlength="200"
+                        style="resize: none;"></textarea>
+                </div>
+            </div>
+
+            <div id="form-foro" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Categoria de Muro Social</label>
+                    <select id="forum-category" class="form-control">
+                        <option value="Historias">Historias de Lamas</option>
+                        <option value="Datos">Datos utiles</option>
+                        <option value="Propuestas">Propuestas</option>
+                        <option value="Talento">Talento y pasion</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Titulo del Tema</label>
+                    <input type="text" id="forum-title" class="form-control" placeholder="Titulo de tu publicacion" maxlength="80">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mensaje</label>
+                    <textarea id="forum-content" class="form-control" rows="4" placeholder="¿Qué quieres compartir con Lamas?" maxlength="1000" style="resize: none;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Foto <span style="color:#9ca3af; font-weight:normal;">(Opcional)</span></label>
+                    <div class="mini-photo-picker">
+                        <input type="file" id="forum-photo" accept="image/*" style="display: none;"
+                            onchange="previewImage(this, 'forum-photo-preview', 'forum-photo-preview-container')">
+                        <div id="forum-photo-preview-container" onclick="document.getElementById('forum-photo').click()"
+                            style="cursor: pointer; text-align: center;">
+                            <i data-lucide="image-plus" style="width: 40px; height: 40px; color: #9ca3af;"></i>
+                            <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir una foto</p>
+                            <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">Se comprimira mucho y solo se vera pequena en la tarjeta.</p>
+                        </div>
+                        <img id="forum-photo-preview" class="mini-photo-preview">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="phone-group">
+                <label class="form-label">WhatsApp de Contacto</label>
+                <input type="tel" id="post-phone" class="form-control" placeholder="Numero de celular">
+            </div>
+
+            <button class="btn-submit" onclick="submitAny()" id="btn-submit-post">PUBLICAR AHORA</button>
+        </div>
+    </div>
+  <footer class="site-footer">
+    <div class="site-footer__main">
+      <div>
+        <div class="site-footer__brand">
+          <img src="assets/logo.png" alt="CityMart">
+          <div>
+            <span class="site-footer__eyebrow">Directorio y turismo local</span>
+            <h3>CityMart</h3>
+          </div>
+        </div>
+        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
+      </div>
+      <div class="site-footer__aside">
+        <span class="site-footer__label">Enlaces institucionales</span>
+        <div class="site-footer__links">
+          <a href="about.html">Sobre nosotros</a>
+          <a href="contact.html">Contacto</a>
+          <a href="privacy-policy.html">Privacidad</a>
+          <a href="terms.html">Terminos</a>
+          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
+        </div>
+        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="./" class="nav-item">
+            <i data-lucide="home" class="nav-icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="turismo.html" class="nav-item">
+            <i data-lucide="compass" class="nav-icon"></i>
+            <span>Turismo</span>
+        </a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
+            <div
+                style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
+                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+            </div>
+            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
+        </a>
+        <a href="community.html" class="nav-item active">
+            <i data-lucide="users" class="nav-icon"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="user-circle" class="nav-icon"></i>
+            <span>Perfil</span>
+        </a>
     </nav>
 
     <script type="module">
         import { db, auth } from './assets/js/firebase-init.js';
-        import { collection, onSnapshot, addDoc, query, orderBy, serverTimestamp, getDocs, where, limit, startAfter, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { awardCityCashAction, showCityCashRewardToast } from './assets/js/citycash.js';
-
-        lucide.createIcons();
-        let storageDepsPromise = null;
-
-        async function getStorageDeps() {
-            if (!storageDepsPromise) {
-                storageDepsPromise = Promise.all([
+        import { collection, onSnapshot, addDoc, query, orderBy, serverTimestamp, getDocs, getDoc, where, limit, startAfter, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
                     import('./assets/js/firebase-init.js'),
                     import("https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js")
                 ]).then(([firebaseInit, firebaseStorage]) => ({
@@ -1469,7 +1657,7 @@
                         .replace(/\.[^/.]+$/, '')
                         .replace(/[^\w-]+/g, '_')
                         .slice(0, 40) || 'foto';
-                    const filePath = `community_posts/${Date.now()}_${safeName}.${fileExtension}`;
+                    const filePath = `community_posts/${currUser.uid}/${Date.now()}_${safeName}.${fileExtension}`;
                     const storageRef = ref(storage, filePath);
                     const snapshot = await uploadBytes(storageRef, optimizedPhoto);
                     const photoUrl = await getDownloadURL(snapshot.ref);
@@ -1559,7 +1747,12 @@
                 const optimizedPhoto = window.optimizeUploadImage
                     ? await window.optimizeUploadImage(photoFile, 'lostfound')
                     : (window.compressImage ? await window.compressImage(photoFile) : photoFile);
-                const filePath = `lost_found/${Date.now()}_${photoFile.name}`;
+                const safeName = (photoFile.name || 'foto')
+                    .replace(/\.[^/.]+$/, '')
+                    .replace(/[^\w-]+/g, '_')
+                    .slice(0, 40) || 'foto';
+                const fileExtension = (optimizedPhoto.type || '').includes('png') ? 'png' : 'jpg';
+                const filePath = `lost_found/${currUser.uid}/${Date.now()}_${safeName}.${fileExtension}`;
                 const storageRef = ref(storage, filePath);
                 const snapshot = await uploadBytes(storageRef, optimizedPhoto);
                 const photoUrl = await getDownloadURL(snapshot.ref);
@@ -1690,16 +1883,19 @@
                 : `<div style="padding: 8px 16px 28px; text-align: center; color: #94a3b8; font-size: 0.75rem; font-weight: 700;">Ya viste lo mas reciente de ${getCurrentCityLabel()}.</div>`;
 
             postsContainer.innerHTML = COMMUNITY_MARKETPLACE_NOTE + visiblePosts.map(p => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
+                const cleanPhone = window.sanitizePhone ? window.sanitizePhone(p.data.phone) : String(p.data.phone || '').replace(/\D/g, '').slice(0, 20);
                 const isBusco = p.data.type === 'busco';
                 const badgeClass = isBusco ? 'badge-busco' : 'badge-ofrezco';
                 const badgeText = isBusco ? 'BUSCO' : 'OFREZCO';
                 const expireAt = getDateValue(p.expiredTime || p.data.expiresAt) || new Date();
-                const locHTML = p.data.location ? `<div style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:#6b7280; margin-bottom:8px;"><i data-lucide="map-pin" style="width:12px;"></i> ${p.data.location}</div>` : '';
-                const postPhoto = window.pickDisplayImage
+                const locHTML = p.data.location ? `<div style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:#6b7280; margin-bottom:8px;"><i data-lucide="map-pin" style="width:12px;"></i> ${escape(p.data.location)}</div>` : '';
+                const rawPostPhoto = window.pickDisplayImage
                     ? window.pickDisplayImage([p.data.photo], '', { width: 320 })
                     : (p.data.photo || '');
+                const postPhoto = window.sanitizeUrl ? window.sanitizeUrl(rawPostPhoto) : rawPostPhoto;
                 const photoHTML = postPhoto
-                    ? `<img src="${postPhoto}" alt="${p.data.title || 'Foto del anuncio'}" class="post-thumb" loading="lazy" decoding="async" fetchpriority="low">`
+                    ? `<img src="${escape(postPhoto)}" alt="${escape(p.data.title || 'Foto del anuncio')}" class="post-thumb" loading="lazy" decoding="async" fetchpriority="low">`
                     : '';
 
                 return `
@@ -1707,21 +1903,21 @@
                         <div class="post-header">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <span class="type-badge ${badgeClass}">${badgeText}</span>
-                                <span class="post-category">${p.data.category}</span>
+                                <span class="post-category">${escape(p.data.category)}</span>
                             </div>
                             <button class="btn-report" onclick="reportPost('${p.id}')"><i data-lucide="flag" style="width: 14px; height: 14px;"></i></button>
                         </div>
                         <div class="post-body">
                             <div class="post-copy">
-                                <h3 class="post-title">${p.data.title}</h3>
-                                <p class="post-desc">${p.data.description}</p>
+                                <h3 class="post-title">${escape(p.data.title)}</h3>
+                                <p class="post-desc">${escape(p.data.description)}</p>
                                 ${locHTML}
                             </div>
                             ${photoHTML}
                         </div>
                         <div class="post-footer">
                             <div class="timer-badge post-timer" data-expire="${expireAt.getTime()}"><i data-lucide="clock" style="width:12px;"></i><span></span></div>
-                            <a href="https://wa.me/51${p.data.phone}?text=Hola,%20vi%20tu%20anuncio%20en%20CityMart%20${encodeURIComponent(getCurrentCityLabel())}:%20${encodeURIComponent(p.data.title)}" target="_blank" class="btn-whatsapp"><i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Contactar</a>
+                            <a href="https://wa.me/51${cleanPhone}?text=Hola,%20vi%20tu%20anuncio%20en%20CityMart%20${encodeURIComponent(getCurrentCityLabel())}:%20${encodeURIComponent(String(p.data.title || ''))}" target="_blank" class="btn-whatsapp" rel="noopener"><i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Contactar</a>
                         </div>
                     </div>`;
             }).join('') + loadMoreHtml;
@@ -1785,28 +1981,32 @@
             }
 
             lostContainer.innerHTML = items.map(p => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
+                const cleanPhone = window.sanitizePhone ? window.sanitizePhone(p.data.phone) : String(p.data.phone || '').replace(/\D/g, '').slice(0, 20);
                 const canDelete = currUser && p.data.userId === currUser.uid;
                 const expiresLabel = p.data.expiresAt
                     ? (p.data.expiresAt.toDate ? p.data.expiresAt.toDate().toLocaleDateString() : '30 dias')
                     : '30 dias';
-                const lostImage = window.pickDisplayImage
+                const rawLostImage = window.pickDisplayImage
                     ? window.pickDisplayImage([p.data.photo_thumb, p.data.photo], 'assets/placeholder.svg', { width: 960 })
                     : (p.data.photo_thumb || p.data.photo || 'assets/placeholder.svg');
+                const lostImage = window.sanitizeUrl ? window.sanitizeUrl(rawLostImage, 'assets/placeholder.svg') : rawLostImage;
+                const photoPath = String(p.data.photo_path || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
                 return `
                     <div class="post-card" style="padding: 0; overflow: hidden;">
-                        <img src="${lostImage}" alt="Objeto extraviado" style="width: 100%; height: 200px; object-fit: cover;" loading="lazy" decoding="async" fetchpriority="low">
+                        <img src="${escape(lostImage)}" alt="Objeto extraviado" style="width: 100%; height: 200px; object-fit: cover;" loading="lazy" decoding="async" fetchpriority="low">
                         <div style="padding: 14px;">
                             <div class="post-header">
                                 <span class="type-badge badge-busco" style="background: #fef3c7; color: #d97706; border-color: #fcd34d;">OBJETO EXTRAVIADO</span>
                                 <div style="display:flex; align-items:center; gap:8px;">
-                                    ${canDelete ? `<button class="btn-report" onclick="deleteLostFound('${p.id}', '${p.data.photo_path || ''}')"><i data-lucide="trash-2" style="width: 14px; height: 14px;"></i></button>` : ''}
+                                    ${canDelete ? `<button class="btn-report" onclick="deleteLostFound('${p.id}', '${photoPath}')"><i data-lucide="trash-2" style="width: 14px; height: 14px;"></i></button>` : ''}
                                     <button class="btn-report" onclick="reportPost('${p.id}', 'comunidad_lostfound')"><i data-lucide="flag" style="width: 14px; height: 14px;"></i></button>
                                 </div>
                             </div>
-                            <p class="post-desc" style="margin-top: 8px; font-size: 0.9rem;">${p.data.description}</p>
+                            <p class="post-desc" style="margin-top: 8px; font-size: 0.9rem;">${escape(p.data.description)}</p>
                             <div class="post-footer">
                                 <span style="font-size: 0.7rem; color: #9ca3af; font-weight: 600;">Publicado: ${p.data.createdAt ? (p.data.createdAt.toDate ? p.data.createdAt.toDate().toLocaleDateString() : 'Recientemente') : 'Recientemente'} · Expira: ${expiresLabel}</span>
-                                <a href="https://wa.me/51${p.data.phone}" target="_blank" class="btn-whatsapp"><i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Contactar</a>
+                                <a href="https://wa.me/51${cleanPhone}" target="_blank" class="btn-whatsapp" rel="noopener"><i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Contactar</a>
                             </div>
                         </div>
                     </div>`;
@@ -1866,35 +2066,38 @@
             }
 
             forumList.innerHTML = items.map(p => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
                 const voters = p.data.voters || [];
                 const votos = voters.length;
                 const hasVoted = currUser && voters.includes(currUser.uid);
-                const catClass = `category-${p.data.category}`;
-                const tagClass = `tag-${p.data.category}`;
-                const forumPhoto = window.pickDisplayImage
+                const categoryKey = String(p.data.category || 'general').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                const catClass = `category-${categoryKey}`;
+                const tagClass = `tag-${categoryKey}`;
+                const rawForumPhoto = window.pickDisplayImage
                     ? window.pickDisplayImage([p.data.photo], '', { width: 320 })
                     : (p.data.photo || '');
+                const forumPhoto = window.sanitizeUrl ? window.sanitizeUrl(rawForumPhoto) : rawForumPhoto;
                 const photoHTML = forumPhoto
-                    ? `<img src="${forumPhoto}" alt="${p.data.title || 'Foto del tema'}" class="forum-card__thumb" loading="lazy" decoding="async" fetchpriority="low">`
+                    ? `<img src="${escape(forumPhoto)}" alt="${escape(p.data.title || 'Foto del tema')}" class="forum-card__thumb" loading="lazy" decoding="async" fetchpriority="low">`
                     : '';
                 return `
                     <div class="forum-card ${catClass}" onclick="openThread('${p.id}')">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                            <span class="forum-category-tag ${tagClass}">${p.data.category}</span>
-                            <div class="vote-btn ${hasVoted ? 'active' : ''}" onclick="event.stopPropagation(); votarTema('${p.id}', ${JSON.stringify(voters)})">
+                            <span class="forum-category-tag ${tagClass}">${escape(p.data.category)}</span>
+                            <div class="vote-btn ${hasVoted ? 'active' : ''}" onclick="event.stopPropagation(); votarTema('${p.id}')">
                                 <i data-lucide="heart" style="width:14px; fill: ${hasVoted ? '#ef4444' : 'none'}; color: ${hasVoted ? '#ef4444' : 'currentColor'}"></i>
                                 <span>${votos}</span>
                             </div>
                         </div>
                         <div class="forum-card__layout">
                             <div class="forum-card__copy">
-                                <h3 style="font-family: 'Inter'; font-size: 1.15rem; font-weight: 700; color: #1f2937; margin: 8px 0;">${p.data.title}</h3>
-                                <p style="font-size: 0.9rem; color: #4b5563; line-height:1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${p.data.content}</p>
+                                <h3 style="font-family: 'Inter'; font-size: 1.15rem; font-weight: 700; color: #1f2937; margin: 8px 0;">${escape(p.data.title)}</h3>
+                                <p style="font-size: 0.9rem; color: #4b5563; line-height:1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${escape(p.data.content)}</p>
                             </div>
                             ${photoHTML}
                         </div>
                         <div class="forum-meta">
-                            <span style="font-weight:700; color:#374151;">${p.data.userName || 'Vecino'}</span>
+                            <span style="font-weight:700; color:#374151;">${escape(p.data.userName || 'Vecino')}</span>
                             <span>${p.data.createdAt ? (p.data.createdAt.toDate ? p.data.createdAt.toDate().toLocaleDateString() : 'Recientemente') : 'Recientemente'}</span>
                         </div>
                     </div>
@@ -1903,10 +2106,14 @@
             lucide.createIcons();
         }
 
-        window.votarTema = async function(id, voters) {
+        window.votarTema = async function(id, voters = null) {
             if (!currUser) { alert("Inicia sesion para votar"); return; }
             try {
                 const docRef = doc(db, "foro_temas", id);
+                if (!Array.isArray(voters)) {
+                    const snap = await getDoc(docRef);
+                    voters = snap.exists() && Array.isArray(snap.data().voters) ? snap.data().voters : [];
+                }
                 const hasVoted = voters.includes(currUser.uid);
                 const nextVoters = hasVoted
                     ? voters.filter((uid) => uid !== currUser.uid)
@@ -1953,7 +2160,7 @@
                         .replace(/\.[^/.]+$/, '')
                         .replace(/[^\w-]+/g, '_')
                         .slice(0, 40) || 'foto';
-                    const filePath = `foro_temas/${Date.now()}_${safeName}.${fileExtension}`;
+                    const filePath = `foro_temas/${currUser.uid}/${Date.now()}_${safeName}.${fileExtension}`;
                     const storageRef = ref(storage, filePath);
                     const snapshot = await uploadBytes(storageRef, optimizedPhoto);
                     const photoUrl = await getDownloadURL(snapshot.ref);
@@ -2025,26 +2232,29 @@
                 const voters = threadData.voters || [];
                 const votos = voters.length;
                 const hasVoted = currUser && voters.includes(currUser.uid);
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
+                const categoryKey = String(threadData.category || 'general').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                const userName = String(threadData.userName || 'Vecino');
 
                 document.getElementById('active-thread-content').innerHTML = `
                     <div style="padding: 0 16px 12px; display:flex; align-items:center; gap:8px; cursor:pointer; color:#64748b;" onclick="closeThread()">
                         <i data-lucide="arrow-left" style="width:18px;"></i>
                         <span style="font-size: 0.85rem; font-weight:700;">Volver a Muro Social</span>
                     </div>
-                    <div class="main-post-hero category-${threadData.category}">
+                    <div class="main-post-hero category-${categoryKey}">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-                            <span class="forum-category-tag tag-${threadData.category}" style="font-size: 0.65rem; padding: 4px 10px; border-radius:8px;">${threadData.category}</span>
-                            <div class="vote-btn ${hasVoted ? 'active' : ''}" style="background:white; border-color:#e2e8f0; padding: 6px 10px;" onclick="votarTema('${id}', ${JSON.stringify(voters)})">
+                            <span class="forum-category-tag tag-${categoryKey}" style="font-size: 0.65rem; padding: 4px 10px; border-radius:8px;">${escape(threadData.category)}</span>
+                            <div class="vote-btn ${hasVoted ? 'active' : ''}" style="background:white; border-color:#e2e8f0; padding: 6px 10px;" onclick="votarTema('${id}')">
                                 <i data-lucide="heart" style="width:14px; fill: ${hasVoted ? '#ef4444' : 'none'}; color: ${hasVoted ? '#ef4444' : 'currentColor'}"></i>
                                 <span style="font-size: 0.85rem;">${votos}</span>
                             </div>
                         </div>
-                        <h2 style="font-family: 'Inter'; font-size: 1.3rem; font-weight: 700; line-height: 1.1; margin: 6px 0; color: #111;">${threadData.title}</h2>
+                        <h2 style="font-family: 'Inter'; font-size: 1.3rem; font-weight: 700; line-height: 1.1; margin: 6px 0; color: #111;">${escape(threadData.title)}</h2>
                         <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
-                            <div class="reply-user-icon" style="width:24px; height:24px; font-size: 0.7rem; background:#f1f5f9;">${threadData.userName?.charAt(0) || 'V'}</div>
-                            <div style="font-size: 0.75rem; color: #64748b; font-weight:600;">Por ${threadData.userName} - <span style="opacity: 0.7;">${threadData.createdAt ? (threadData.createdAt.toDate ? threadData.createdAt.toDate().toLocaleDateString() : 'Hoy') : 'Hoy'}</span></div>
+                            <div class="reply-user-icon" style="width:24px; height:24px; font-size: 0.7rem; background:#f1f5f9;">${escape(userName.charAt(0) || 'V')}</div>
+                            <div style="font-size: 0.75rem; color: #64748b; font-weight:600;">Por ${escape(userName)} - <span style="opacity: 0.7;">${threadData.createdAt ? (threadData.createdAt.toDate ? threadData.createdAt.toDate().toLocaleDateString() : 'Hoy') : 'Hoy'}</span></div>
                         </div>
-                        <p style="font-size: 0.92rem; color: #334155; line-height: 1.5; white-space: pre-wrap; margin: 0;">${threadData.content}</p>
+                        <p style="font-size: 0.92rem; color: #334155; line-height: 1.5; white-space: pre-wrap; margin: 0;">${escape(threadData.content)}</p>
                     </div>
                 `;
                 lucide.createIcons();
@@ -2080,23 +2290,25 @@
                 return;
             }
             container.innerHTML = replies.map(r => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
                 const voters = r.data.voters || [];
                 const votos = voters.length;
                 const hasVoted = currUser && voters.includes(currUser.uid);
-                const inicial = r.data.userName?.charAt(0) || 'V';
+                const userName = String(r.data.userName || 'Vecino');
+                const inicial = userName.charAt(0) || 'V';
                 return `
                     <div class="reply-card">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
                             <div style="display:flex; align-items:center; gap:6px;">
-                                <div class="reply-user-icon" style="width:18px; height:18px; font-size:0.55rem;">${inicial}</div>
-                                <div style="font-size: 0.7rem; font-weight: 700; color: #475569;">${r.data.userName}</div>
+                                <div class="reply-user-icon" style="width:18px; height:18px; font-size:0.55rem;">${escape(inicial)}</div>
+                                <div style="font-size: 0.7rem; font-weight: 700; color: #475569;">${escape(userName)}</div>
                             </div>
-                            <div class="vote-btn ${hasVoted ? 'active' : ''}" style="padding: 1px 6px; font-size: 0.65rem; background:transparent; border-color:transparent;" onclick="votarRespuesta('${r.id}', ${JSON.stringify(voters)})">
+                            <div class="vote-btn ${hasVoted ? 'active' : ''}" style="padding: 1px 6px; font-size: 0.65rem; background:transparent; border-color:transparent;" onclick="votarRespuesta('${r.id}')">
                                 <i data-lucide="heart" style="width:10px; fill: ${hasVoted ? '#ef4444' : 'none'}; color: ${hasVoted ? '#ef4444' : 'currentColor'}"></i>
                                 <span>${votos}</span>
                             </div>
                         </div>
-                        <p style="font-size: 0.82rem; color: #334155; line-height: 1.35; white-space: pre-wrap; margin: 0; padding-left: 24px;">${r.data.content}</p>
+                        <p style="font-size: 0.82rem; color: #334155; line-height: 1.35; white-space: pre-wrap; margin: 0; padding-left: 24px;">${escape(r.data.content)}</p>
                         <div style="font-size: 0.55rem; color: #94a3b8; margin-top: 4px; padding-left: 24px; display:flex; align-items:center; gap:3px;">
                             <i data-lucide="clock" style="width:8px;"></i>
                             ${r.data.createdAt ? (r.data.createdAt.toDate ? r.data.createdAt.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Ahora') : 'Ahora'}
@@ -2107,10 +2319,14 @@
             lucide.createIcons();
         }
 
-        window.votarRespuesta = async function(id, voters) {
+        window.votarRespuesta = async function(id, voters = null) {
             if (!currUser) { alert("Inicia sesion para votar"); return; }
             try {
                 const docRef = doc(db, "foro_respuestas", id);
+                if (!Array.isArray(voters)) {
+                    const snap = await getDoc(docRef);
+                    voters = snap.exists() && Array.isArray(snap.data().voters) ? snap.data().voters : [];
+                }
                 const hasVoted = voters.includes(currUser.uid);
                 await updateDoc(docRef, {
                     voters: hasVoted ? arrayRemove(currUser.uid) : arrayUnion(currUser.uid)
@@ -2168,22 +2384,26 @@
                 return;
             }
             list.innerHTML = users.map(u => {
-                const profileImage = window.pickDisplayImage
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
+                const name = u.nombre || u.displayName || u.display_name || 'Vecino';
+                const phone = window.sanitizePhone ? window.sanitizePhone(u.phone || u.telefono || u.phone_number) : String(u.phone || u.telefono || u.phone_number || '').replace(/\D/g, '').slice(0, 20);
+                const rawProfileImage = window.pickDisplayImage
                     ? window.pickDisplayImage([u.photoURL_thumb, u.photo_thumb, u.photo_url, u.photoURL, u.foto], 'assets/default-avatar.svg', { width: 240 })
                     : (u.photoURL_thumb || u.photo_thumb || u.photo_url || u.photoURL || u.foto || 'assets/default-avatar.svg');
+                const profileImage = window.sanitizeUrl ? window.sanitizeUrl(rawProfileImage, 'assets/default-avatar.svg') : rawProfileImage;
 
                 return `
                 <div class="yellow-card">
-                    <img src="${profileImage}" class="yellow-avatar" onerror="this.src='assets/default-avatar.svg'" loading="lazy" decoding="async" fetchpriority="low" alt="${u.nombre || u.displayName || u.display_name || 'Vecino'}">
+                    <img src="${escape(profileImage)}" class="yellow-avatar" onerror="this.src='assets/default-avatar.svg'" loading="lazy" decoding="async" fetchpriority="low" alt="${escape(name)}">
                     <div style="flex:1;">
-                        <h4 style="font-family: 'Inter'; font-weight: 700; font-size:1rem; margin-bottom:1px; color:#1e293b;">${u.nombre || u.displayName || u.display_name || 'Vecino'}</h4>
-                        <p style="font-size:0.75rem; color:#64748b; line-height:1.2; margin-bottom:4px;">${u.bio || u.descripcion || `Vecino de ${getCurrentCityLabel()}`}</p>
+                        <h4 style="font-family: 'Inter'; font-weight: 700; font-size:1rem; margin-bottom:1px; color:#1e293b;">${escape(name)}</h4>
+                        <p style="font-size:0.75rem; color:#64748b; line-height:1.2; margin-bottom:4px;">${escape(u.bio || u.descripcion || `Vecino de ${getCurrentCityLabel()}`)}</p>
                         <div style="display:flex; align-items:center; gap:4px; font-size:0.8rem; font-weight:700; color: #059669;">
                             <i data-lucide="phone" style="width:10px;"></i>
-                            <span>${u.telefono || u.phone || u.phone_number || 'S/N'}</span>
+                            <span>${escape(phone || 'S/N')}</span>
                         </div>
                     </div>
-                    <a href="https://wa.me/51${u.phone || u.telefono || u.phone_number}" target="_blank" style="background:#22c55e; color:white; width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);">
+                    <a href="https://wa.me/51${phone}" target="_blank" rel="noopener" style="background:#22c55e; color:white; width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);">
                         <i data-lucide="message-circle" style="width:20px; fill: white;"></i>
                     </a>
                 </div>

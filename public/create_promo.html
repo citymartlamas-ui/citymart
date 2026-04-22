@@ -405,7 +405,7 @@
                     
                     setStatus(isImage ? 'Subiendo imagen...' : 'Subiendo video...');
                     const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
-                    imagePath = `promociones/${Date.now()}_${sanitizeName}`;
+                    imagePath = `promociones/${currentUser.uid}/${Date.now()}_${sanitizeName}`;
                     const storageRef = ref(storage, imagePath);
 
                     await uploadBytes(storageRef, processedFile);

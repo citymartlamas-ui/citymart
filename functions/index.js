@@ -5,8 +5,23 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 const crypto = require("crypto");
-const BACKFILL_SECRET = "citymart-backfill-20260331-4m7q";
-const ADMIN_EMAIL = "admin@gmail.com";
+const runtimeConfig = (() => {
+  try {
+    return functions.config() || {};
+  } catch (error) {
+    return {};
+  }
+})();
+const BACKFILL_SECRET = String(
+  process.env.CITYMART_BACKFILL_SECRET ||
+  runtimeConfig.citymart?.backfill_secret ||
+  ""
+).trim();
+const ADMIN_EMAIL = String(
+  process.env.CITYMART_ADMIN_EMAIL ||
+  runtimeConfig.citymart?.admin_email ||
+  "admin@gmail.com"
+).trim().toLowerCase();
 const APP_BASE_URL = "https://usuarios-citymart-lamas.web.app";
 const THUMB_WIDTH = 560;
 const THUMB_HEIGHT = 560;
@@ -105,6 +120,27 @@ function setCityCashCors(res) {
   res.set("Cache-Control", "no-store");
 }
 
+function constantTimeEquals(left, right) {
+  const leftBuffer = Buffer.from(String(left || ""));
+  const rightBuffer = Buffer.from(String(right || ""));
+  return leftBuffer.length === rightBuffer.length && crypto.timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function requireBackfillSecret(req, res) {
+  if (!BACKFILL_SECRET) {
+    res.status(503).json({ ok: false, error: "maintenance-secret-not-configured" });
+    return false;
+  }
+
+  const providedSecret = String(req.headers["x-backfill-key"] || "").trim();
+  if (!constantTimeEquals(providedSecret, BACKFILL_SECRET)) {
+    res.status(403).json({ ok: false, error: "forbidden" });
+    return false;
+  }
+
+  return true;
+}
+
 async function authenticateCityCashRequest(req, res) {
   setCityCashCors(res);
 
@@ -134,7 +170,7 @@ async function authenticateCityCashRequest(req, res) {
 }
 
 function isCityCashAdmin(decoded) {
-  return String(decoded?.email || "").trim().toLowerCase() === "admin@gmail.com";
+  return decoded?.admin === true || String(decoded?.email || "").trim().toLowerCase() === ADMIN_EMAIL;
 }
 
 const LEGACY_BUSINESS_OWNER_UID_FIELDS = ["uid", "ownerUid", "ownerId", "claimedBy", "createdBy", "userId"];
@@ -1361,11 +1397,7 @@ exports.backfillLegacyThumbnails = functions
         return;
       }
 
-      const secret = req.query.key || req.headers["x-backfill-key"];
-      if (secret !== BACKFILL_SECRET) {
-        res.status(403).json({ ok: false, error: "forbidden" });
-        return;
-      }
+      if (!requireBackfillSecret(req, res)) return;
 
       const allowedPrefixes = ["negocios/", "promociones/", "noticias/", "lost_found/", "users/"];
       const prefix = String(req.body?.prefix || req.query.prefix || "");
@@ -1424,11 +1456,7 @@ exports.repairBusinessImageDoc = functions
         return;
       }
 
-      const secret = req.query.key || req.headers["x-backfill-key"];
-      if (secret !== BACKFILL_SECRET) {
-        res.status(403).json({ ok: false, error: "forbidden" });
-        return;
-      }
+      if (!requireBackfillSecret(req, res)) return;
 
       const businessId = String(req.body?.businessId || req.query.businessId || "").trim();
       if (!businessId) {
@@ -1502,11 +1530,7 @@ exports.deleteStorageFile = functions
         return;
       }
 
-      const secret = req.query.key || req.headers["x-backfill-key"];
-      if (secret !== BACKFILL_SECRET) {
-        res.status(403).json({ ok: false, error: "forbidden" });
-        return;
-      }
+      if (!requireBackfillSecret(req, res)) return;
 
       const filePath = String(req.body?.filePath || req.query.filePath || "").trim();
       if (!filePath) {
@@ -2078,11 +2102,7 @@ exports.repairLegacyBusinessOwners = functions
         return;
       }
 
-      const secret = req.query.key || req.headers["x-backfill-key"];
-      if (secret !== BACKFILL_SECRET) {
-        res.status(403).json({ ok: false, error: "forbidden" });
-        return;
-      }
+      if (!requireBackfillSecret(req, res)) return;
 
       const db = admin.firestore();
       const authCache = new Map();
@@ -2449,6 +2469,48 @@ exports.playSecretNumber = functions
       });
     }
   });
+
+async function recalculateBusinessReviewStats(businessId) {
+  const normalizedBusinessId = String(businessId || "").trim();
+  if (!normalizedBusinessId) return null;
+
+  const db = admin.firestore();
+  const reviewsSnap = await db.collection("resenas")
+    .where("negocio_id", "==", normalizedBusinessId)
+    .get();
+  let total = 0;
+  let count = 0;
+
+  reviewsSnap.forEach((docSnap) => {
+    const rating = Number(docSnap.data()?.puntuacion || 0);
+    if (Number.isFinite(rating) && rating >= 1 && rating <= 5) {
+      total += rating;
+      count += 1;
+    }
+  });
+
+  const average = count ? Number((total / count).toFixed(2)) : 0;
+  await db.collection("negocio").doc(normalizedBusinessId).set({
+    promedio_puntuacion: average,
+    rating_promedio: average,
+    total_resenas: count,
+    rating_updated_at: admin.firestore.FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  return { businessId: normalizedBusinessId, average, count };
+}
+
+exports.syncBusinessReviewStats = functions.firestore
+  .document("resenas/{reviewId}")
+  .onWrite(async (change) => {
+    const beforeBusinessId = change.before.exists ? change.before.data()?.negocio_id : "";
+    const afterBusinessId = change.after.exists ? change.after.data()?.negocio_id : "";
+    const affectedBusinessIds = Array.from(new Set([beforeBusinessId, afterBusinessId].filter(Boolean)));
+
+    await Promise.all(affectedBusinessIds.map((businessId) => recalculateBusinessReviewStats(businessId)));
+    return null;
+  });
+
 exports.pruneCityCashTransactions = functions.firestore.document("citycash_transactions/{txId}").onCreate(async (snap) => {
   const data = snap.data() || {};
   const uid = data.uid;
@@ -2474,3 +2536,34 @@ exports.pruneCityCashTransactions = functions.firestore.document("citycash_trans
     return null;
   }
 });
+
+/**
+ * Limpieza automatica del Chat Global
+ * Se ejecuta cada hora y elimina mensajes con antiguedad superior a 24 horas.
+ */
+exports.cleanupGlobalChat = functions.pubsub
+  .schedule('every 1 hours')
+  .onRun(async (context) => {
+    const cutOff = Date.now() - (24 * 60 * 60 * 1000);
+    const chatRef = admin.database().ref('global_chat');
+    
+    try {
+      const oldMessagesQuery = chatRef.orderByChild('timestamp').endAt(cutOff);
+      const snapshot = await oldMessagesQuery.once('value');
+      const updates = {};
+      
+      snapshot.forEach((child) => {
+        updates[child.key] = null;
+      });
+      
+      if (Object.keys(updates).length > 0) {
+        await chatRef.update(updates);
+        console.log('[cleanupGlobalChat] Se eliminaron ' + Object.keys(updates).length + ' mensajes expirados.');
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('[cleanupGlobalChat] Error:', error);
+      return null;
+    }
+  });

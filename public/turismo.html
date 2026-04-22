@@ -22,6 +22,8 @@
     <meta name="apple-mobile-web-app-title" content="CityMart">
     <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/css/global-chat.css">
+    <link rel="stylesheet" href="assets/css/global-chat.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://commons.wikimedia.org" crossorigin>
@@ -241,6 +243,47 @@
             transform: scale(1.04);
             filter: saturate(1.05);
         }
+
+        @keyframes gc-badge-pop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* ─── Nav Item Transformation ─── */
+.chat-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    min-width: 64px;
+}
+
+.chat-nav-item .main-action {
+    background: linear-gradient(135deg, #1f6b52, #2d9f78) !important;
+    color: white !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-top: -35px !important;
+    border: 4px solid white !important;
+    box-shadow: 0 4px 15px rgba(31, 107, 82, 0.4) !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.chat-nav-item:hover .main-action {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(31, 107, 82, 0.5);
+}
+
+.chat-nav-item span {
+    display: none !important; /* Force hide label as requested */
+}
 
         .turismo-hero::before {
             content: '';
@@ -1865,12 +1908,11 @@
             <i data-lucide="compass" class="nav-icon"></i>
             <span>Turismo</span>
         </a>
-        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
-            <div
-                style="background: linear-gradient(135deg, var(--tour-moss), #2d7c61); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 14px 26px -16px rgba(31, 107, 82, 0.9);">
-                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
+        <a class="chat-nav-item" onclick="window.dispatchEvent(new CustomEvent('open-global-chat'))">
+            <div class="main-action">
+                <i data-lucide="message-circle" style="width: 28px; height: 28px;"></i>
             </div>
-            <span style="font-weight: 800; color: var(--tour-deep); margin-top: 2px;">Publicar</span>
+            <span>Chat</span>
         </a>
         <a href="community.html" class="nav-item">
             <i data-lucide="users" class="nav-icon"></i>
@@ -2284,7 +2326,7 @@
                                 item.premium ? 'Premium' : '',
                                 formatCategoryLabel(item.categoria),
                                 item.railCity && item.railCity !== currentCity ? formatCityLabel(item.railCity) : ''
-                            ].filter(Boolean).join(' � '))}</span>
+                            ].filter(Boolean).join(' · '))}</span>
                         </div>
                         <h4>${escapeHtml(item.nombre)}</h4>
                         <p>${escapeHtml(getTourismBusinessSummary(item))}</p>
@@ -2537,10 +2579,13 @@
         loadBusinessesByCategory();
     </script>
 
-        <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
+    <script type="module">
+        import { auth, db } from './assets/js/firebase-init.js';
+        import { initGlobalChat } from './assets/js/global-chat.js';
+        initGlobalChat(auth, db);
+    </script>
+
+    <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
 </body>
 
 </html>
-
-
-

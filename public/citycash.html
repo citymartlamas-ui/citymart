@@ -1091,15 +1091,17 @@
                 return;
             }
 
-            historyListEl.innerHTML = state.transactions.slice(0, 6).map((item) => `
+            historyListEl.innerHTML = state.transactions.slice(0, 6).map((item) => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ""));
+                return `
                 <div class="citycash-history-item">
                     <div>
-                        <strong>${item.label || "Movimiento CityCash"}</strong>
+                        <strong>${escape(item.label || "Movimiento CityCash")}</strong>
                         <p>${formatCityCashDate(item.createdAt)} · ${item.type === "earn" ? "Ganancia" : "Gasto"}</p>
                     </div>
                     <div class="citycash-history-amount ${Number(item.amount || 0) >= 0 ? "is-positive" : "is-negative"}">${formatCityCashAmount(item.amount || 0)}</div>
                 </div>
-            `).join("");
+            `}).join("");
         }
 
         function renderBusinesses() {
@@ -1119,18 +1121,22 @@
                 return;
             }
 
-            businessListEl.innerHTML = state.businesses.map((business) => `
+            businessListEl.innerHTML = state.businesses.map((business) => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ""));
+                const safeImage = window.sanitizeUrl ? window.sanitizeUrl(business.image, "assets/placeholder.svg") : business.image;
+                business = { ...business, categoria: escape(business.categoria) };
+                return `
                 <article class="citycash-business-card">
-                    <img src="${business.image}" alt="${business.nombre}" loading="lazy" decoding="async">
+                    <img src="${escape(safeImage)}" alt="${escape(business.nombre)}" loading="lazy" decoding="async">
                     <div style="flex: 1;">
-                        <strong>${business.nombre}</strong>
+                        <strong>${escape(business.nombre)}</strong>
                         <p>${business.categoria} · ${getCityCashCityLabel(business.ciudad)}</p>
                     </div>
                     <button class="citycash-select-btn ${state.selectedBusinessId === business.id ? "is-active" : ""}" onclick="window.selectCityCashBusiness('${business.id}')">
                         ${state.selectedBusinessId === business.id ? "Seleccionado" : "Elegir"}
                     </button>
                 </article>
-            `).join("");
+            `}).join("");
         }
 
         function renderAvailability() {

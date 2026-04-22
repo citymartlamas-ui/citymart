@@ -426,8 +426,11 @@
         const ADMIN_CITYCASH_BONUS_KEY = "admin_self_bonus_20260408_v1";
         let currentAdminUser = null;
 
-        auth.onAuthStateChanged((user) => {
-            if (user && user.email === ADMIN_EMAIL) {
+        auth.onAuthStateChanged(async (user) => {
+            const token = user ? await user.getIdTokenResult().catch(() => null) : null;
+            const isAdmin = Boolean(token?.claims?.admin === true || user?.email === ADMIN_EMAIL);
+
+            if (user && isAdmin) {
                 currentAdminUser = user;
                 document.getElementById('admin-login-check').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
@@ -578,12 +581,15 @@
             `;
 
             negocios.forEach(data => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
                 const id = data.id;
                 const isPremium = data.promocionanuncio === true;
                 const cityValue = (data.ciudad || data.provincia || data.ubicacion || '').toString().trim();
                 const cityBadgeHtml = cityValue
-                    ? `<p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:6px;">CIUDAD: ${cityValue.toUpperCase()}</p>`
+                    ? `<p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:6px;">CIUDAD: ${escape(cityValue.toUpperCase())}</p>`
                     : '';
+                const imageUrl = window.sanitizeUrl ? window.sanitizeUrl(data.foto || 'assets/placeholder.svg', 'assets/placeholder.svg') : (data.foto || 'assets/placeholder.svg');
+                data = { ...data, categoria: escape(data.categoria), direccion: escape(data.direccion || 'Lamas') };
 
                 // Fecha legible
                 let fechaStr = '';
@@ -594,9 +600,9 @@
 
                 container.innerHTML += `
                     <div class="admin-card">
-                        <img src="${data.foto || 'assets/placeholder.svg'}">
+                        <img src="${escape(imageUrl)}">
                         <div class="admin-info">
-                            <h3>${data.nombre}</h3>
+                            <h3>${escape(data.nombre)}</h3>
                             ${cityBadgeHtml}
                             <p>${data.categoria} • ${data.direccion || 'Lamas'}${fechaStr ? ' • ' + fechaStr : ''}</p>
                         </div>
@@ -661,11 +667,26 @@
                 }
 
                 docs.forEach(data => {
+                    const escape = window.escapeHtml || ((value) => String(value ?? ''));
                     const id = data.id;
                     const isPromo = collName === 'promociones';
                     const isSurvey = collName === 'encuestas_diarias';
                     const isPending = data.estado === 'pendiente';
                     const isApproved = data.estado === 'aprobado';
+                    data = {
+                        ...data,
+                        precio_oferta: escape(data.precio_oferta || ''),
+                        ciudad: escape(data.ciudad || ''),
+                        provincia: escape(data.provincia || ''),
+                        ubicacion: escape(data.ubicacion || ''),
+                        duracion_horas: escape(data.duracion_horas || '')
+                    };
+                    if (Array.isArray(data.opciones)) {
+                        data.opciones = data.opciones.map((opcion) => ({
+                            ...opcion,
+                            texto: escape(opcion?.texto || '')
+                        }));
+                    }
 
                     let extraPromoInfo = '';
                     if (isPromo) {
@@ -679,7 +700,7 @@
 
                     if (isSurvey) {
                         const opciones = data.opciones || [];
-                        const surveyCity = (data.ciudad || data.provincia || 'lamas').toUpperCase();
+                        const surveyCity = escape(String(data.ciudad || data.provincia || 'lamas').toUpperCase());
                         let opsHtml = opciones.map(o => `• ${o.texto}`).join('<br>');
                         extraPromoInfo = `
                             <p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:4px;">CIUDAD: ${surveyCity}</p>
@@ -702,7 +723,7 @@
 
                     const cityValue = (data.ciudad || data.provincia || data.ubicacion || '').toString().trim();
                     const cityBadgeHtml = cityValue
-                        ? `<p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:6px;">CIUDAD: ${cityValue.toUpperCase()}</p>`
+                        ? `<p style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; font-size:0.72rem; font-weight:700; padding:6px 10px; border-radius:999px; margin-top:6px;">CIUDAD: ${escape(cityValue.toUpperCase())}</p>`
                         : '';
 
                     // Botones simplificados: APROBAR / DESAPROBAR
@@ -711,17 +732,17 @@
                         : `<button class="admin-btn btn-reject" onclick="window.updateField('${collName}', '${id}', {estado: 'pendiente'})">❌ DESAPROBAR</button>`;
 
                     // Imagen / Title para Encuesta vs Promo/Noticias
-                    const imgSrc = isSurvey ? (data.patrocinador_foto || 'assets/placeholder.svg') : (data.imagen || 'assets/placeholder.svg');
+                    const imgSrc = window.sanitizeUrl ? window.sanitizeUrl(isSurvey ? (data.patrocinador_foto || 'assets/placeholder.svg') : (data.imagen || 'assets/placeholder.svg'), 'assets/placeholder.svg') : (isSurvey ? (data.patrocinador_foto || 'assets/placeholder.svg') : (data.imagen || 'assets/placeholder.svg'));
                     const titleText = isPromo ? ((data.precio_oferta ? 'S/ ' + data.precio_oferta.toString().replace(/^S\/\s*/i, '') + ' - ' : '') + data.titulo) : (isSurvey ? data.pregunta : data.titulo);
                     const subtitleText = isSurvey ? 'Por: ' + (data.patrocinador_nombre || data.nombre_creador || 'Usuario') : (isPromo ? 'De: ' + (data.nombre_negocio || 'Usuario') : (data.contenido || '').substring(0, 60) + '...');
 
                     container.innerHTML += `
                         <div class="admin-card">
-                            <img src="${imgSrc}">
+                            <img src="${escape(imgSrc)}">
                             <div class="admin-info">
                                 ${badgeHtml}
-                                <h3>${titleText}</h3>
-                                <p>${subtitleText}</p>
+                                <h3>${escape(titleText)}</h3>
+                                <p>${escape(subtitleText)}</p>
                                 ${cityBadgeHtml}
                                 ${extraPromoInfo}
                                 ${fechaStr ? `<p style="font-size: 0.7rem; color: #9ca3af; margin-top: 2px;">📅 ${fechaStr}</p>` : ''}

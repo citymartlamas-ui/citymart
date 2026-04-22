@@ -457,7 +457,8 @@
                             const card = document.createElement('div');
                             card.className = 'card';
                             card.style.height = '120px';
-                            card.innerHTML = `<img src="${imgUrl}" class="img-full" style="border-radius:15px; cursor:zoom-in;" loading="lazy" decoding="async" fetchpriority="low">`;
+                            const safeImgUrl = window.sanitizeUrl ? window.sanitizeUrl(imgUrl, 'assets/placeholder.svg') : imgUrl;
+                            card.innerHTML = `<img src="${window.escapeHtml ? window.escapeHtml(safeImgUrl) : safeImgUrl}" class="img-full" style="border-radius:15px; cursor:zoom-in;" loading="lazy" decoding="async" fetchpriority="low">`;
                             card.onclick = () => window.openFullscreenImage(imgUrl, allPhotos);
                             gallery.appendChild(card);
                         });
@@ -466,14 +467,15 @@
                     }
 
                     // Contact links (WhatsApp/Phone)
-                    if (phone && contactBar) {
+                    const cleanPhone = window.sanitizePhone ? window.sanitizePhone(phone) : String(phone || '').replace(/\D/g, '').slice(0, 20);
+                    if (cleanPhone && contactBar) {
                         contactBar.style.display = 'block';
                         contactBar.innerHTML = `
                             <div style="display: flex; gap: 10px; width: 100%;">
-                                <a href="https://wa.me/51${phone}" class="whatsapp-btn" style="flex: 1; text-decoration: none;">
+                                <a href="https://wa.me/51${cleanPhone}" class="whatsapp-btn" style="flex: 1; text-decoration: none;" rel="noopener">
                                     <i data-lucide="message-circle" style="fill: white;"></i> WHATSAPP
                                 </a>
-                                <a href="tel:${phone}" class="whatsapp-btn" style="flex: 1; background: var(--primary-color); text-decoration: none; box-shadow: 0 10px 20px rgba(11, 89, 242, 0.2);">
+                                <a href="tel:${cleanPhone}" class="whatsapp-btn" style="flex: 1; background: var(--primary-color); text-decoration: none; box-shadow: 0 10px 20px rgba(11, 89, 242, 0.2);">
                                     <i data-lucide="phone" style="fill: white;"></i> LLAMAR
                                 </a>
                             </div>
@@ -583,10 +585,7 @@
                         fecha: serverTimestamp()
                     });
 
-                    // Update business average rating (calculating it locally for faster update, 
-                    // though onSnapshot will catch it if we had a cloud function, 
-                    // but here we do it to keep data in 'negocio' synced)
-                    updateBusinessStats(currentBizIdForReview);
+                    // El promedio se sincroniza desde Cloud Functions para que el cliente no pueda manipularlo.
 
                     document.getElementById('review-text').value = '';
                     selectedRating = 0;
@@ -672,27 +671,30 @@
                 docs.sort((a, b) => (b.fecha?.seconds || 0) - (a.fecha?.seconds || 0));
 
                 listEl.innerHTML = docs.map(d => {
+                    const escape = window.escapeHtml || ((value) => String(value ?? ''));
                     let dStars = '';
                     for (let i = 1; i <= 5; i++) {
                         dStars += '<span style="color: ' + (i <= d.puntuacion ? '#fbbf24' : '#d1d5db') + '; font-size: 1.1rem; line-height: 1;">★</span>';
                     }
                     const dateStr = d.fecha ? new Date(d.fecha.seconds * 1000).toLocaleDateString() : 'Reciente';
-                    const userPhoto = d.usuario_foto || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(d.usuario_nombre) + '&background=random';
+                    const userName = String(d.usuario_nombre || 'Usuario de CityMart');
+                    const fallbackAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(userName) + '&background=random';
+                    const userPhoto = window.sanitizeUrl ? window.sanitizeUrl(d.usuario_foto, fallbackAvatar) : (d.usuario_foto || fallbackAvatar);
 
                     return '<div style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">' +
                         '<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">' +
                         '<div style="display: flex; align-items: center; gap: 10px;">' +
-                        '<img src="' + userPhoto + '" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: #eee;">' +
+                        '<img src="' + escape(userPhoto) + '" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: #eee;">' +
                         '<div>' +
                         '<div style="display: flex; align-items: center; gap: 6px;">' +
-                        '<span style="font-weight: 600; font-size: 0.85rem; color:#1f2937;">' + d.usuario_nombre + '</span>' +
+                        '<span style="font-weight: 600; font-size: 0.85rem; color:#1f2937;">' + escape(userName) + '</span>' +
                         '<div style="display:flex; gap:1px;">' + dStars + '</div>' +
                         '</div>' +
                         '<p style="color: #9ca3af; font-size: 0.7rem; margin-top: 1px;">' + dateStr + '</p>' +
                         '</div>' +
                         '</div>' +
                         '</div>' +
-                        (d.comentario ? '<p style="font-size: 0.85rem; color: #4b5563; line-height: 1.4; margin-top: 6px; padding-left: 42px;">' + d.comentario + '</p>' : '') +
+                        (d.comentario ? '<p style="font-size: 0.85rem; color: #4b5563; line-height: 1.4; margin-top: 6px; padding-left: 42px;">' + escape(d.comentario) + '</p>' : '') +
                         '</div>';
                 }).join('');
             });

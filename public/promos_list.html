@@ -104,15 +104,17 @@
                 }
 
                 listContainer.innerHTML = items.map(p => {
+                    const escape = window.escapeHtml || ((value) => String(value ?? ''));
                     const price = p.precio_oferta ? p.precio_oferta.toString().replace(/^S\/\s*/i, '') : '';
                     const displayPrice = price ? `S/ ${price}` : '';
-                    const promoImage = window.pickDisplayImage
+                    const rawPromoImage = window.pickDisplayImage
                         ? window.pickDisplayImage([p.imagen_thumb, p.imagen], 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=640', { width: 960 })
                         : (p.imagen_thumb || p.imagen || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=640');
+                    const promoImage = window.sanitizeUrl ? window.sanitizeUrl(rawPromoImage, 'assets/placeholder.svg') : rawPromoImage;
                     const isVideo = p.imagen && (p.imagen.includes('.mp4') || p.imagen.includes('video/') || p.tipo === 'video');
                     const media = isVideo
-                        ? `<video src="${p.imagen}" style="width:100%; height:100%; object-fit:cover;" autoplay loop muted playsinline preload="metadata"></video>`
-                        : `<img src="${promoImage}" alt="${p.titulo}" style="width:100%; height:100%; object-fit:cover;" loading="lazy" decoding="async" fetchpriority="low">`;
+                        ? `<video src="${escape(window.sanitizeUrl ? window.sanitizeUrl(p.imagen) : p.imagen)}" style="width:100%; height:100%; object-fit:cover;" autoplay loop muted playsinline preload="metadata"></video>`
+                        : `<img src="${escape(promoImage)}" alt="${escape(p.titulo)}" style="width:100%; height:100%; object-fit:cover;" loading="lazy" decoding="async" fetchpriority="low">`;
 
                     return `
                         <div class="modern-glass" style="height: 160px; border-radius: 32px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid rgba(255,255,255,0.8);" onclick="window.location.href='promo_detail.html?id=${p.id}'">
@@ -120,9 +122,9 @@
                             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.2) 60%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px;">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px;">
                                     <div style="flex: 1; min-width: 0;">
-                                        <h3 style="color: white; font-size: 1.25rem; font-weight: 600; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${p.titulo}</h3>
+                                        <h3 style="color: white; font-size: 1.25rem; font-weight: 600; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${escape(p.titulo)}</h3>
                                     </div>
-                                    ${displayPrice ? `<div style="background: var(--premium-gold); color: #000; padding: 8px 16px; border-radius: 14px; font-weight: 600; font-size: 1.15rem; box-shadow: 0 4px 20px -5px rgba(251, 191, 36, 0.5); flex-shrink: 0; transform: translateY(-2px);">${displayPrice}</div>` : ''}
+                                    ${displayPrice ? `<div style="background: var(--premium-gold); color: #000; padding: 8px 16px; border-radius: 14px; font-weight: 600; font-size: 1.15rem; box-shadow: 0 4px 20px -5px rgba(251, 191, 36, 0.5); flex-shrink: 0; transform: translateY(-2px);">${escape(displayPrice)}</div>` : ''}
                                 </div>
                             </div>
                         </div>

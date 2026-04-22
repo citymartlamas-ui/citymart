@@ -175,6 +175,37 @@ window.pickEntityImage = function (entity = {}, fallback = 'assets/placeholder.s
         );
 };
 
+window.escapeHtml = window.escapeHtml || function (value = '') {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+};
+
+window.sanitizePhone = window.sanitizePhone || function (value = '') {
+    return String(value || '').replace(/\D/g, '').slice(0, 20);
+};
+
+window.sanitizeUrl = window.sanitizeUrl || function (value = '', fallback = '') {
+    const url = String(value || '').trim();
+    if (!url) return fallback;
+
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+            return parsed.href;
+        }
+    } catch (error) {
+        if (/^(assets\/|\.\/|\.\.\/)/.test(url) && !url.includes('javascript:')) {
+            return url;
+        }
+    }
+
+    return fallback;
+};
+
 window.setStoredCity = function (value, fallback = 'lamas') {
     const normalized = window.normalizeCityValue(value, fallback);
 
@@ -415,10 +446,15 @@ window.showToast = function (message, type = 'success') {
     if (type === 'error') icon = 'alert-circle';
     if (type === 'info') icon = 'info';
 
-    toast.innerHTML = `
-        <i data-lucide="${icon}" style="width: 18px; height: 18px;"></i>
-        <span>${message}</span>
-    `;
+    const iconEl = document.createElement('i');
+    iconEl.setAttribute('data-lucide', icon);
+    iconEl.style.width = '18px';
+    iconEl.style.height = '18px';
+
+    const messageEl = document.createElement('span');
+    messageEl.textContent = String(message ?? '');
+
+    toast.append(iconEl, messageEl);
 
     container.appendChild(toast);
 

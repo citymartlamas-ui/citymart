@@ -120,23 +120,25 @@
                 }
 
                 listContainer.innerHTML = items.map(data => {
+                    const escape = window.escapeHtml || ((value) => String(value ?? ''));
                     const rating = data.rating || 0;
-                    const img = window.pickDisplayImage
+                    const rawImg = window.pickDisplayImage
                         ? window.pickDisplayImage(data.foto, 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600', { width: 420 })
                         : data.foto;
+                    const img = window.sanitizeUrl ? window.sanitizeUrl(rawImg, 'assets/placeholder.svg') : rawImg;
 
                     return `
                         <div class="modern-dir-card" onclick="window.location.href='business_detail.html?id=${data.id}'">
-                            <img src="${img}" alt="${data.nombre}" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="${escape(img)}" alt="${escape(data.nombre)}" loading="lazy" decoding="async" fetchpriority="low">
                             <div class="modern-dir-card-content">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
-                                    <h3 style="flex: 1;">${data.nombre}</h3>
+                                    <h3 style="flex: 1;">${escape(data.nombre)}</h3>
                                     <div class="premium-badge">
                                         <i data-lucide="star"></i>
                                         <span style="font-size: 0.75rem; font-weight: 600; color: #92400e;">${Number(rating).toFixed(1)}</span>
                                     </div>
                                 </div>
-                                <p class="category">${data.categoria || 'Servicio Premium'}</p>
+                                <p class="category">${escape(data.categoria || 'Servicio Premium')}</p>
                                 
                                 <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
                                     <button class="glass-pill active" style="font-size: 0.65rem; padding: 6px 14px; background: var(--primary-color); color: white; border: none; font-weight: 600;">EXPLORAR</button>

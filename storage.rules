@@ -23,23 +23,26 @@ service firebase.storage {
         && request.resource.size < 5 * 1024 * 1024;
     }
 
-    match /negocios/{allPaths=**} {
+    match /negocios/{userId}/{allPaths=**} {
       allow read: if true;
       allow write: if signedIn()
+        && request.auth.uid == userId
         && isImage()
         && request.resource.size < 5 * 1024 * 1024;
     }
 
-    match /promociones/{allPaths=**} {
+    match /promociones/{userId}/{allPaths=**} {
       allow read: if true;
       allow write: if signedIn()
+        && request.auth.uid == userId
         && isImageOrVideo()
         && request.resource.size < 10 * 1024 * 1024;
     }
 
-    match /noticias/{allPaths=**} {
+    match /noticias/{userId}/{allPaths=**} {
       allow read: if true;
       allow write: if signedIn()
+        && request.auth.uid == userId
         && isImage()
         && request.resource.size < 5 * 1024 * 1024;
     }
@@ -51,23 +54,26 @@ service firebase.storage {
         && request.resource.size < 5 * 1024 * 1024;
     }
 
-    match /lost_found/{allPaths=**} {
+    match /lost_found/{userId}/{allPaths=**} {
       allow read: if true;
       allow write: if signedIn()
+        && request.auth.uid == userId
         && isImage()
         && request.resource.size < 5 * 1024 * 1024;
     }
 
-    match /community_posts/{allPaths=**} {
+    match /community_posts/{userId}/{allPaths=**} {
       allow read: if true;
       allow write: if signedIn()
+        && request.auth.uid == userId
         && isImage()
         && request.resource.size < 5 * 1024 * 1024;
     }
 
-    match /foro_temas/{allPaths=**} {
+    match /foro_temas/{userId}/{allPaths=**} {
       allow read: if true;
       allow write: if signedIn()
+        && request.auth.uid == userId
         && isImage()
         && request.resource.size < 5 * 1024 * 1024;
     }

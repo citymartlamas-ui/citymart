@@ -533,7 +533,7 @@
                     
                     setStatus('Subiendo foto principal...');
                     const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
-                    const filePath = `negocios/${Date.now()}_${sanitizeName}`;
+                    const filePath = `negocios/${currentUser.uid}/${Date.now()}_${sanitizeName}`;
                     const storageRef = ref(storage, filePath);
 
                     await uploadBytes(storageRef, compressed);
@@ -555,7 +555,7 @@
                     const uploadPromises = selectedGalleryFiles.map(async (file, i) => {
                         const compressed = await compressImage(file, { quality: 0.7 });
                         const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
-                        const filePath = `negocios/galeria/${Date.now()}_${i}_${sanitizeName}`;
+                        const filePath = `negocios/${currentUser.uid}/galeria/${Date.now()}_${i}_${sanitizeName}`;
                         const storageRef = ref(storage, filePath);
                         
                         await uploadBytes(storageRef, compressed);

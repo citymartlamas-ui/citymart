@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -21,6 +21,7 @@
     <meta name="apple-mobile-web-app-title" content="CityMart">
     <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/css/global-chat.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -536,30 +537,33 @@
 
             let html = '';
             filtered.forEach((business) => {
+                const escape = window.escapeHtml || ((value) => String(value ?? ''));
+                const cleanPhone = window.sanitizePhone ? window.sanitizePhone(business.phone) : String(business.phone || '').replace(/\D/g, '').slice(0, 20);
+                const safeImg = window.sanitizeUrl ? window.sanitizeUrl(business.img, 'assets/placeholder.svg') : business.img;
                 const actionBtn = business.type === 'service'
-                    ? `<button onclick="event.stopPropagation(); window.location.href='tel:${business.phone}'"
+                    ? `<button onclick="event.stopPropagation(); window.location.href='tel:${cleanPhone}'"
                         style="background: #f1f5f9; color: var(--text-main); border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); transition: var(--transition);">
                         <i data-lucide="phone" style="width: 14px; height: 14px;"></i>
                     </button>`
-                    : `<button onclick="event.stopPropagation(); window.location.href='https://wa.me/51${business.phone}'"
+                    : `<button onclick="event.stopPropagation(); window.location.href='https://wa.me/51${cleanPhone}'"
                         style="background: #25d366; color: white; border: none; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2); transition: var(--transition);">
                         <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i>
                     </button>`;
 
                 html += `
                     <div class="modern-dir-card" onclick="window.location.href='business_detail.html?id=${business.id}'">
-                        <img src="${business.img}" alt="${business.title}" loading="lazy" decoding="async">
+                        <img src="${escape(safeImg)}" alt="${escape(business.title)}" loading="lazy" decoding="async">
                         <div class="modern-dir-card-content">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
-                                <h3 style="flex: 1;">${business.title}</h3>
+                                <h3 style="flex: 1;">${escape(business.title)}</h3>
                                 <div class="premium-badge">
                                     <i data-lucide="star"></i>
                                     <span>${business.rating.toFixed(1)}</span>
                                 </div>
                             </div>
-                            <p style="font-size: 0.8rem; color: #64748b; margin: 4px 0 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; font-weight: 500;">${business.sub}</p>
+                            <p style="font-size: 0.8rem; color: #64748b; margin: 4px 0 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; font-weight: 500;">${escape(business.sub)}</p>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
-                                <span class="category">${business.cat}</span>
+                                <span class="category">${escape(business.cat)}</span>
                                 ${actionBtn}
                             </div>
                         </div>
@@ -723,20 +727,4 @@
                 el.addEventListener('mouseenter', () => { paused = true; });
                 el.addEventListener('mouseleave', () => {
                     paused = false;
-                    scrollPos = el.scrollLeft;
-                });
-            }, 1500);
-        }
-
-        const catTrack = document.getElementById('category-carousel');
-        if (catTrack) autoScroll(catTrack);
-    </script>
-
-        <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
-</body>
-
-</html>
-
-
-
 

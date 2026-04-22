@@ -1,23 +1,33 @@
 {
   "rules": {
+    ".read": false,
+    ".write": false,
     "presence": {
       ".read": true,
       "$sessionId": {
-        ".write": "newData.exists() ? (newData.hasChildren(['lastSeen']) && newData.child('lastSeen').isNumber()) : true",
-        ".validate": "newData.hasChildren(['lastSeen']) && newData.child('lastSeen').isNumber()"
+        ".write": "newData.exists() ? (newData.hasChildren(['lastSeen']) && newData.child('lastSeen').isNumber() && newData.child('lastSeen').val() <= now + 60000 && newData.child('lastSeen').val() >= now - 300000) : true",
+        ".validate": "newData.hasChildren(['lastSeen']) && newData.child('lastSeen').isNumber() && newData.child('lastSeen').val() <= now + 60000 && newData.child('lastSeen').val() >= now - 300000"
       }
     },
     "stats": {
       ".read": true,
       ".write": false,
       "total_visits": {
-        ".write": "newData.isNumber() && (!data.exists() || newData.val() >= data.val())"
+        ".write": "newData.isNumber() && ((!data.exists() && newData.val() == 1) || (data.exists() && newData.val() == data.val() + 1))"
       },
       "daily_visits": {
         "$date": {
-          ".write": "newData.isNumber() && (!data.exists() || newData.val() >= data.val())"
+          ".write": "newData.isNumber() && $date.matches(/^\\d{4}-\\d{2}-\\d{2}$/) && ((!data.exists() && newData.val() == 1) || (data.exists() && newData.val() == data.val() + 1))"
         }
       }
+    },
+    "global_chat": {
+      ".read": "auth != null",
+      "$msg_id": {
+        ".write": "auth != null && (!data.exists() || data.child('uid').val() == auth.uid)",
+        ".validate": "newData.hasChildren(['uid', 'userName', 'text', 'timestamp']) && newData.child('text').val().length <= 300"
+      },
+      ".indexOn": ["timestamp"]
     }
   }
 }

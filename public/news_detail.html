@@ -260,20 +260,23 @@
             document.getElementById('news-title').innerText = data.titulo || "Sin titulo";
             document.getElementById('news-tag').innerText = category.toUpperCase();
 
-            const fullImage = data.imagen || DEFAULT_NEWS_IMAGE;
-            newsImg.src = data.imagen_thumb || fullImage;
+            const fullImage = window.sanitizeUrl ? window.sanitizeUrl(data.imagen || DEFAULT_NEWS_IMAGE, DEFAULT_NEWS_IMAGE) : (data.imagen || DEFAULT_NEWS_IMAGE);
+            newsImg.src = window.sanitizeUrl ? window.sanitizeUrl(data.imagen_thumb || fullImage, DEFAULT_NEWS_IMAGE) : (data.imagen_thumb || fullImage);
             newsImg.dataset.fullsrc = fullImage;
 
             const content = data.contenido || data.texto || "Sin contenido disponible.";
-            document.getElementById('news-desc').innerHTML = content.replace(/\n/g, '<br>');
+            const escapedContent = window.escapeHtml ? window.escapeHtml(content) : String(content || '');
+            document.getElementById('news-desc').innerHTML = escapedContent.replace(/\n/g, '<br>');
             document.getElementById('news-date').innerText = formatDetailDate(data.fecha_creacion);
 
             const contactContainer = document.getElementById('author-contact-container');
             if (data.whatsapp) {
                 const titleEncoded = encodeURIComponent(data.titulo || "Noticia en CityMart");
+                const cleanPhone = window.sanitizePhone ? window.sanitizePhone(data.whatsapp) : String(data.whatsapp || '').replace(/\D/g, '').slice(0, 20);
                 contactContainer.style.display = 'block';
                 contactContainer.innerHTML = `
-                    <a href="https://wa.me/51${data.whatsapp}?text=Hola, te contacto sobre la noticia: ${titleEncoded}" 
+                    <a href="https://wa.me/51${cleanPhone}?text=Hola, te contacto sobre la noticia: ${titleEncoded}"
+                       rel="noopener"
                        style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #25d366; color: white; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
                         <i data-lucide="message-circle" style="width: 20px; height: 20px;"></i> CONTACTAR POR WHATSAPP
                     </a>

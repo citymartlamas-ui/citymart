@@ -290,7 +290,7 @@
 
                     setStatus('Subiendo imagen...');
                     const sanitizeName = file.name.replace(/[^a-zA-Z0-9.]/g, '');
-                    const filePath = `noticias/${Date.now()}_${sanitizeName}`;
+                    const filePath = `noticias/${currentUser.uid}/${Date.now()}_${sanitizeName}`;
                     const storageRef = ref(storage, filePath);
 
                     await uploadBytes(storageRef, compressed);
