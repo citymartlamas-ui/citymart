@@ -83,6 +83,9 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+
+
 </head>
 
 <body>
@@ -101,7 +104,7 @@
         </div>
     </header>
 
-    <!-- MODAL DE ÉXITO -->
+    <!-- MODAL DE ��XITO -->
     <div id="success-modal"
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);">
         <div
@@ -111,9 +114,9 @@
                 <i data-lucide="check-circle" style="width: 40px; height: 40px;"></i>
             </div>
             <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.5rem; margin-bottom: 15px; color: #111;">
-                ¡Solicitud recibida!</h2>
+                �Solicitud recibida!</h2>
             <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">Para activar tu plan
-                Premium, realiza el pago vía <b>Yape</b> al <b>928 403 248</b> y envía el comprobante por WhatsApp.
+                Premium, realiza el pago v�a <b>Yape</b> al <b>928 403 248</b> y env�a el comprobante por WhatsApp.
             </p>
 
             <a id="whatsapp-admin-link" href="#" target="_blank"
@@ -149,14 +152,14 @@
                 <h3 style="font-family: 'Inter'; font-size: 1.5rem; font-weight: 700;">Plan Premium</h3>
             </div>
             <p style="opacity: 0.8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">Impulsa tu negocio o
-                servicio y llega a más clientes en Lamas con beneficios exclusivos.</p>
+                servicio y llega a m�s clientes en Lamas con beneficios exclusivos.</p>
 
             <div class="benefit-item">
                 <div class="benefit-icon"><i data-lucide="trending-up" style="width: 18px; height: 18px;"></i></div>
                 <div>
                     <h4 style="font-weight: 700; margin-bottom: 2px;">Mayor Visibilidad</h4>
-                    <p style="font-size: 0.85rem; opacity: 0.7;">Tu negocio o servicio aparecerá en los primeros
-                        resultados de búsqueda.</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7;">Tu negocio o servicio aparecer� en los primeros
+                        resultados de b�squeda.</p>
                 </div>
             </div>
 
@@ -164,7 +167,7 @@
                 <div class="benefit-icon"><i data-lucide="badge-check" style="width: 18px; height: 18px;"></i></div>
                 <div>
                     <h4 style="font-weight: 700; margin-bottom: 2px;">Sello Verificado</h4>
-                    <p style="font-size: 0.85rem; opacity: 0.7;">Genera más confianza con el distintivo de Negocio o
+                    <p style="font-size: 0.85rem; opacity: 0.7;">Genera m�s confianza con el distintivo de Negocio o
                         Servicio Premium.</p>
                 </div>
             </div>
@@ -173,7 +176,7 @@
                 <div class="benefit-icon"><i data-lucide="megaphone" style="width: 18px; height: 18px;"></i></div>
                 <div>
                     <h4 style="font-weight: 700; margin-bottom: 2px;">Anuncios Prioritarios</h4>
-                    <p style="font-size: 0.85rem; opacity: 0.7;">Tus promociones se mostrarán en la sección destacada de
+                    <p style="font-size: 0.85rem; opacity: 0.7;">Tus promociones se mostrar�n en la secci�n destacada de
                         la app.</p>
                 </div>
             </div>
@@ -188,19 +191,19 @@
             </div>
 
             <div class="form-group">
-                <label for="contact-phone">Teléfono de Contacto</label>
+                <label for="contact-phone">Tel�fono de Contacto</label>
                 <input type="tel" id="contact-phone" placeholder="999 999 999" required>
             </div>
 
             <div
                 style="background: #fffbeb; padding: 16px; border-radius: 12px; border: 1px solid #fde68a; margin-bottom: 24px;">
-                <p style="color: #92400e; font-size: 0.9rem; line-height: 1.4;">Un asesor se pondrá en contacto contigo
-                    para completar la activación del plan premium.</p>
+                <p style="color: #92400e; font-size: 0.9rem; line-height: 1.4;">Un asesor se pondr� en contacto contigo
+                    para completar la activaci�n del plan premium.</p>
             </div>
 
             <button type="submit"
                 style="width: 100%; padding: 16px; background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">SOLICITAR
-                ACTIVACIÓN</button>
+                ACTIVACI��N</button>
         </form>
     </main>
 
@@ -222,7 +225,7 @@
                     const querySnapshot = await getDocs(q);
 
                     if (querySnapshot.empty) {
-                        select.innerHTML = '<option value="">No tienes negocios o servicios registrados aún</option>';
+                        select.innerHTML = '<option value="">No tienes negocios o servicios registrados a�n</option>';
                         const submitBtn = document.querySelector('#premium-form button[type="submit"]');
                         if (submitBtn) submitBtn.disabled = true;
                     } else {
@@ -300,7 +303,7 @@
 
             if (submitButton) {
                 submitButton.disabled = false;
-                submitButton.textContent = 'SOLICITAR ACTIVACIÓN';
+                submitButton.textContent = 'SOLICITAR ACTIVACI��N';
             }
         });
     </script>
@@ -309,5 +312,6 @@
 </body>
 
 </html>
+
 
 

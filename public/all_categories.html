@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Todas las CategorÃ­as | CityMart</title>
+    <title>Todas las Categorías | CityMart</title>
     <link rel="stylesheet" href="assets/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,6 +62,18 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Adsterra Ads -->
+
+  <style>
+    .adsterra-native-wrap, .adsterra-banner-mobile, .adsterra-banner-desktop { width: 100%; text-align: center; }
+    .adsterra-banner-desktop { display: none; }
+    .adsterra-banner-mobile  { display: flex; justify-content: center; }
+    @media (min-width: 720px) {
+      .adsterra-banner-mobile  { display: none; }
+      .adsterra-banner-desktop { display: flex; justify-content: center; }
+    }
+  </style>
 </head>
 
 <body>
@@ -74,7 +86,7 @@
                 </div>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <a href="./" style="color: var(--text-color);"><i data-lucide="chevron-left"></i></a>
-                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.4rem;">CategorÃ­as</h2>
+                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.4rem;">Categorías</h2>
             </div>
         </div>
     </header>
@@ -94,7 +106,7 @@
             <i data-lucide="compass" class="nav-icon"></i>
             <span>Turismo</span>
         </a>
-        <!-- BotÃ³n Publicar Central -->
+        <!-- Botón Publicar Central -->
         <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
             <div
                 style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
@@ -117,43 +129,43 @@
         const categories = [
             // Comida y Bebidas
             { name: "Restaurantes", icon: "utensils", value: "restaurantes", group: "Comida" },
-            { name: "CafeterÃ­as", icon: "coffee", value: "cafeteria", group: "Comida" },
+            { name: "Cafeterías", icon: "coffee", value: "cafeteria", group: "Comida" },
             { name: "Bares / Karaokes", icon: "beer", value: "bar", group: "Comida" },
-            { name: "PanaderÃ­as", icon: "cake", value: "panaderia", group: "Comida" },
-            { name: "Comida RÃ¡pida", icon: "pizza", value: "comida_rapida", group: "Comida" },
+            { name: "Panaderías", icon: "cake", value: "panaderia", group: "Comida" },
+            { name: "Comida Rápida", icon: "pizza", value: "comida_rapida", group: "Comida" },
             // Hospedaje
             { name: "Hoteles", icon: "bed", value: "hospedaje", group: "Hoteles" },
             { name: "Alquileres", icon: "home", value: "alquiler", group: "Hoteles" },
             // Arte
-            { name: "ArtesanÃ­as", icon: "shopping-bag", value: "artesania", group: "ArtesanÃ­as" },
-            { name: "Arte y Cultura", icon: "palette", value: "arte_cultura", group: "ArtesanÃ­as" },
+            { name: "Artesanías", icon: "shopping-bag", value: "artesania", group: "Artesanías" },
+            { name: "Arte y Cultura", icon: "palette", value: "arte_cultura", group: "Artesanías" },
             // Comercio
             { name: "Tiendas", icon: "shopping-cart", value: "tiendas", group: "Comercio" },
             { name: "Moda y Ropa", icon: "shirt", value: "moda", group: "Comercio" },
-            { name: "TecnologÃ­a", icon: "smartphone", value: "tecnologia", group: "Comercio" },
-            { name: "FerreterÃ­as", icon: "hammer", value: "ferreteria", group: "Comercio" },
-            { name: "LibrerÃ­as", icon: "book-open", value: "libreria", group: "Comercio" },
+            { name: "Tecnología", icon: "smartphone", value: "tecnologia", group: "Comercio" },
+            { name: "Ferreterías", icon: "hammer", value: "ferreteria", group: "Comercio" },
+            { name: "Librerías", icon: "book-open", value: "libreria", group: "Comercio" },
             // Salud
             { name: "Farmacias", icon: "pill", value: "salud", group: "Salud" },
-            { name: "ClÃ­nicas", icon: "stethoscope", value: "clinica", group: "Salud" },
+            { name: "Clínicas", icon: "stethoscope", value: "clinica", group: "Salud" },
             { name: "Spa y Bienestar", icon: "heart-pulse", value: "spa", group: "Salud" },
             { name: "Gimnasios", icon: "dumbbell", value: "gimnasio", group: "Salud" },
             // Servicios
             { name: "Servicios Generales", icon: "wrench", value: "servicios", group: "Servicios" },
-            { name: "ConstrucciÃ³n", icon: "hard-hat", value: "construccion", group: "Servicios" },
-            { name: "CarpinterÃ­a", icon: "axe", value: "carpinteria", group: "Servicios" },
-            { name: "GasfiterÃ­a", icon: "droplets", value: "gasfiteria", group: "Servicios" },
+            { name: "Construcción", icon: "hard-hat", value: "construccion", group: "Servicios" },
+            { name: "Carpintería", icon: "axe", value: "carpinteria", group: "Servicios" },
+            { name: "Gasfitería", icon: "droplets", value: "gasfiteria", group: "Servicios" },
             { name: "Electricistas", icon: "zap", value: "electricista", group: "Servicios" },
-            { name: "PeluquerÃ­as", icon: "scissors", value: "peluqueria", group: "Servicios" },
-            { name: "SastrerÃ­a", icon: "ruler", value: "sastreria", group: "Servicios" },
-            { name: "LavanderÃ­as", icon: "waves", value: "lavanderia", group: "Servicios" },
+            { name: "Peluquerías", icon: "scissors", value: "peluqueria", group: "Servicios" },
+            { name: "Sastrería", icon: "ruler", value: "sastreria", group: "Servicios" },
+            { name: "Lavanderías", icon: "waves", value: "lavanderia", group: "Servicios" },
             { name: "Contabilidad", icon: "calculator", value: "contabilidad", group: "Servicios" },
-            { name: "MecÃ¡nica", icon: "settings", value: "mecanica", group: "Servicios" },
+            { name: "Mecánica", icon: "settings", value: "mecanica", group: "Servicios" },
             // Transporte
             { name: "Transporte", icon: "car", value: "transporte", group: "Transporte" },
             { name: "Turismo", icon: "map", value: "turismo", group: "Transporte" },
-            // EducaciÃ³n
-            { name: "EducaciÃ³n", icon: "graduation-cap", value: "educacion", group: "EducaciÃ³n" },
+            // Educación
+            { name: "Educación", icon: "graduation-cap", value: "educacion", group: "Educación" },
             // Agro
             { name: "Agricultura", icon: "tree-pine", value: "agro", group: "Agro" },
             { name: "Veterinarias", icon: "dog", value: "veterinaria", group: "Agro" },
@@ -207,6 +219,7 @@
   </footer></body>
 
 </html>
+
 
 
 

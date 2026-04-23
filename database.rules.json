@@ -28,6 +28,16 @@
         ".validate": "newData.hasChildren(['uid', 'userName', 'text', 'timestamp']) && newData.child('text').val().length <= 300"
       },
       ".indexOn": ["timestamp"]
+    },
+    "global_chat_by_city": {
+      "$city": {
+        ".read": "auth != null && ($city == 'lamas' || $city == 'tarapoto')",
+        "$msg_id": {
+          ".write": "auth != null && ($city == 'lamas' || $city == 'tarapoto') && (!data.exists() || data.child('uid').val() == auth.uid)",
+          ".validate": "newData.hasChildren(['uid', 'userName', 'text', 'timestamp', 'city']) && newData.child('uid').val() == auth.uid && newData.child('city').val() == $city && newData.child('text').isString() && newData.child('text').val().length <= 300 && newData.child('timestamp').isNumber()"
+        },
+        ".indexOn": ["timestamp"]
+      }
     }
   }
 }

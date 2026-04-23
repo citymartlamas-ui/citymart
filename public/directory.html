@@ -21,14 +21,14 @@
     <meta name="apple-mobile-web-app-title" content="CityMart">
     <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/css/global-chat.css">
+    <link rel="stylesheet" href="assets/css/global-chat.css?v=20260423-home-chat-ads-1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
         rel="stylesheet">
     <script defer src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="assets/js/utils.js?v=20260401-homefix-2"></script>
+    <script defer src="assets/js/utils.js?v=20260423-home-chat-ads-1"></script>
     <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
     <style>
         body {
@@ -133,94 +133,7 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6211692359872996"
-        crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <header class="section modern-glass"
-        style="padding-top: 10px; padding-bottom: 10px; position: sticky; top: 0; z-index: 1000; border-bottom: none; box-shadow: var(--shadow-sm);">
-        <div class="container">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="window.location.href='./'">
-                    <img src="assets/logo.png" alt="CityMart" style="height: 40px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));">
-                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.25rem; margin-top: 4px; letter-spacing: -0.02em;">CityMart</h1>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                   <div style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 6px 14px; border-radius: 100px; font-weight: 600; font-size: 0.65rem; border: 1px solid rgba(16, 185, 129, 0.2); text-transform: uppercase;">Directorio</div>
-                </div>
-            </div>
-            
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <a href="./" style="background: white; width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); color: var(--text-main); flex-shrink: 0;"><i data-lucide="chevron-left" style="width: 22px;"></i></a>
-                <div style="flex: 1; position: relative;">
-                    <i data-lucide="search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; width: 18px;"></i>
-                    <input type="text" id="business-search" placeholder="Buscar negocios locales..."
-                        style="width: 100%; padding: 14px 14px 14px 48px; border-radius: 18px; border: 1px solid #f1f5f9; background: #f8fafc; outline: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s;"
-                        onfocus="this.style.borderColor='var(--primary-color)'; this.style.background='white'; this.style.boxShadow='0 4px 15px rgba(16,185,129,0.1)';"
-                        onblur="this.style.borderColor='#f1f5f9'; this.style.background='#f8fafc'; this.style.boxShadow='none';">
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="container" style="padding-top: 14px; padding-bottom: 120px; min-height: calc(100vh - 220px);">
-        <!-- Carrusel de CategorÃ­as (Rotativo) -->
-        <section class="section" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 16px;">
-            <div id="category-carousel" class="carousel-track" style="padding-left: 0; gap: 16px;">
-                <div class="cat-item active" onclick="filterBy('Todos')">
-                    <div class="cat-icon"><i data-lucide="layout-grid"></i></div>
-                    <span class="cat-label">Todos</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('Comida')">
-                    <div class="cat-icon"><i data-lucide="utensils"></i></div>
-                    <span class="cat-label">Comida</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('Hoteles')">
-                    <div class="cat-icon"><i data-lucide="bed"></i></div>
-                    <span class="cat-label">Hoteles</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('Comercio')">
-                    <div class="cat-icon"><i data-lucide="shopping-cart"></i></div>
-                    <span class="cat-label">Comercio</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('Salud')">
-                    <div class="cat-icon"><i data-lucide="heart-pulse"></i></div>
-                    <span class="cat-label">Salud</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('Servicios')">
-                    <div class="cat-icon"><i data-lucide="wrench"></i></div>
-                    <span class="cat-label">Servicios</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('ArtesanÃ­as')">
-                    <div class="cat-icon"><i data-lucide="shopping-bag"></i></div>
-                    <span class="cat-label">ArtesanÃ­as</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('Transporte')">
-                    <div class="cat-icon"><i data-lucide="car"></i></div>
-                    <span class="cat-label">Transporte</span>
-                </div>
-                <div class="cat-item" onclick="filterBy('EducaciÃ³n')">
-                    <div class="cat-icon"><i data-lucide="graduation-cap"></i></div>
-                    <span class="cat-label">EducaciÃ³n</span>
-                </div>
-                <!-- Ver todas las categorÃ­as -->
-                <div class="cat-item" onclick="window.location.href='all_categories.html'">
-                    <div class="cat-icon" style="background: #eef2ff; color: var(--primary-color);">
-                        <i data-lucide="plus"></i>
-                    </div>
-                    <span class="cat-label" style="color: var(--primary-color);">Ver mÃ¡s</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Mosaico Inmersivo de Negocios -->
-        <div class="business-mosaic">
-            <!-- Cargando... -->
-        </div>
-    </main>
+</main>
   <footer class="site-footer">
     <div class="site-footer__main">
       <div>
@@ -257,7 +170,7 @@
             <i data-lucide="layout-grid" class="nav-icon"></i>
             <span>Directorio</span>
         </a>
-        <!-- BotÃ³n Publicar Central -->
+        <!-- BotÃƒÂ³n Publicar Central -->
         <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
             <div
                 style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">

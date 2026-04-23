@@ -22,8 +22,8 @@
     <meta name="apple-mobile-web-app-title" content="CityMart">
     <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/css/global-chat.css">
-    <link rel="stylesheet" href="assets/css/global-chat.css">
+    <link rel="stylesheet" href="assets/css/global-chat.css?v=20260423-home-chat-ads-1">
+    <link rel="stylesheet" href="assets/css/global-chat.css?v=20260423-home-chat-ads-1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://commons.wikimedia.org" crossorigin>
@@ -32,7 +32,7 @@
         href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script defer src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="assets/js/utils.js?v=20260401-homefix-2"></script>
+    <script defer src="assets/js/utils.js?v=20260423-home-chat-ads-1"></script>
     <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
     <style>
         :root {
@@ -250,7 +250,7 @@
   100% { transform: scale(1); }
 }
 
-/* ─── Nav Item Transformation ─── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Nav Item Transformation Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 .chat-nav-item {
     display: flex;
     flex-direction: column;
@@ -1539,339 +1539,7 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-</head>
-
-<body class="page-tourism">
-    <header class="tour-topbar modern-glass">
-        <div class="tour-topbar-inner">
-            <div class="brand-lockup" onclick="window.location.href='./'">
-                <div class="brand-mark">
-                    <img src="assets/logo.png" alt="CityMart">
-                </div>
-                <div class="brand-copy">
-                    <small>CityMart guide</small>
-                    <strong>Turismo amazonia viva</strong>
-                </div>
-            </div>
-
-            <div class="tour-chip-group">
-                <div id="turismo-city-switcher" class="city-switcher-container" aria-label="Cambiar ciudad">
-                    <button type="button" class="city-pill active" onclick="switchTurismoCity('lamas')">Lamas</button>
-                    <button type="button" class="city-pill" onclick="switchTurismoCity('tarapoto')">Tarapoto</button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <section class="turismo-hero" id="hero-section">
-        <img id="hero-img" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Plaza%20de%20Armas%20de%20Lamas,%20Tarapoto,%20San%20Mart%C3%ADn,%20Per%C3%BA.%2003%20%28cropped%29.jpg?width=1280"
-            alt="Turismo" fetchpriority="high" decoding="async">
-        <div class="hero-shell">
-            <div class="hero-copy">
-                <div class="hero-kicker" id="hero-kicker-wrap" hidden>
-                    <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-                    <span id="hero-kicker"></span>
-                </div>
-                <div class="turismo-city-badge">
-                    <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>
-                    <span id="hero-city-name">Lamas</span>
-                </div>
-                <h1 id="hero-title">Lamas</h1>
-                <p id="hero-subtitle">Ciudad de los tres pisos naturales, a unos 20 km de Tarapoto, con plaza historica, castillo y cultura Kichwa Lamista viva.</p>
-                <div class="hero-actions">
-                    <a href="#lugares-shell" class="hero-action hero-action-primary">Explorar paradas clave</a>
-                    <a href="#rutas-shell" class="hero-action hero-action-secondary">Ver ruta sugerida</a>
-                </div>
-            </div>
-
-            <aside class="trip-brief-card">
-                <div class="trip-brief-label">
-                    <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
-                    <span>Bitacora del viaje</span>
-                </div>
-                <h2 id="hero-note-title">Ruta corta con identidad</h2>
-                <p id="hero-note">La ciudad combina patrimonio urbano, cultura viva y una subida breve desde Tarapoto, por eso funciona muy bien para una escapada de un dia.</p>
-
-                <div class="hero-metrics">
-                    <div class="hero-metric">
-                        <strong id="stat-lugares">5</strong>
-                        <span>paradas</span>
-                    </div>
-                    <div class="hero-metric">
-                        <strong id="stat-eventos">3</strong>
-                        <span>eventos</span>
-                    </div>
-                    <div class="hero-metric">
-                        <strong id="stat-rutas">2</strong>
-                        <span>rutas</span>
-                    </div>
-                </div>
-
-                <div id="hero-tags" class="hero-tags">
-                    <span class="hero-tag">
-                        <i data-lucide="leaf" style="width: 12px; height: 12px;"></i>
-                        <span>Plaza de Armas</span>
-                    </span>
-                    <span class="hero-tag">
-                        <i data-lucide="leaf" style="width: 12px; height: 12px;"></i>
-                        <span>Castillo de Lamas</span>
-                    </span>
-                    <span class="hero-tag">
-                        <i data-lucide="leaf" style="width: 12px; height: 12px;"></i>
-                        <span>Kichwa Lamista</span>
-                    </span>
-                </div>
-            </aside>
-        </div>
-    </section>
-
-    <main class="tourism-main">
-        <section class="tour-panel tour-panel--soft">
-            <div class="panel-heading">
-                <div class="panel-heading-copy">
-                    <span class="section-kicker">Editorial Amazon Escape</span>
-                    <h2>Empieza el viaje segun el plan que tienes en mente</h2>
-                    <p>Esta portada esta pensada como una guia viva: primero eliges el mood del viaje y luego bajas directo a los lugares, experiencias y negocios que te resuelven la ruta.</p>
-                </div>
-            </div>
-
-            <div class="intent-grid">
-                <button class="intent-card" type="button"
-                    onclick="document.getElementById('day-section').scrollIntoView({behavior:'smooth', block:'start'})">
-                    <div class="icon">
-                        <i data-lucide="trees" style="width: 24px; height: 24px;"></i>
-                    </div>
-                    <h4>Pasar el dia</h4>
-                    <p>Recreos, centros de esparcimiento y puntos donde la experiencia vale la salida completa.</p>
-                </button>
-
-                <button class="intent-card" type="button"
-                    onclick="document.getElementById('night-section').scrollIntoView({behavior:'smooth', block:'start'})">
-                    <div class="icon">
-                        <i data-lucide="music-4" style="width: 24px; height: 24px;"></i>
-                    </div>
-                    <h4>Seguir de noche</h4>
-                    <p>Bares, karaokes y lugares con mas energia para cuando la ciudad cambia de ritmo.</p>
-                </button>
-
-                <button class="intent-card" type="button"
-                    onclick="document.getElementById('food-section').scrollIntoView({behavior:'smooth', block:'start'})">
-                    <div class="icon">
-                        <i data-lucide="utensils-crossed" style="width: 24px; height: 24px;"></i>
-                    </div>
-                    <h4>Comer bien</h4>
-                    <p>Sabores locales, almuerzos y paradas donde la gastronomia acompana la ruta.</p>
-                </button>
-
-                <button class="intent-card" type="button"
-                    onclick="document.getElementById('sleep-section').scrollIntoView({behavior:'smooth', block:'start'})">
-                    <div class="icon">
-                        <i data-lucide="bed-double" style="width: 24px; height: 24px;"></i>
-                    </div>
-                    <h4>Quedarte cerca</h4>
-                    <p>Hospedajes y opciones para dormir sin alejarte de los puntos que mas interesan.</p>
-                </button>
-            </div>
-        </section>
-
-        <section id="lugares-shell" class="tour-panel">
-            <div class="section-header">
-                <div class="section-heading-copy">
-                    <span class="section-kicker">Postales y miradores</span>
-                    <h3>Lugares que merecen una parada completa</h3>
-                    <p>Los spots mas memorables para abrir la ruta con un panorama claro de la ciudad y su identidad.</p>
-                </div>
-            </div>
-
-            <div id="lugares-carousel" class="carousel-horizontal"></div>
-        </section>
-
-        <div class="dual-panel-grid">
-            <section id="day-section" class="tour-panel tour-panel--soft">
-                <div class="section-header">
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Aire libre</span>
-                        <h3>Donde pasar el dia</h3>
-                        <p>Planes largos, naturaleza y experiencias para ir con tiempo.</p>
-                    </div>
-                    <a id="day-directory-link" href="directory.html?search=recreo" class="section-link" data-search="recreo">
-                        <span>Ver mas</span>
-                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-                    </a>
-                </div>
-
-                <div id="day-carousel" class="carousel-horizontal"></div>
-            </section>
-
-            <section id="night-section" class="tour-panel">
-                <div class="section-header">
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Modo nocturno</span>
-                        <h3>Donde divertirte</h3>
-                        <p>Opciones para extender la salida cuando el viaje sigue despues del atardecer.</p>
-                    </div>
-                    <a id="night-directory-link" href="directory.html?search=discoteca" class="section-link" data-search="discoteca">
-                        <span>Ver mas</span>
-                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-                    </a>
-                </div>
-
-                <div id="nightlife-carousel" class="carousel-horizontal"></div>
-            </section>
-        </div>
-
-        <section class="tour-panel">
-            <div class="section-header">
-                <div class="section-heading-copy">
-                    <span class="section-kicker">Calendario local</span>
-                    <h3>Eventos y fiestas para caer en el momento correcto</h3>
-                    <p>Fechas que ayudan a decidir cuando ir y que ambiente esperar en la ciudad.</p>
-                </div>
-            </div>
-
-            <div id="eventos-list" class="eventos-stack"></div>
-        </section>
-
-        <div class="dual-panel-grid">
-            <section id="food-section" class="tour-panel">
-                <div class="section-header">
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Sabores de ruta</span>
-                        <h3>Donde comer</h3>
-                        <p>Paradas practicas para almorzar, cenar o probar algo muy local en el camino.</p>
-                    </div>
-                    <a id="food-directory-link" href="directory.html" class="section-link" data-search="restaurante">
-                        <span>Ver mas</span>
-                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-                    </a>
-                </div>
-
-                <div id="gastro-carousel" class="carousel-horizontal"></div>
-            </section>
-
-            <section id="sleep-section" class="tour-panel tour-panel--soft">
-                <div class="section-header">
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Base del viaje</span>
-                        <h3>Donde dormir</h3>
-                        <p>Hospedajes pensados para que la ruta comience facil desde el primer dia.</p>
-                    </div>
-                    <a id="sleep-directory-link" href="directory.html?cat=hospedaje" class="section-link" data-cat="hospedaje">
-                        <span>Ver mas</span>
-                        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-                    </a>
-                </div>
-
-                <div id="hospedaje-carousel" class="carousel-horizontal"></div>
-            </section>
-        </div>
-
-        <section class="tour-panel">
-            <div class="section-header">
-                <div class="section-heading-copy">
-                    <span class="section-kicker">Experiencias vivas</span>
-                    <h3>Tours, cultura y compras con acento local</h3>
-                    <p>Negocios que completan el viaje con talleres, artesania, recorridos y hallazgos de la zona.</p>
-                </div>
-                <a id="culture-directory-link" href="directory.html?search=artesania" class="section-link" data-search="artesania">
-                    <span>Ver mas</span>
-                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-                </a>
-            </div>
-
-            <div id="culture-business-carousel" class="carousel-horizontal"></div>
-        </section>
-
-        <section id="agencias-shell" class="tour-panel tour-panel--soft">
-            <div class="section-header">
-                <div class="section-heading-copy">
-                    <span class="section-kicker">Viajes guiados</span>
-                    <h3>Agencias de turismo con vitrina propia</h3>
-                    <p>Este espacio esta reservado para agencias, operadores y servicios de viaje que quieran ser vistos primero.</p>
-                </div>
-                <a id="agencies-directory-link" href="directory.html?search=agencia" class="section-link" data-search="agencia">
-                    <span>Ver mas</span>
-                    <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-                </a>
-            </div>
-
-            <div class="agencies-spotlight">
-                <article class="agency-hero-card">
-                    <div class="agency-kicker">
-                        <i data-lucide="map" style="width: 14px; height: 14px;"></i>
-                        Agencias destacadas
-                    </div>
-                    <h3>Tu operador puede aparecer aqui con una presencia mucho mas visible.</h3>
-                    <p>Ideal para tours, paquetes, transporte turistico, full day y experiencias guiadas en Lamas, Tarapoto y alrededores.</p>
-                    <div class="agency-meta-row">
-                        <div class="agency-meta-chip">
-                            <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i>
-                            Mayor visibilidad
-                        </div>
-                        <div class="agency-meta-chip">
-                            <i data-lucide="plane" style="width: 14px; height: 14px;"></i>
-                            Tours y viajes
-                        </div>
-                        <div class="agency-meta-chip">
-                            <i data-lucide="star" style="width: 14px; height: 14px;"></i>
-                            Presencia premium
-                        </div>
-                    </div>
-                </article>
-
-                <article class="agency-note-card">
-                    <div>
-                        <div class="agency-status">
-                            <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
-                            Espacio activo
-                        </div>
-                        <h4>Bloque listo para recibir agencias y tours.</h4>
-                        <p>Aun si todavia no hay agencias cargadas, este apartado ya queda visible para marcar que aqui iran los negocios orientados a viaje y planificacion.</p>
-                    </div>
-                    <div id="agencias-carousel" class="carousel-horizontal"></div>
-                </article>
-            </div>
-        </section>
-
-        <section id="rutas-shell" class="tour-panel tour-panel--soft">
-            <div class="section-header">
-                <div class="section-heading-copy">
-                    <span class="section-kicker">Rutas armadas</span>
-                    <h3>Itinerarios para no empezar desde cero</h3>
-                    <p>Ideas rapidas para ordenar el viaje, aprovechar tiempos y no perderte los puntos fuertes.</p>
-                </div>
-            </div>
-
-            <div id="rutas-container" class="ruta-stack"></div>
-        </section>
-
-        <div class="dual-panel-grid">
-            <section class="tour-panel">
-                <div class="section-header">
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Llegada y acceso</span>
-                        <h3>Como llegar sin vueltas</h3>
-                        <p>Opciones practicas para aterrizar, moverte y calcular el traslado principal.</p>
-                    </div>
-                </div>
-
-                <div id="como-llegar-container" class="info-stack"></div>
-            </section>
-
-            <section class="tour-panel tour-panel--soft">
-                <div class="section-header">
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Textura local</span>
-                        <h3>Cultura y artesania</h3>
-                        <p>Capas de identidad que hacen que el viaje se sienta propio y no intercambiable.</p>
-                    </div>
-                </div>
-
-                <div id="cultura-carousel" class="carousel-horizontal"></div>
-            </section>
-        </div>
-    </main>
+</main>
   <footer class="site-footer">
     <div class="site-footer__main">
       <div>
@@ -2326,7 +1994,7 @@
                                 item.premium ? 'Premium' : '',
                                 formatCategoryLabel(item.categoria),
                                 item.railCity && item.railCity !== currentCity ? formatCityLabel(item.railCity) : ''
-                            ].filter(Boolean).join(' · '))}</span>
+                            ].filter(Boolean).join(' Ã‚Â· '))}</span>
                         </div>
                         <h4>${escapeHtml(item.nombre)}</h4>
                         <p>${escapeHtml(getTourismBusinessSummary(item))}</p>
@@ -2581,11 +2249,12 @@
 
     <script type="module">
         import { auth, db } from './assets/js/firebase-init.js';
-        import { initGlobalChat } from './assets/js/global-chat.js';
+        import { initGlobalChat } from './assets/js/global-chat.js?v=20260423-home-chat-ads-1';
         initGlobalChat(auth, db);
     </script>
 
-    <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
+    <script src="assets/js/pwa-init.js?v=20260423-home-chat-ads-1"></script>
 </body>
 
 </html>
+

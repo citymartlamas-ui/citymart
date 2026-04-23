@@ -208,11 +208,22 @@ window.sanitizeUrl = window.sanitizeUrl || function (value = '', fallback = '') 
 
 window.setStoredCity = function (value, fallback = 'lamas') {
     const normalized = window.normalizeCityValue(value, fallback);
+    let previous = null;
 
     try {
+        previous = localStorage.getItem('citymart_city');
         localStorage.setItem('citymart_city', normalized);
     } catch (error) {
         // Ignore storage write issues.
+    }
+
+    if (previous !== normalized) {
+        window.dispatchEvent(new CustomEvent('citymart:city-changed', {
+            detail: {
+                city: normalized,
+                previousCity: previous
+            }
+        }));
     }
 
     return normalized;
@@ -479,7 +490,7 @@ window.compressImage = async function (file, { maxWidth = 1280, maxHeight = 1280
     return new Promise(async (resolve, reject) => {
         let currentFile = file;
 
-        // Soporte para HEIC (común en iPhones)
+        // Soporte para HEIC (comÃºn en iPhones)
         if (file.name.toLowerCase().endsWith('.heic') || file.type === 'image/heic') {
             console.log("Detectado formato HEIC, intentando convertir...");
             if (typeof heic2any !== 'undefined') {
@@ -487,14 +498,14 @@ window.compressImage = async function (file, { maxWidth = 1280, maxHeight = 1280
                     const blob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.7 });
                     currentFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: "image/jpeg" });
                 } catch (e) {
-                    console.warn("Fallo conversión heic2any, continuando con original:", e);
+                    console.warn("Fallo conversiÃ³n heic2any, continuando con original:", e);
                 }
             } else {
-                console.warn("heic2any no está cargado. Se intentará procesar como imagen normal.");
+                console.warn("heic2any no estÃ¡ cargado. Se intentarÃ¡ procesar como imagen normal.");
             }
         }
 
-        // Si no es imagen tras intento de conversión, resolver original
+        // Si no es imagen tras intento de conversiÃ³n, resolver original
         if (!currentFile.type.startsWith('image/')) {
             return resolve(currentFile);
         }
@@ -534,7 +545,7 @@ window.compressImage = async function (file, { maxWidth = 1280, maxHeight = 1280
                     }
                 }, 'image/jpeg', quality);
             };
-            img.onerror = () => reject(new Error('Fallo al cargar la imagen para compresión. Verifica el formato.'));
+            img.onerror = () => reject(new Error('Fallo al cargar la imagen para compresiÃ³n. Verifica el formato.'));
         };
         reader.onerror = () => reject(new Error('Fallo al leer el archivo.'));
     });
@@ -558,4 +569,49 @@ window.optimizeUploadImage = async function (file, preset = 'default') {
 };
 
 // Global polyfill/override for alert if desired (optional, better to call showToast directly)
-// window.alert = (msg) => window.showToast(msg);
+
+// Global Chat Loader
+(() => {
+    function loadGlobalChat() {
+        // Prevent loading if we're on a page that shouldn't have chat (optional)
+        // e.g. login, signup, admin
+        const path = window.location.pathname;
+        const excluded = ['/login', '/signup', '/admin', '/forgot-password'];
+        if (excluded.some(p => path.includes(p))) return;
+
+        // Load CSS
+        if (!document.querySelector('link[href*="global-chat.css"]')) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'assets/css/global-chat.css?v=20260423-home-chat-ads-1';
+            document.head.appendChild(link);
+        }
+
+        const pageAlreadyLoadsChat = Array.from(document.scripts).some((script) => {
+            return script.type === 'module' && (
+                String(script.src || '').includes('global-chat.js') ||
+                String(script.textContent || '').includes('global-chat.js')
+            );
+        });
+        if (pageAlreadyLoadsChat) return;
+
+        if (!window.__citymartGlobalChatLoader) {
+            window.__citymartGlobalChatLoader = Promise.all([
+                import('./firebase-init.js'),
+                import('./global-chat.js?v=20260423-home-chat-ads-1')
+            ]).then(([firebaseInit, globalChat]) => {
+                if (typeof globalChat.initGlobalChat === 'function') {
+                    globalChat.initGlobalChat(firebaseInit.auth, firebaseInit.rtdb);
+                }
+            }).catch((error) => {
+                console.warn('[GlobalChat] Loader error', error);
+            });
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadGlobalChat);
+    } else {
+        loadGlobalChat();
+    }
+})();

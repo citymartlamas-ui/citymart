@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Editar PromociÃ³n | CityMart</title>
+    <title>Editar Promoción | CityMart</title>
     <link rel="stylesheet" href="assets/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,6 +98,9 @@
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#065f46">
+
+
+
 </head>
 
 <body>
@@ -111,7 +114,7 @@
             <div style="display: flex; align-items: center; gap: 16px;">
                 <a href="profile.html" style="color: var(--text-color);"><i data-lucide="chevron-left"
                         style="width: 28px; height: 28px;"></i></a>
-                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.3rem;">Editar PromociÃ³n</h2>
+                <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.3rem;">Editar Promoción</h2>
             </div>
         </div>
     </header>
@@ -119,7 +122,7 @@
     <main class="container" style="padding-top: 20px; padding-bottom: 100px;">
         <form id="promo-form" style="display: none;">
             <div class="form-group">
-                <label>Imagen o Video de la PromociÃ³n</label>
+                <label>Imagen o Video de la Promoción</label>
                 <div class="upload-area" onclick="document.getElementById('promo-image').click()">
                     <div id="default-upload-content"
                         style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none;">
@@ -133,25 +136,25 @@
                         autoplay loop muted></video>
                     <input type="file" id="promo-image" accept="image/*,video/*" style="display: none;">
                 </div>
-                <p style="font-size: 0.7rem; color: #666; text-align: center;">Deja vacÃ­o para mantener el archivo
+                <p style="font-size: 0.7rem; color: #666; text-align: center;">Deja vacío para mantener el archivo
                     actual.</p>
             </div>
 
             <div class="form-group">
-                <label for="title">TÃ­tulo de la Oferta</label>
+                <label for="title">Título de la Oferta</label>
                 <input type="text" id="title" required>
             </div>
 
             <div class="form-group">
-                <label for="description">DescripciÃ³n Corta</label>
+                <label for="description">Descripción Corta</label>
                 <textarea id="description" rows="2" required></textarea>
             </div>
 
             <div class="form-group">
-                <label>DuraciÃ³n</label>
+                <label>Duración</label>
                 <div class="duration-options">
-                    <div class="duration-btn active" data-days="1">1 DÃ­a</div>
-                    <div class="duration-btn" data-days="3">3 DÃ­as</div>
+                    <div class="duration-btn active" data-days="1">1 Día</div>
+                    <div class="duration-btn" data-days="3">3 Días</div>
                 </div>
                 <input type="hidden" id="duration" value="1">
             </div>
@@ -216,14 +219,14 @@
 
                     // Verify ownership
                     if (currentPromoData.uid_propietario !== user.uid && user.email !== 'admin@gmail.com') {
-                        alert("No tienes permiso para editar esta promociÃ³n.");
+                        alert("No tienes permiso para editar esta promoción.");
                         window.location.href = 'profile.html';
                         return;
                     }
 
                     fillForm(currentPromoData);
                 } else {
-                    alert("No se encontrÃ³ la promociÃ³n.");
+                    alert("No se encontró la promoción.");
                     window.location.href = 'profile.html';
                 }
             } catch (e) {
@@ -343,7 +346,7 @@
                 });
 
                 if (window.CityCache) CityCache.invalidate('promociones');
-                alert("Â¡Cambios guardados! Tu promociÃ³n pasarÃ¡ a revisiÃ³n.");
+                alert("¡Cambios guardados! Tu promoción pasará a revisión.");
                 window.location.href = 'profile.html';
             } catch (err) {
                 console.error(err);
@@ -356,4 +359,5 @@
 </body>
 
 </html>
+
 

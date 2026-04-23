@@ -26,6 +26,18 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Adsterra Ads -->
+
+  <style>
+    .adsterra-native-wrap, .adsterra-banner-mobile, .adsterra-banner-desktop { width: 100%; text-align: center; }
+    .adsterra-banner-desktop { display: none; }
+    .adsterra-banner-mobile  { display: flex; justify-content: center; }
+    @media (min-width: 720px) {
+      .adsterra-banner-mobile  { display: none; }
+      .adsterra-banner-desktop { display: flex; justify-content: center; }
+    }
+  </style>
 </head>
   <body>
     <div id="message">
@@ -39,6 +51,7 @@
         <script src="assets/js/pwa-init.js"></script>
 </body>
 </html>
+
 
 
 

@@ -1,28 +1,17 @@
 const functions = require("firebase-functions/v1");
+const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const sharp = require("sharp");
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
 const crypto = require("crypto");
-const runtimeConfig = (() => {
-  try {
-    return functions.config() || {};
-  } catch (error) {
-    return {};
-  }
-})();
-const BACKFILL_SECRET = String(
-  process.env.CITYMART_BACKFILL_SECRET ||
-  runtimeConfig.citymart?.backfill_secret ||
-  ""
-).trim();
+const BACKFILL_SECRET_PARAM = defineSecret("CITYMART_BACKFILL_SECRET");
 const ADMIN_EMAIL = String(
   process.env.CITYMART_ADMIN_EMAIL ||
-  runtimeConfig.citymart?.admin_email ||
   "admin@gmail.com"
 ).trim().toLowerCase();
-const APP_BASE_URL = "https://usuarios-citymart-lamas.web.app";
+const APP_BASE_URL = "https://citymart.vip";
 const THUMB_WIDTH = 560;
 const THUMB_HEIGHT = 560;
 const THUMB_QUALITY = 68;
@@ -126,14 +115,19 @@ function constantTimeEquals(left, right) {
   return leftBuffer.length === rightBuffer.length && crypto.timingSafeEqual(leftBuffer, rightBuffer);
 }
 
+function getBackfillSecret() {
+  return String(process.env.CITYMART_BACKFILL_SECRET || BACKFILL_SECRET_PARAM.value() || "").trim();
+}
+
 function requireBackfillSecret(req, res) {
-  if (!BACKFILL_SECRET) {
+  const expectedSecret = getBackfillSecret();
+  if (!expectedSecret) {
     res.status(503).json({ ok: false, error: "maintenance-secret-not-configured" });
     return false;
   }
 
   const providedSecret = String(req.headers["x-backfill-key"] || "").trim();
-  if (!constantTimeEquals(providedSecret, BACKFILL_SECRET)) {
+  if (!constantTimeEquals(providedSecret, expectedSecret)) {
     res.status(403).json({ ok: false, error: "forbidden" });
     return false;
   }
@@ -1048,54 +1042,137 @@ async function sendAdminPushNotification({
     return { sent: false, reason: "admin-without-push-token" };
   }
 
-  const message = {
-    notification: {
-      title,
-      body,
-    },
-    data: {
-      ...Object.keys(data || {}).reduce((acc, key) => {
-        acc[key] = String(data[key] ?? "");
-        return acc;
-      }, {}),
-      link,
-    },
-    webpush: {
-      fcmOptions: {
-        link,
-      },
-      notification: {
-        icon: `${APP_BASE_URL}/assets/icons/app-icon-192-v3.png`,
-        badge: `${APP_BASE_URL}/assets/icons/notification-badge.png`,
-        click_action: link,
-      },
-    },
-    tokens,
-  };
-
-  const response = await admin.messaging().sendEachForMulticast(message);
-  const invalidTokens = [];
-  response.responses.forEach((item, index) => {
-    if (item.success) return;
-
-    const errorCode = item.error?.code || "";
-    if (
-      errorCode === "messaging/invalid-registration-token" ||
-      errorCode === "messaging/registration-token-not-registered"
-    ) {
-      invalidTokens.push(tokens[index]);
-    }
+  return sendPushToTokens(tokens, {
+    title,
+    body,
+    link,
+    data,
   });
+}
 
+function asPushData(data = {}, link = APP_BASE_URL) {
+  return {
+    ...Object.keys(data || {}).reduce((acc, key) => {
+      acc[key] = String(data[key] ?? "");
+      return acc;
+    }, {}),
+    link,
+  };
+}
+
+function chunkArray(items, size) {
+  const chunks = [];
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size));
+  }
+  return chunks;
+}
+
+function isInvalidMessagingTokenError(errorCode = "") {
+  return errorCode === "messaging/invalid-registration-token" ||
+    errorCode === "messaging/registration-token-not-registered";
+}
+
+async function getAllPushTokens() {
+  const snap = await admin.firestore().collection("fcmTokens").get();
+  const tokens = [];
+  snap.forEach((docSnap) => {
+    const token = String(docSnap.id || docSnap.data()?.token || "").trim();
+    if (token) tokens.push(token);
+  });
+  return [...new Set(tokens)];
+}
+
+async function deleteInvalidPushTokens(tokens = []) {
+  const uniqueTokens = [...new Set(tokens.filter(Boolean))];
+  if (!uniqueTokens.length) return;
+
+  const db = admin.firestore();
   await Promise.all(
-    invalidTokens.map((token) => db.collection("fcmTokens").doc(token).delete().catch(() => null))
+    uniqueTokens.map((token) => db.collection("fcmTokens").doc(token).delete().catch(() => null))
   );
+}
+
+async function sendPushToTokens(tokens = [], {
+  title,
+  body,
+  link = APP_BASE_URL,
+  image = "",
+  data = {},
+} = {}) {
+  const uniqueTokens = [...new Set(tokens.filter(Boolean))];
+  if (!uniqueTokens.length) {
+    return { sent: false, reason: "without-push-tokens", successCount: 0, failureCount: 0 };
+  }
+
+  let successCount = 0;
+  let failureCount = 0;
+  const invalidTokens = [];
+  const tokenChunks = chunkArray(uniqueTokens, 500);
+
+  for (const tokenChunk of tokenChunks) {
+    const message = {
+      notification: {
+        title,
+        body,
+      },
+      data: asPushData(data, link),
+      webpush: {
+        fcmOptions: {
+          link,
+        },
+        notification: {
+          icon: `${APP_BASE_URL}/assets/icons/app-icon-192-v4.png`,
+          badge: `${APP_BASE_URL}/assets/icons/notification-badge.png`,
+          click_action: link,
+        },
+      },
+    };
+
+    if (image) {
+      message.notification.image = image;
+      message.webpush.notification.image = image;
+    }
+
+    const response = await admin.messaging().sendEachForMulticast({
+      ...message,
+      tokens: tokenChunk,
+    });
+
+    successCount += response.successCount;
+    failureCount += response.failureCount;
+    response.responses.forEach((item, index) => {
+      if (item.success) return;
+
+      const errorCode = item.error?.code || "";
+      if (isInvalidMessagingTokenError(errorCode)) {
+        invalidTokens.push(tokenChunk[index]);
+      }
+    });
+  }
+
+  await deleteInvalidPushTokens(invalidTokens);
 
   return {
-    sent: response.successCount > 0,
-    successCount: response.successCount,
-    failureCount: response.failureCount,
+    sent: successCount > 0,
+    successCount,
+    failureCount,
+    invalidTokenCount: invalidTokens.length,
   };
+}
+
+async function sendPushToAllSubscribers(payload = {}) {
+  const tokens = await getAllPushTokens();
+  return sendPushToTokens(tokens, payload);
+}
+
+function stripHtml(value = "") {
+  return String(value || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+}
+
+function truncateText(value = "", maxLength = 120) {
+  const text = stripHtml(value);
+  return text.length > maxLength ? `${text.substring(0, maxLength - 3)}...` : text;
 }
 
 async function updateDocByField(collectionName, fieldName, filePath, payload) {
@@ -1276,7 +1353,11 @@ exports.notificarNoticiaAprobada = functions.firestore.document("noticias/{notic
   const dataAnterior = change.before.data();
   const dataNueva = change.after.data();
 
-  if (dataNueva.estado === "aprobado" && dataAnterior.estado !== "aprobado") {
+  if (dataNueva.estado !== "aprobado" || dataAnterior.estado === "aprobado") {
+    return null;
+  }
+
+  {
     const tituloNoticia = dataNueva.titulo || "Nueva Noticia en CityMart";
     const contenidoBruto = dataNueva.contenido || dataNueva.texto || "Ingresa a la app para descubrir de quÃ© se trata.";
 
@@ -1301,6 +1382,18 @@ exports.notificarNoticiaAprobada = functions.firestore.document("noticias/{notic
     }
 
     try {
+      await sendPushToAllSubscribers({
+        title: `Nueva noticia: ${tituloNoticia}`,
+        body: cuerpoLimpio,
+        image: imagenLogo,
+        link: enlaceNoticia,
+        data: {
+          tipo: "noticia",
+          noticiaId: context.params.noticiaId,
+        },
+      });
+      return null;
+
       const tokensSnap = await admin.firestore().collection("fcmTokens").get();
       if (tokensSnap.empty) return null;
 
@@ -1358,6 +1451,84 @@ exports.notificarNoticiaAprobada = functions.firestore.document("noticias/{notic
   return null;
 });
 
+exports.notificarNegocioCreado = functions.firestore.document("negocio/{negocioId}").onCreate(async (snap, context) => {
+  const data = snap.data() || {};
+  const negocioId = context.params.negocioId;
+  const estado = String(data.estado || "aprobado").trim().toLowerCase();
+
+  if (estado !== "aprobado" || data.negociovisible === false) {
+    return null;
+  }
+
+  const db = admin.firestore();
+  const eventRef = db.collection("notification_events").doc(`negocio_created_${negocioId}`);
+  const shouldSend = await db.runTransaction(async (transaction) => {
+    const eventSnap = await transaction.get(eventRef);
+    if (eventSnap.exists) return false;
+
+    transaction.create(eventRef, {
+      type: "negocio_created",
+      negocioId,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      status: "sending",
+    });
+    return true;
+  });
+
+  if (!shouldSend) return null;
+
+  const nombre = truncateText(data.nombre || "Nuevo negocio en CityMart", 80);
+  const categoria = truncateText(data.categoria || data.negocio_o_servicio || "negocio", 40);
+  const ciudad = truncateText(data.ciudad || data.provincia || "tu ciudad", 40);
+  const descripcion = truncateText(data.descripcion || `Nuevo ${categoria} disponible en ${ciudad}.`, 120);
+  const image = data.imagen || data.foto || `${APP_BASE_URL}/assets/logo.png`;
+  const link = `${APP_BASE_URL}/business_detail.html?id=${negocioId}`;
+
+  try {
+    await db.collection("alertas").add({
+      titulo: nombre,
+      resumen: descripcion,
+      imagen: image,
+      enlace: `business_detail.html?id=${negocioId}`,
+      negocioId,
+      tipo: "negocio",
+      fecha: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  } catch (alertaError) {
+    console.error("[notificarNegocioCreado] Error guardando alerta interna:", alertaError);
+  }
+
+  try {
+    const result = await sendPushToAllSubscribers({
+      title: `Nuevo negocio: ${nombre}`,
+      body: descripcion,
+      image,
+      link,
+      data: {
+        tipo: "negocio",
+        negocioId,
+      },
+    });
+
+    await eventRef.set({
+      status: "sent",
+      sentAt: admin.firestore.FieldValue.serverTimestamp(),
+      successCount: Number(result.successCount || 0),
+      failureCount: Number(result.failureCount || 0),
+      invalidTokenCount: Number(result.invalidTokenCount || 0),
+    }, { merge: true });
+  } catch (error) {
+    console.error("[notificarNegocioCreado] Error enviando push:", error);
+    await eventRef.set({
+      status: "failed",
+      failedAt: admin.firestore.FieldValue.serverTimestamp(),
+      error: String(error.message || error).slice(0, 300),
+    }, { merge: true });
+  }
+
+  return null;
+});
+
 exports.limpiarObjetosPerdidosExpirados = functions.pubsub.schedule("every 24 hours").onRun(async () => {
   const now = admin.firestore.Timestamp.now();
   const snap = await admin.firestore()
@@ -1389,7 +1560,7 @@ exports.limpiarObjetosPerdidosExpirados = functions.pubsub.schedule("every 24 ho
 });
 
 exports.backfillLegacyThumbnails = functions
-  .runWith({ timeoutSeconds: 540, memory: "1GB" })
+  .runWith({ timeoutSeconds: 540, memory: "1GB", secrets: [BACKFILL_SECRET_PARAM] })
   .https.onRequest(async (req, res) => {
     try {
       if (req.method !== "POST") {
@@ -1448,7 +1619,7 @@ exports.backfillLegacyThumbnails = functions
   });
 
 exports.repairBusinessImageDoc = functions
-  .runWith({ timeoutSeconds: 540, memory: "1GB" })
+  .runWith({ timeoutSeconds: 540, memory: "1GB", secrets: [BACKFILL_SECRET_PARAM] })
   .https.onRequest(async (req, res) => {
     try {
       if (req.method !== "POST") {
@@ -1522,7 +1693,7 @@ exports.repairBusinessImageDoc = functions
   });
 
 exports.deleteStorageFile = functions
-  .runWith({ timeoutSeconds: 120, memory: "256MB" })
+  .runWith({ timeoutSeconds: 120, memory: "256MB", secrets: [BACKFILL_SECRET_PARAM] })
   .https.onRequest(async (req, res) => {
     try {
       if (req.method !== "POST") {
@@ -2094,7 +2265,7 @@ exports.linkLegacyBusinessesByEmail = functions
   });
 
 exports.repairLegacyBusinessOwners = functions
-  .runWith({ timeoutSeconds: 540, memory: "1GB" })
+  .runWith({ timeoutSeconds: 540, memory: "1GB", secrets: [BACKFILL_SECRET_PARAM] })
   .https.onRequest(async (req, res) => {
     try {
       if (req.method !== "POST") {
@@ -2545,20 +2716,44 @@ exports.cleanupGlobalChat = functions.pubsub
   .schedule('every 1 hours')
   .onRun(async (context) => {
     const cutOff = Date.now() - (24 * 60 * 60 * 1000);
-    const chatRef = admin.database().ref('global_chat');
+    const chatPaths = [
+      'global_chat',
+      'global_chat_by_city/lamas',
+      'global_chat_by_city/tarapoto'
+    ];
     
     try {
-      const oldMessagesQuery = chatRef.orderByChild('timestamp').endAt(cutOff);
-      const snapshot = await oldMessagesQuery.once('value');
-      const updates = {};
-      
-      snapshot.forEach((child) => {
-        updates[child.key] = null;
+      for (const path of chatPaths) {
+        const chatRef = admin.database().ref(path);
+        const oldMessagesQuery = chatRef.orderByChild('timestamp').endAt(cutOff);
+        const snapshot = await oldMessagesQuery.once('value');
+        const updates = {};
+
+        snapshot.forEach((child) => {
+          updates[child.key] = null;
+        });
+
+        if (Object.keys(updates).length > 0) {
+          await chatRef.update(updates);
+          console.log('[cleanupGlobalChat] ' + path + ': se eliminaron ' + Object.keys(updates).length + ' mensajes expirados.');
+        }
+      }
+
+      const bucket = admin.storage().bucket();
+      const [files] = await bucket.getFiles({ prefix: 'chat_photos/' });
+      const stalePhotos = files.filter((file) => {
+        const createdAt = Date.parse(file.metadata && file.metadata.timeCreated ? file.metadata.timeCreated : '');
+        return Number.isFinite(createdAt) && createdAt <= cutOff;
       });
-      
-      if (Object.keys(updates).length > 0) {
-        await chatRef.update(updates);
-        console.log('[cleanupGlobalChat] Se eliminaron ' + Object.keys(updates).length + ' mensajes expirados.');
+
+      if (stalePhotos.length > 0) {
+        await Promise.all(
+          stalePhotos.map((file) => file.delete({ ignoreNotFound: true }).catch((error) => {
+            console.warn('[cleanupGlobalChat] No se pudo borrar foto ' + file.name + ':', error.message);
+            return null;
+          }))
+        );
+        console.log('[cleanupGlobalChat] chat_photos: se eliminaron ' + stalePhotos.length + ' fotos expiradas.');
       }
       
       return null;

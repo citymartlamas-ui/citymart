@@ -1,4 +1,4 @@
-﻿// ========== FIREBASE CLOUD MESSAGING ==========
+// ========== FIREBASE CLOUD MESSAGING ==========
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js");
 
@@ -59,7 +59,7 @@ self.addEventListener('notificationclick', (event) => {
 });
 
 // ========== PWA CACHE ==========
-const CACHE_NAME = 'citymart-v59';
+const CACHE_NAME = 'citymart-v70';
 const PRE_CACHE_ASSETS = [
   '/index.html',
   '/manifest.json',
@@ -113,7 +113,6 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(PRE_CACHE_ASSETS))
   );

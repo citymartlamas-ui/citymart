@@ -74,6 +74,9 @@
             border-color: var(--primary-color);
         }
     </style>
+
+
+
 </head>
 
 <body style="background: #fcfcfc;">
@@ -86,7 +89,7 @@
             <h1 style="font-family: 'Inter'; font-weight: 700; font-size: 1.25rem; color: #111; line-height: 1;">
                 Estudio de Mercado</h1>
             <p style="font-size: 0.75rem; color: #6b7280; margin-top: 2px;">Los estudios/encuestas deben ser aprobados
-                por administración</p>
+                por administraci�n</p>
         </div>
     </header>
 
@@ -104,7 +107,7 @@
                     <div id="btn-business" class="creator-btn" onclick="setCreatorType('negocio')">Negocio</div>
                 </div>
 
-                <!-- Sección Oculta de Negocio -->
+                <!-- Secci�n Oculta de Negocio -->
                 <div id="business-selection-area" style="display: none; margin-top: 16px;">
                     <label
                         style="font-size: 0.75rem; font-weight: 700; color: #6b7280; display: block; margin-bottom: 6px;">SELECCIONA
@@ -139,7 +142,7 @@
                     style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 12px;">PREGUNTA
                     O CONCEPTO DEL ESTUDIO</label>
                 <textarea id="survey-question" rows="3"
-                    placeholder="Ej: ¿Qué le parece un nuevo local de Sushi en el centro?"
+                    placeholder="Ej: �Qu� le parece un nuevo local de Sushi en el centro?"
                     style="width: 100%; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; font-family: 'Inter'; outline: none; transition: border-color 0.2s; resize: none;"
                     maxlength="150" oninput="updateCharCount()"></textarea>
                 <div style="text-align: right; margin-top: 6px;">
@@ -154,36 +157,36 @@
                     <label
                         style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 0;">OPCIONES
                         DE RESPUESTA</label>
-                    <span style="font-size: 0.7rem; color: #9ca3af; font-weight: 700;">(Mín 2, Máx 4)</span>
+                    <span style="font-size: 0.7rem; color: #9ca3af; font-weight: 700;">(M�n 2, M�x 4)</span>
                 </div>
 
                 <div id="options-container">
                     <div class="option-group">
-                        <input type="text" class="option-input required-option" placeholder="Opción 1 (Ej: Sí)"
+                        <input type="text" class="option-input required-option" placeholder="Opci�n 1 (Ej: S�)"
                             required>
                     </div>
                     <div class="option-group">
-                        <input type="text" class="option-input required-option" placeholder="Opción 2 (Ej: No)"
+                        <input type="text" class="option-input required-option" placeholder="Opci�n 2 (Ej: No)"
                             required>
                     </div>
                 </div>
 
                 <button type="button" id="add-option-btn" onclick="addOption()"
                     style="width: 100%; padding: 12px; background: #f3f4f6; color: #4b5563; border: 1px dashed #d1d5db; border-radius: 12px; font-weight: 700; font-size: 0.85rem; margin-top: 4px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;">
-                    <i data-lucide="plus" style="width: 16px;"></i> AGREGAR OPCIÓN
+                    <i data-lucide="plus" style="width: 16px;"></i> AGREGAR OPCI��N
                 </button>
             </section>
 
-            <!-- Duración -->
+            <!-- Duraci�n -->
             <section
                 style="background: white; padding: 20px; border-radius: 16px; border: 1px solid #f3f4f6; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
                 <label
-                    style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 12px;">DURACIÓN
+                    style="font-weight: 700; font-size: 0.85rem; color: #374151; display: block; margin-bottom: 12px;">DURACI��N
                     DEL ESTUDIO</label>
                 <div style="display: flex; gap: 12px;">
                     <div id="duration-24" class="duration-btn active" onclick="setDuration('24')">24 HORAS</div>
-                    <div id="duration-72" class="duration-btn" onclick="setDuration('72')">3 DÍAS</div>
-                    <div id="duration-120" class="duration-btn" onclick="setDuration('120')">5 DÍAS</div>
+                    <div id="duration-72" class="duration-btn" onclick="setDuration('72')">3 D��AS</div>
+                    <div id="duration-120" class="duration-btn" onclick="setDuration('120')">5 D��AS</div>
                 </div>
             </section>
 
@@ -204,11 +207,11 @@
                 *Crear un Estudio de Mercado es totalmente GRATIS por tiempo limitado.
             </p>
 
-            <!-- Botón Guardar -->
+            <!-- Bot�n Guardar -->
             <button type="submit" id="submit-btn" disabled
                 style="width: 100%; padding: 18px; background: #fbbf24; color: #111; border: none; border-radius: 14px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: not-allowed; opacity: 0.5; transition: all 0.3s; margin-top: 10px;">
                 <i data-lucide="send" style="width: 20px;"></i>
-                ENVIAR PARA APROBACIÓN
+                ENVIAR PARA APROBACI��N
             </button>
         </form>
     </main>
@@ -236,10 +239,10 @@
             surveyCitySelect.value = savedCity === 'tarapoto' ? 'tarapoto' : 'lamas';
         }
 
-        // Verificación Auth
+        // Verificaci�n Auth
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                showToast("Debes iniciar sesión para realizar estudios de mercado.", "error");
+                showToast("Debes iniciar sesi�n para realizar estudios de mercado.", "error");
                 window.location.href = 'login.html';
                 return;
             }
@@ -314,7 +317,7 @@
             const div = document.createElement('div');
             div.className = 'option-group';
             div.innerHTML = `
-                <input type="text" class="option-input" placeholder="Opción ${currentCount + 1}" oninput="checkFormValidity()">
+                <input type="text" class="option-input" placeholder="Opci�n ${currentCount + 1}" oninput="checkFormValidity()">
                 <button type="button" onclick="this.parentElement.remove(); checkFormValidity(); checkLimitOptions();" style="background: none; border: none; color: #ef4444; padding: 10px; cursor: pointer;">
                     <i data-lucide="x-circle" style="width: 20px;"></i>
                 </button>
@@ -396,7 +399,7 @@
                     });
                 });
 
-                // Obtener siempre la foto más actualizada desde la BD en lugar de la sesión
+                // Obtener siempre la foto m�s actualizada desde la BD en lugar de la sesi�n
                 let fotoFinal = user.photoURL || '';
                 try {
                     const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -431,13 +434,13 @@
                 await addDoc(collection(db, "encuestas_diarias"), payload);
                 if (window.CityCache) CityCache.invalidate('encuestas');
 
-                showToast("Estudio enviado para aprobación. Un administrador lo revisará pronto.");
+                showToast("Estudio enviado para aprobaci�n. Un administrador lo revisar� pronto.");
                 window.location.href = 'profile.html';
 
             } catch (err) {
                 console.error("Error creando encuesta:", err);
                 showToast("Hubo un error al crear la encuesta.", "error");
-                submitBtn.innerHTML = `<i data-lucide="send" style="width: 20px;"></i> ENVIAR PARA APROBACIÓN`;
+                submitBtn.innerHTML = `<i data-lucide="send" style="width: 20px;"></i> ENVIAR PARA APROBACI��N`;
                 submitBtn.disabled = false;
                 lucide.createIcons();
             }
@@ -447,4 +450,5 @@
 </body>
 
 </html>
+
 

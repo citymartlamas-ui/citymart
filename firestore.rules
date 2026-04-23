@@ -76,6 +76,29 @@ service cloud.firestore {
         && request.resource.data.total_votos == ((resource.data.total_votos is int ? resource.data.total_votos : 0) + 1);
     }
 
+    function validFcmTokenWrite(document) {
+      return signedIn()
+        && request.resource.data.keys().hasOnly([
+          "token", "uid", "email", "permission", "plataforma", "contexto",
+          "userAgent", "fecha", "updatedAt"
+        ])
+        && request.resource.data.keys().hasAll(["token", "uid", "permission", "contexto"])
+        && request.resource.data.token == document
+        && request.resource.data.uid == request.auth.uid
+        && optionalString("token", 4096)
+        && optionalString("email", 160)
+        && optionalString("permission", 30)
+        && optionalString("plataforma", 80)
+        && optionalString("contexto", 30)
+        && optionalString("userAgent", 600)
+        && request.resource.data.permission == "granted"
+        && request.resource.data.contexto in ["pwa", "browser"]
+        && (!request.resource.data.keys().hasAny(["fecha"])
+          || request.resource.data.fecha is timestamp)
+        && (!request.resource.data.keys().hasAny(["updatedAt"])
+          || request.resource.data.updatedAt is timestamp);
+    }
+
     function canUpdateOnlyVoters() {
       return signedIn() && unchangedKeys(["voters"]);
     }
@@ -245,7 +268,7 @@ service cloud.firestore {
 
     match /fcmTokens/{document} {
       allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
-      allow create, update: if isAdmin() || (signedIn() && request.resource.data.uid == request.auth.uid);
+      allow create, update: if isAdmin() || validFcmTokenWrite(document);
       allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
     }
 

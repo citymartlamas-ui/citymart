@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chat Comunitario - CityMart</title>
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css?v=20260423-colors">
+    <link rel="stylesheet" href="assets/css/global-chat.css?v=20260423-home-chat-ads-1">
+    <style>
+        body {
+            background:
+                linear-gradient(135deg, rgba(2, 6, 23, 0.1), rgba(4, 47, 46, 0.04)),
+                var(--gc-city-scene, var(--gc-lamas-scene)) center / cover fixed no-repeat;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: -18px;
+            z-index: -1;
+            background: var(--gc-city-scene, var(--gc-lamas-scene)) center / cover no-repeat;
+            filter: blur(1px) saturate(1.2) brightness(1.22);
+            transform: scale(1.015);
+        }
+
+        .chat-full-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            background:
+                linear-gradient(180deg, rgba(8, 16, 14, 0.12), rgba(3, 7, 18, 0.22)),
+                rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 30px 80px var(--gc-city-shadow, rgba(2, 44, 34, 0.5));
+            position: relative;
+        }
+
+        .chat-header-standalone {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background:
+                linear-gradient(135deg, rgba(4, 120, 87, 0.72), var(--gc-city-accent, rgba(16, 185, 129, 0.72))),
+                rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.28);
+            z-index: 10;
+            box-shadow: 0 12px 28px rgba(5, 150, 105, 0.16);
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateX(-2px);
+        }
+
+        .header-info h1 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .header-info p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .header-info p::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        #gc-messages {
+            background: linear-gradient(180deg, rgba(2, 6, 23, 0.035), rgba(2, 6, 23, 0.1));
+        }
+
+        /* Standalone overrides */
+        .gc-messages {
+            height: auto;
+            flex: 1;
+        }
+
+        .gc-input-area {
+            background: rgba(2, 6, 23, 0.28);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        @media (max-width: 600px) {
+            .chat-full-container {
+                max-width: 100%;
+                box-shadow: none;
+            }
+
+            .chat-header-standalone {
+                flex-wrap: wrap;
+            }
+
+            .chat-header-actions {
+                width: 100%;
+                margin-left: 0 !important;
+                justify-content: space-between;
+            }
+        }
+    </style>
+
+  <!-- Adsterra Ads -->
+
+</head>
+
+<body data-chat-city="lamas">
+    <div class="chat-full-container">
+        <header class="chat-header-standalone">
+            <button class="back-btn" onclick="history.back()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <div class="header-info">
+                <h1 id="gc-header-title">Chat CityMart</h1>
+                <p id="gc-online-label">Canal Lamas</p>
+            </div>
+            <div class="chat-header-actions" style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+                <div class="gc-city-switcher" aria-label="Cambiar ciudad del chat">
+                    <button type="button" data-chat-city="lamas" aria-pressed="true">Lamas</button>
+                    <button type="button" data-chat-city="tarapoto" aria-pressed="false">Tarapoto</button>
+                </div>
+                <div class="gc-ttl-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>Auto-elimina 24h</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="gc-messages" class="gc-messages">
+            <div class="gc-empty-state" id="gc-empty-state">
+                <div style="font-size: 3rem; margin-bottom: 10px;">&#x1F4AC;</div>
+                <p style="font-weight: 700; color: #1e293b;">&iexcl;Saluda a tus vecinos!</p>
+                <span id="gc-empty-sub" style="font-size: 0.8rem; color: #64748b;">Los mensajes desaparecen cada 24 horas.</span>
+            </div>
+        </div>
+
+        <div id="gc-input-area" class="gc-input-area">
+            <!-- Dynamically populated by JS -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db, rtdb } from './assets/js/firebase-init.js';
+        import { initGlobalChat } from './assets/js/global-chat.js?v=20260423-home-chat-ads-1';
+
+        // Initialize in standalone mode
+        initGlobalChat(auth, rtdb, {
+            mode: 'standalone',
+            messagesContainer: document.getElementById('gc-messages'),
+            inputContainer: document.getElementById('gc-input-area')
+        });
+    </script>
+</body>
+
+</html>
+

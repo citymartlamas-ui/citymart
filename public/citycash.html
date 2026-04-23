@@ -835,123 +835,7 @@
             }
         }
     </style>
-</head>
-<body>
-    <main class="citycash-shell">
-        <div class="citycash-topbar">
-            <button class="citycash-back" onclick="window.location.href='profile.html'">
-                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
-                Volver al perfil
-            </button>
-            <span class="citycash-eyebrow">
-                <i data-lucide="coins" style="width: 14px; height: 14px;"></i>
-                Economia CityCash
-            </span>
-        </div>
-
-        <section class="citycash-hero">
-            <div class="citycash-hero-grid">
-                <div>
-                    <span class="citycash-eyebrow">
-                        <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-                        Tu visibilidad depende de ti
-                    </span>
-                    <h1 class="citycash-title">Haz que tu negocio se vea donde todos miran.</h1>
-                    <p class="citycash-copy">
-                        Gana CityCash dentro de la app y usalo para ocupar los espacios mas vistos del Home.
-                    </p>
-                    <p class="citycash-inline-note"><strong>Compra primero.</strong> Los mejores espacios se ocupan rapido.</p>
-                    <div class="citycash-action-row">
-                        <button id="citycash-go-earn" class="citycash-primary-btn">Ganar CityCash</button>
-                        <button id="citycash-go-use" class="citycash-secondary-btn">Usar CityCash</button>
-                        <a href="premios.html" class="citycash-secondary-btn" style="text-decoration: none; border-color: var(--citycash-gold); color: var(--citycash-gold-deep);">
-                            <i data-lucide="gift" style="width: 14px; margin-right: 6px;"></i> Ver Premios
-                        </a>
-                    </div>
-                </div>
-
-                <aside class="citycash-balance-card">
-                    <div>
-                        <small>Wallet CityCash</small>
-                        <div id="citycash-balance-amount" class="citycash-balance-amount"><span class="citycash-coin"></span> 0</div>
-                        <p class="citycash-balance-caption">Convierte saldo en visibilidad real.</p>
-                    </div>
-                    <div class="citycash-stat-grid">
-                        <div class="citycash-stat-pill">
-                            <span>Ganado</span>
-                            <strong id="citycash-earned-total">+0</strong>
-                        </div>
-                        <div class="citycash-stat-pill">
-                            <span>Gastado</span>
-                            <strong id="citycash-spent-total">0</strong>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        </section>
-
-        <section class="citycash-panel">
-            <div class="citycash-tab-row">
-                <button id="citycash-tab-earn" class="citycash-tab active">Como ganar CityCash</button>
-                <button id="citycash-tab-use" class="citycash-tab">Usar CityCash</button>
-            </div>
-
-            <div id="citycash-login-box" class="citycash-login-box">
-                <h3>Inicia sesion para activar tu wallet</h3>
-                <p style="margin: 0 0 14px; color: var(--citycash-soft);">Tu saldo, historial y ranking dependen de tu cuenta autenticada.</p>
-                <button class="citycash-primary-btn" onclick="window.location.href='login.html'">Ingresar ahora</button>
-            </div>
-
-            <div id="citycash-view-earn" data-citycash-view class="is-visible">
-                <div class="citycash-panel-head">
-                    <div>
-                        <span class="citycash-panel-label">Como ganar CityCash</span>
-                        <h2>Gana saldo con acciones reales.</h2>
-                        <p>Ve a la seccion correcta y suma.</p>
-                    </div>
-                </div>
-                <div id="citycash-action-list" class="citycash-action-list"></div>
-            </div>
-
-            <div id="citycash-view-use" data-citycash-view>
-                <div class="citycash-panel-head">
-                    <div>
-                        <span class="citycash-panel-label">Usar CityCash</span>
-                        <h2>Elige negocio y posicion.</h2>
-                        <p>Pagas y apareces en el Home.</p>
-                    </div>
-                </div>
-
-                <div class="citycash-note">
-                    <strong>Ranking CityCash</strong>
-                    <p id="citycash-availability-copy">Espacios limitados. Reinicio semanal.</p>
-                </div>
-
-                <div class="citycash-use-grid">
-                    <div>
-                        <div id="citycash-business-list" class="citycash-business-list"></div>
-                    </div>
-                    <div>
-                        <div id="citycash-availability-grid" class="citycash-availability-grid"></div>
-                        <button id="citycash-confirm-purchase" class="citycash-primary-btn" style="width: 100%; margin-top: 14px;" disabled>
-                            Confirmar y destacar mi negocio
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="citycash-panel">
-                <div class="citycash-panel-head">
-                    <div>
-                        <span class="citycash-panel-label">Historial</span>
-                        <h2>Movimientos CityCash</h2>
-                        <p>Lo que ganaste y gastaste.</p>
-                    </div>
-                </div>
-            <div id="citycash-history-list" class="citycash-history-list"></div>
-        </section>
-    </main>
+</main>
 
     <nav class="bottom-nav">
         <a href="./" class="nav-item">
@@ -1097,7 +981,7 @@
                 <div class="citycash-history-item">
                     <div>
                         <strong>${escape(item.label || "Movimiento CityCash")}</strong>
-                        <p>${formatCityCashDate(item.createdAt)} · ${item.type === "earn" ? "Ganancia" : "Gasto"}</p>
+                        <p>${formatCityCashDate(item.createdAt)} Â· ${item.type === "earn" ? "Ganancia" : "Gasto"}</p>
                     </div>
                     <div class="citycash-history-amount ${Number(item.amount || 0) >= 0 ? "is-positive" : "is-negative"}">${formatCityCashAmount(item.amount || 0)}</div>
                 </div>
@@ -1130,7 +1014,7 @@
                     <img src="${escape(safeImage)}" alt="${escape(business.nombre)}" loading="lazy" decoding="async">
                     <div style="flex: 1;">
                         <strong>${escape(business.nombre)}</strong>
-                        <p>${business.categoria} · ${getCityCashCityLabel(business.ciudad)}</p>
+                        <p>${business.categoria} Â· ${getCityCashCityLabel(business.ciudad)}</p>
                     </div>
                     <button class="citycash-select-btn ${state.selectedBusinessId === business.id ? "is-active" : ""}" onclick="window.selectCityCashBusiness('${business.id}')">
                         ${state.selectedBusinessId === business.id ? "Seleccionado" : "Elegir"}
@@ -1334,3 +1218,4 @@
     </script>
 </body>
 </html>
+

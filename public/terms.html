@@ -41,6 +41,18 @@
         .last-updated { font-size: 0.85rem; color: #6b7280; font-weight: 600; margin-bottom: 40px; }
         .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--primary-color); font-weight: 700; text-decoration: none; font-size: 0.9rem; margin-bottom: 20px; }
     </style>
+
+  <!-- Adsterra Ads -->
+
+  <style>
+    .adsterra-native-wrap, .adsterra-banner-mobile, .adsterra-banner-desktop { width: 100%; text-align: center; }
+    .adsterra-banner-desktop { display: none; }
+    .adsterra-banner-mobile  { display: flex; justify-content: center; }
+    @media (min-width: 720px) {
+      .adsterra-banner-mobile  { display: none; }
+      .adsterra-banner-desktop { display: flex; justify-content: center; }
+    }
+  </style>
 </head>
 
 <body>
@@ -131,5 +143,6 @@
     <script src="assets/js/pwa-init.js"></script>
 </body>
 </html>
+
 
 

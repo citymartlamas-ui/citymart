@@ -127,80 +127,7 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-</head>
-
-<body>
-    <main class="container" style="padding: 0; max-width: 768px;">
-        <div class="news-hero">
-            <a href="news.html" class="back-btn">
-                <i data-lucide="chevron-left"></i>
-            </a>
-            <img id="news-img"
-                src="https://images.unsplash.com/photo-1533903345306-15d1c30952de?auto=format&fit=crop&q=80&w=1200"
-                alt="Portada de la noticia" class="news-media" style="cursor: zoom-in;" fetchpriority="high"
-                decoding="async">
-        </div>
-
-        <div class="news-content">
-            <div id="news-tag" class="category-tag" style="background: var(--secondary-color);">EVENTO</div>
-            <h1 id="news-title"
-                style="font-family: 'Inter'; font-size: 2.2rem; line-height: 1.1; margin-bottom: 16px;">Cargando
-                noticia...</h1>
-
-            <div class="news-meta">
-                <div style="display: flex; align-items: center; gap: 4px;">
-                    <i data-lucide="calendar" style="width: 14px;"></i>
-                    <span id="news-date">Cargando...</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 4px;">
-                    <i data-lucide="eye" style="width: 14px;"></i>
-                    <span id="news-views">-- vistas</span>
-                </div>
-            </div>
-
-            <div class="article-body">
-                <p id="news-desc">
-                    Cargando descripción...
-                </p>
-
-                <div id="author-contact-container" style="display: none; margin-top: 24px;">
-                    <!-- Se llena en JS -->
-                </div>
-
-                <div
-                    style="margin-top: 40px; padding: 20px; background: #f0fdf4; border-radius: 16px; border: 1px dashed #86efac; text-align: center;">
-                    <i data-lucide="heart" style="color: #22c55e; margin-bottom: 8px; width: 32px; height: 32px;"></i>
-                    <p
-                        style="font-weight: 700; color: #166534; font-size: 1.1rem; margin-bottom: 4px; font-family: 'Inter';">
-                        ¡Gracias por mantenerte informado!</p>
-                    <p style="color: #15803d; font-size: 0.95rem;">Mientras más lees y compartes, más ayudas a que
-                        nuestra comunidad en Lamas siga creciendo positivamente.</p>
-                </div>
-            </div>
-
-            <div class="share-section">
-                <p style="font-weight: 700; color: #6b7280; font-size: 0.9rem;">Compartir noticia</p>
-                <div class="share-btns">
-                    <div class="share-icon" onclick="window.shareContent('facebook')"><i data-lucide="facebook"></i>
-                    </div>
-                    <div class="share-icon" onclick="window.shareContent('whatsapp')"><i
-                            data-lucide="message-circle"></i></div>
-                    <div class="share-icon" onclick="window.shareContent('native')"><i data-lucide="share-2"></i></div>
-                </div>
-            </div>
-
-            <div style="height: 100px;"></div>
-        </div>
-
-        <!-- MODAL DE IMAGEN FULLSCREEN -->
-        <div id="image-modal"
-            style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); cursor: zoom-out;">
-            <span
-                style="position: absolute; top: 20px; right: 20px; color: white; font-size: 2.5rem; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; opacity: 0.8; transition: 0.2s;">&times;</span>
-            <img id="image-modal-content"
-                style="max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-        </div>
-    </main>
+</main>
 
     <script type="module">
         import { db } from './assets/js/firebase-init.js';
@@ -416,6 +343,7 @@
   </footer></body>
 
 </html>
+
 
 
 

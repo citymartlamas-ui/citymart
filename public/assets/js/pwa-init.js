@@ -2,7 +2,7 @@
     if (window.__cityMartPwaInit) return;
     window.__cityMartPwaInit = true;
 
-    const CLIENT_ASSET_VERSION = '2026-04-11-premium-fix-1';
+    const CLIENT_ASSET_VERSION = '2026-04-23-home-chat-ads-1';
     let registrationPromise = null;
 
     function dispatch(name, detail) {
@@ -21,34 +21,13 @@
                 scope: '/',
                 updateViaCache: 'none'
             },
-            forceUpdate: true,
-            skipWaiting: true,
-            reloadOnActivate: true,
+            forceUpdate: false,
+            skipWaiting: false,
+            reloadOnActivate: false,
             logErrors: false,
             ...window.CityMartPWAConfig,
             ...options
         };
-    }
-
-    function markReloaded() {
-        try {
-            if (sessionStorage.getItem('sw_refreshed')) return false;
-            sessionStorage.setItem('sw_refreshed', '1');
-            return true;
-        } catch (error) {
-            return true;
-        }
-    }
-
-    function markClientRefresh(version) {
-        try {
-            const key = `cm_client_refresh_${version}`;
-            if (sessionStorage.getItem(key)) return false;
-            sessionStorage.setItem(key, '1');
-            return true;
-        } catch (error) {
-            return true;
-        }
     }
 
     async function refreshClientAssetsIfNeeded() {
@@ -61,23 +40,16 @@
                 .filter((key) => key.startsWith('cm_cache_'))
                 .forEach((key) => localStorage.removeItem(key));
 
-            if ('serviceWorker' in navigator) {
-                const registrations = await navigator.serviceWorker.getRegistrations().catch(() => []);
-                await Promise.all(registrations.map((registration) => registration.unregister().catch(() => false)));
-            }
-
             if ('caches' in window) {
-                const cacheKeys = await caches.keys().catch(() => []);
-                await Promise.all(
-                    cacheKeys
-                        .filter((key) => key.startsWith('citymart-'))
-                        .map((key) => caches.delete(key).catch(() => false))
-                );
-            }
-
-            if (markClientRefresh(CLIENT_ASSET_VERSION)) {
-                window.location.reload();
-                return true;
+                setTimeout(() => {
+                    caches.keys()
+                        .then((cacheKeys) => Promise.all(
+                            cacheKeys
+                                .filter((key) => key.startsWith('citymart-'))
+                                .map((key) => caches.delete(key).catch(() => false))
+                        ))
+                        .catch(() => { });
+                }, 1500);
             }
         } catch (error) {
             // If cleanup fails, continue with the regular registration flow.
@@ -104,13 +76,11 @@
 
             return navigator.serviceWorker.register(config.swUrl, config.registerOptions);
         }).then((registration) => {
-            const reloadPage = () => {
-                if (!config.reloadOnActivate) return;
-                if (!markReloaded()) return;
-                window.location.reload();
-            };
-
-            navigator.serviceWorker.addEventListener('controllerchange', reloadPage, { once: true });
+            if (config.reloadOnActivate) {
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    dispatch('citymart:sw-controllerchange', { registration, config });
+                }, { once: true });
+            }
 
             if (config.forceUpdate) {
                 registration.update().catch(() => { });

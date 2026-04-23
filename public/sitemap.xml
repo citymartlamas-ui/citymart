@@ -2,26 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://citymart.vip/</loc>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://citymart.vip/directory</loc>
+    <loc>https://citymart.vip/turismo.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://citymart.vip/community</loc>
+    <loc>https://citymart.vip/community.html</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://citymart.vip/turismo</loc>
+    <loc>https://citymart.vip/directory.html</loc>
+    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://citymart.vip/about</loc>
+    <loc>https://citymart.vip/about.html</loc>
+    <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://citymart.vip/contact</loc>
+    <loc>https://citymart.vip/contact.html</loc>
+    <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://citymart.vip/privacy-policy</loc>
+    <loc>https://citymart.vip/privacy-policy.html</loc>
+    <priority>0.3</priority>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>https://citymart.vip/terms</loc>
+    <loc>https://citymart.vip/terms.html</loc>
+    <priority>0.3</priority>
+    <changefreq>yearly</changefreq>
   </url>
 </urlset>

@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script defer src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="assets/js/utils.js?v=20260401-homefix-2"></script>
+    <script defer src="assets/js/utils.js?v=20260423-home-chat-ads-1"></script>
     <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
 
     <link rel="manifest" href="manifest.json">
@@ -33,34 +33,7 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-</head>
-
-<body>
-    <header class="section modern-glass"
-        style="padding-top: 10px; padding-bottom: 10px; position: sticky; top: 0; z-index: 1000; border-bottom: none; box-shadow: var(--shadow-sm);">
-        <div class="container">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="window.location.href='./'">
-                    <img src="assets/logo.png" alt="CityMart" style="height: 40px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));">
-                    <h1 style="font-family: 'Inter'; font-weight: 700; color: var(--primary-color); font-size: 1.2rem; margin-top: 4px; letter-spacing: -0.02em;">CityMart</h1>
-                </div>
-                <div style="background: rgba(3, 105, 161, 0.1); color: #0369a1; padding: 6px 14px; border-radius: 100px; font-weight: 600; font-size: 0.65rem; border: 1px solid rgba(3, 105, 161, 0.2); text-transform: uppercase;">Ultimas noticias</div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <a href="./" style="background: white; width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); color: var(--text-main);"><i data-lucide="chevron-left" style="width: 22px;"></i></a>
-                <div>
-                   <h2 style="font-family: 'Inter'; font-weight: 700; font-size: 1.4rem; color: #111; margin: 0; line-height: 1;">Noticias</h2>
-                   <p id="city-subtitle" style="font-size: 0.7rem; color: #6b7280; font-weight: 700; margin: 2px 0 0 0; text-transform: uppercase; letter-spacing: 0.05em;">Lo mas relevante hoy</p>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="container" style="padding-top: 14px; padding-bottom: 120px; min-height: calc(100vh - 280px);">
-        <div id="news-list" style="display: flex; flex-direction: column; gap: 24px; min-height: clamp(560px, 68vh, 920px);">
-            <div style="text-align:center; padding: 60px;"><div class="loader"></div></div>
-        </div>
-    </main>
+</main>
 
     <nav class="bottom-nav">
         <a href="./" class="nav-item">
@@ -153,7 +126,7 @@
                                 <div style="background: rgba(16, 185, 129, 0.1); color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 600;">
                                     PROVINCIA ${escape((n.ciudad || n.provincia || 'local').toUpperCase())}
                                 </div>
-                                <span style="font-size: 0.75rem; color: var(--primary-color); font-weight: 600; margin-left: auto;">Leer mas →</span>
+                                <span style="font-size: 0.75rem; color: var(--primary-color); font-weight: 600; margin-left: auto;">Leer mas Ã¢â€ â€™</span>
                             </div>
                         </div>
                     </div>`;
@@ -169,7 +142,7 @@
         loadNews();
     </script>
 
-        <script src="assets/js/pwa-init.js?v=20260401-homefix-2"></script>
+        <script src="assets/js/pwa-init.js?v=20260423-home-chat-ads-1"></script>
 
   <footer class="site-footer">
     <div class="site-footer__main">
@@ -198,5 +171,6 @@
   </footer>
 </body>
 </html>
+
 
 

@@ -13,3 +13,39 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+    const targetUrl = payload.fcmOptions?.link
+        || payload.data?.link
+        || payload.notification?.click_action
+        || '/';
+    const title = payload.notification?.title || "CityMart";
+
+    return self.registration.showNotification(title, {
+        body: payload.notification?.body || "",
+        icon: '/assets/icons/app-icon-192-v4.png',
+        image: payload.notification?.image || undefined,
+        badge: '/assets/icons/notification-badge.png',
+        vibrate: [200, 100, 200],
+        data: { url: targetUrl }
+    });
+});
+
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    const targetUrl = event.notification.data?.url
+        || event.notification.data?.link
+        || event.notification.data?.FCM_MSG?.data?.link
+        || '/';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+            for (const client of windowClients) {
+                if ('navigate' in client) {
+                    return client.navigate(targetUrl).then(() => client.focus());
+                }
+            }
+            return clients.openWindow(targetUrl);
+        })
+    );
+});

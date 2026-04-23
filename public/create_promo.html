@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Crear PromociÃ³n | CityMart</title>
+    <title>Crear Promoción | CityMart</title>
     <link rel="stylesheet" href="assets/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,6 +100,9 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+
+
 </head>
 
 <body>
@@ -121,7 +124,7 @@
         </div>
     </header>
 
-    <!-- MODAL DE Ã‰XITO Y PAGO -->
+    <!-- MODAL DE Á‰XITO Y PAGO -->
     <div id="success-modal"
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px);">
         <div
@@ -250,7 +253,7 @@
             <i data-lucide="layout-grid" class="nav-icon"></i>
             <span>Directorio</span>
         </a>
-        <!-- BotÃ³n Publicar Central -->
+        <!-- Botón Publicar Central -->
         <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
             <div
                 style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
@@ -286,7 +289,7 @@
         const promoCityEl = document.getElementById('promo-city');
         if (promoCityEl) promoCityEl.value = savedCity;
 
-        // Verificar autenticaciÃ³n y buscar negocio del usuario
+        // Verificar autenticación y buscar negocio del usuario
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -493,5 +496,6 @@
   </footer></body>
 
 </html>
+
 
 

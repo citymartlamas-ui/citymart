@@ -154,6 +154,9 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+
+
 </head>
 
 <body>
@@ -169,7 +172,7 @@
     <main class="container">
         <div class="signup-container">
             <div class="signup-card">
-                <h2 style="font-family: 'Inter'; font-size: 1.8rem; margin-bottom: 8px; color: var(--text-main); font-weight: 700;">Ãšnete a la comunidad</h2>
+                <h2 style="font-family: 'Inter'; font-size: 1.8rem; margin-bottom: 8px; color: var(--text-main); font-weight: 700;">Ášnete a la comunidad</h2>
                 <p style="color: var(--text-soft); margin-bottom: 32px; font-size: 0.95rem; font-weight: 500;">Crea tu cuenta de usuario hoy mismo</p>
 
                 <form id="signup-form">
@@ -177,12 +180,12 @@
                         <label for="name">Nombre Completo</label>
                         <div class="input-wrapper">
                             <i data-lucide="user"></i>
-                            <input type="text" id="name" placeholder="Juan PÃ©rez" required>
+                            <input type="text" id="name" placeholder="Juan Pérez" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Correo ElectrÃ³nico</label>
+                        <label for="email">Correo Electrónico</label>
                         <div class="input-wrapper">
                             <i data-lucide="mail"></i>
                             <input type="email" id="email" placeholder="ejemplo@correo.com" required>
@@ -190,10 +193,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">ContraseÃ±a</label>
+                        <label for="password">Contraseña</label>
                         <div class="input-wrapper">
                             <i data-lucide="lock"></i>
-                            <input type="password" id="password" placeholder="MÃ­nimo 8 caracteres" minlength="8"
+                            <input type="password" id="password" placeholder="Mínimo 8 caracteres" minlength="8"
                                 required>
                         </div>
                     </div>
@@ -201,7 +204,7 @@
                     <div class="form-group checkbox-group">
                         <input type="checkbox" id="terms-check" required>
                         <label for="terms-check" style="font-weight: 600; font-size: 0.85rem; color: var(--text-soft); text-transform: none; letter-spacing: normal; margin-bottom: 0;">
-                            Acepto los <a href="#" style="color: var(--primary-color); font-weight: 700;">TÃ©rminos y Condiciones</a> y la <a href="#" style="color: var(--primary-color); font-weight: 700;">PolÃ­tica de Privacidad</a>.
+                            Acepto los <a href="#" style="color: var(--primary-color); font-weight: 700;">Términos y Condiciones</a> y la <a href="#" style="color: var(--primary-color); font-weight: 700;">Política de Privacidad</a>.
                         </label>
                     </div>
 
@@ -209,7 +212,7 @@
                 </form>
 
                 <div class="footer-links">
-                    Â¿Ya tienes una cuenta? <a href="login.html">Inicia sesiÃ³n</a>
+                    ¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a>
                 </div>
             </div>
         </div>
@@ -230,7 +233,7 @@
             const terms = document.getElementById('terms-check').checked;
 
             if (!terms) {
-                showToast('Debes aceptar los tÃ©rminos y condiciones.', 'error');
+                showToast('Debes aceptar los términos y condiciones.', 'error');
                 return;
             }
 
@@ -245,13 +248,13 @@
                 localStorage.setItem('userEmail', email);
                 localStorage.setItem('userName', name);
 
-                showToast('Â¡Cuenta creada con Ã©xito! Bienvenido cho');
+                showToast('¡Cuenta creada con éxito! Bienvenido cho');
                 window.location.href = './';
             } catch (error) {
                 console.error("Error al crear cuenta:", error);
                 let message = "Hubo un error al crear la cuenta.";
-                if (error.code === 'auth/email-already-in-use') message = "Este correo ya estÃ¡ registrado.";
-                if (error.code === 'auth/weak-password') message = "La contraseÃ±a es muy dÃ©bil.";
+                if (error.code === 'auth/email-already-in-use') message = "Este correo ya está registrado.";
+                if (error.code === 'auth/weak-password') message = "La contraseña es muy débil.";
                 showToast(message, 'error');
             }
         });
@@ -261,5 +264,6 @@
 </body>
 
 </html>
+
 
 
