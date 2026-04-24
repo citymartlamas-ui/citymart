@@ -387,6 +387,45 @@
             background: #059669;
         }
 
+        .mini-photo-picker {
+            width: 100%;
+            height: 150px;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .mini-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            box-sizing: border-box;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .mini-photo-preview {
+            display: none;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 14px;
+            object-fit: cover;
+            object-position: center;
+            cursor: pointer;
+        }
+
         .yellow-search-container {
             padding: 12px;
             border-bottom: 1px solid rgba(226, 232, 240, 0.8);
@@ -574,13 +613,12 @@
                     <div class="mini-photo-picker">
                         <input type="file" id="post-photo" accept="image/*" style="display: none;"
                             onchange="previewImage(this, 'post-photo-preview', 'post-photo-preview-container')">
-                        <div id="post-photo-preview-container" onclick="document.getElementById('post-photo').click()"
-                            style="cursor: pointer; text-align: center;">
+                        <div id="post-photo-preview-container" class="mini-photo-placeholder" onclick="document.getElementById('post-photo').click()">
                             <i data-lucide="image-plus" style="width: 40px; height: 40px; color: #9ca3af;"></i>
                             <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir una foto</p>
                             <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">Se reducira automaticamente y solo se vera pequena en la tarjeta.</p>
                         </div>
-                        <img id="post-photo-preview" class="mini-photo-preview">
+                        <img id="post-photo-preview" class="mini-photo-preview" onclick="document.getElementById('post-photo').click()" alt="Vista previa de la foto">
                     </div>
                 </div>
             </div>
@@ -588,16 +626,14 @@
             <div id="form-objetos" style="display: none;">
                 <div class="form-group">
                     <label class="form-label">Foto del Objeto</label>
-                    <div class="mini-photo-picker" style="padding: 20px;">
+                    <div class="mini-photo-picker">
                         <input type="file" id="lost-photo" accept="image/*" style="display: none;"
                             onchange="previewImage(this)">
-                        <div id="photo-preview-container" onclick="document.getElementById('lost-photo').click()"
-                            style="cursor: pointer; text-align: center;">
+                        <div id="photo-preview-container" class="mini-photo-placeholder" onclick="document.getElementById('lost-photo').click()">
                             <i data-lucide="camera" style="width: 48px; height: 48px; color: #9ca3af;"></i>
                             <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir o tomar foto</p>
                         </div>
-                        <img id="photo-preview" class="mini-photo-preview"
-                            style="max-height: 200px; border-radius: 8px;">
+                        <img id="photo-preview" class="mini-photo-preview" onclick="document.getElementById('lost-photo').click()" alt="Vista previa de la foto">
                     </div>
                 </div>
 
@@ -632,13 +668,12 @@
                     <div class="mini-photo-picker">
                         <input type="file" id="forum-photo" accept="image/*" style="display: none;"
                             onchange="previewImage(this, 'forum-photo-preview', 'forum-photo-preview-container')">
-                        <div id="forum-photo-preview-container" onclick="document.getElementById('forum-photo').click()"
-                            style="cursor: pointer; text-align: center;">
+                        <div id="forum-photo-preview-container" class="mini-photo-placeholder" onclick="document.getElementById('forum-photo').click()">
                             <i data-lucide="image-plus" style="width: 40px; height: 40px; color: #9ca3af;"></i>
                             <p style="font-size: 0.8rem; color: #6b7280; margin-top: 8px;">Toca para subir una foto</p>
                             <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">Se comprimira mucho y solo se vera pequena en la tarjeta.</p>
                         </div>
-                        <img id="forum-photo-preview" class="mini-photo-preview">
+                        <img id="forum-photo-preview" class="mini-photo-preview" onclick="document.getElementById('forum-photo').click()" alt="Vista previa de la foto">
                     </div>
                 </div>
             </div>
@@ -1114,7 +1149,7 @@
             }
 
             if (placeholder) {
-                placeholder.style.display = 'block';
+                placeholder.style.display = 'flex';
             }
 
             if (input) {
