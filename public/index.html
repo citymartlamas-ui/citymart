@@ -21,14 +21,15 @@
   <meta name="apple-mobile-web-app-title" content="CityMart">
   <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
   <link rel="stylesheet" href="assets/style.css?v=20260411-premium-fix-1">
-  <link rel="stylesheet" href="assets/css/global-chat.css?v=20260423-home-chat-ads-1">
+  <link rel="stylesheet" href="assets/css/global-chat.css?v=20260424-chat-compact-1">
+  <link rel="stylesheet" href="assets/css/ads.css?v=20260424-ads-2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
     rel="stylesheet">
   <script defer src="https://unpkg.com/lucide@latest"></script>
-  <script defer src="assets/js/utils.js?v=20260423-home-chat-ads-1"></script>
+  <script defer src="assets/js/utils.js?v=20260401-homefix-2"></script>
   <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
   <style>
     :root {
@@ -1043,7 +1044,7 @@
     }
 
     body.page-home .citycash-home-chip + .citycash-home-chip::before {
-      content: 'ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢';
+      content: '•';
       margin: 0 8px 0 2px;
       color: #c18a2a;
     }
@@ -1644,7 +1645,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: -0.01em;
-      box-shadow: 
+      box-shadow:
         0 12px 24px -10px rgba(245, 158, 11, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.4);
       white-space: nowrap;
@@ -1667,14 +1668,14 @@
       height: 24px;
       background: linear-gradient(135deg, #fff7ad 0%, #fbbf24 45%, #d97706 100%);
       border-radius: 50%;
-      box-shadow: 
+      box-shadow:
         0 2px 4px rgba(0,0,0,0.2),
         inset 0 1px 0 rgba(255,255,255,0.6);
       position: relative;
       flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.3);
     }
-    
+
     .citycash-coin::after {
       content: '';
       position: absolute;
@@ -2454,23 +2455,6 @@
         height: 24px;
       }
     }
-
-    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Adsterra Ad Units ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
-    .adsterra-native-wrap,
-    .adsterra-banner-mobile,
-    .adsterra-banner-desktop {
-      width: 100%;
-      text-align: center;
-    }
-
-    /* Mobile banner: visible solo en mobile */
-    .adsterra-banner-desktop { display: none; }
-    .adsterra-banner-mobile  { display: flex; }
-
-    @media (min-width: 720px) {
-      .adsterra-banner-mobile  { display: none; }
-      .adsterra-banner-desktop { display: flex; }
-    }
   </style>
 
   <link rel="manifest" href="manifest.json">
@@ -2479,7 +2463,129 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<section id="daily-survey-section" class="section" style="padding-top: 4px; padding-bottom: 4px;" data-survey-state="loading" aria-live="polite" aria-busy="true">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6211692359872996"
+    crossorigin="anonymous"></script>
+</head>
+
+<body class="page-home">
+  <header class="section modern-glass home-topbar" style="position: sticky; top: 0; z-index: 2000; padding-top: 16px; padding-bottom: 12px; border-bottom: none; box-shadow: var(--shadow-sm);">
+    <div class="home-topbar-inner">
+      <div class="home-topbar-row">
+        <div id="logo-container" onclick="window.location.href='./'">
+          <img src="assets/logo.png" alt="CityMart" style="height: 44px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));">
+          <small id="city-subtitle" style="color: var(--secondary-color); font-size: 0.85rem; font-weight: 500; letter-spacing: -0.01em;">Lamas</small>
+        </div>
+        <div class="home-topbar-actions">
+          <button type="button" class="home-secret-trigger" onclick="window.toggleSecretNumberModal && window.toggleSecretNumberModal(true)" aria-label="Abrir Numero Secreto">
+            <span class="home-secret-trigger-icon">&#x1F3B2;</span>
+            <span class="home-secret-trigger-label">Jugar</span>
+          </button>
+          <div id="auth-btn" class="home-auth-btn" onclick="window.location.href='login.html'"
+            style="cursor: pointer; background: var(--primary-color); color: white; border-radius: 20px; font-weight: 500; font-size: 0.75rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: all 0.2s;">
+            <span class="auth-btn-label">INGRESAR</span>
+            <span class="auth-btn-avatar" aria-hidden="true"><span style="font-size: 0.9rem; font-weight: 800; line-height: 1;">&rarr;</span></span>
+          </div>
+        </div>
+      </div>
+      <div id="site-stats-counter" style="display: flex; gap: 12px; margin-bottom: 8px; font-size: 0.7rem; font-weight: 500; color: #6b7280; padding-left: 2px;">
+        <span style="display: flex; align-items: center; gap: 4px;">
+          <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;"></span>
+          <b id="online-count">1</b> en l&iacute;nea</span>
+        <span style="display: flex; align-items: center; gap: 4px;">
+          <i data-lucide="rocket" style="width: 14px; height: 14px;"></i> <b id="total-visits">--</b> visitas
+        </span>
+      </div>
+
+      <div id="city-switcher" class="city-switcher-container">
+        <div class="city-pill active" onclick="switchCity('lamas')"><i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> Lamas</div>
+        <div class="city-pill" onclick="switchCity('tarapoto')"><i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> Tarapoto</div>
+      </div>
+
+      <div style="position: relative; margin-top: 16px;">
+        <i data-lucide="search" id="search-icon"
+          style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-soft); width: 20px; cursor: pointer;"></i>
+        <input type="text" id="main-search" placeholder="&iquest;Qu&eacute; est&aacute;s buscando hoy?"
+          style="width: 100%; padding: 16px 16px 16px 54px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); background: white; outline: none; font-size: 1rem; font-weight: 500; font-family: 'Inter'; box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05); transition: all 0.3s ease;">
+      </div>
+    </div>
+  </header>
+
+  <main class="container home-main" style="padding-top: 0;">
+    <div class="cm-ad-section">
+      <div class="cm-ad-slot cm-ad-slot--banner" data-citymart-ad="banner" data-ad-id="home-top">
+        <div class="cm-ad-inner"></div>
+      </div>
+    </div>
+    <!-- Resultados de Busqueda (Oculto por defecto) -->
+    <div id="search-results"
+      style="display: none; flex-direction: column; gap: 16px; padding-top: 20px; padding-bottom: 100px;">
+      <!-- Se puebla dinamicamente -->
+    </div>
+
+    <div id="home-content">
+      <!-- NEGOCIOS PREMIUM -->
+      <section class="section" style="padding-top: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h2 class="section-title home-feature-title" style="margin-bottom: 0;"><span class="home-feature-icon"><i data-lucide="gem"></i></span>Negocios Premium</h2>
+          <a href="premium_list.html"
+            style="font-size: 0.75rem; font-weight: 500; color: var(--primary-color); text-decoration: none; text-transform: uppercase;">Ver
+            todos &gt;</a>
+        </div>
+        <p style="margin: 0 0 10px; font-size: 0.74rem; color: #64748b; font-weight: 700;">Solo aparecen negocios con plan premium activo.</p>
+        <div id="carousel-premium-1" class="carousel-track home-loading-track" data-loading="true" style="margin-bottom: 8px;">
+          <!-- Cargado dinamicamente -->
+        </div>
+        <div id="carousel-premium-2" class="carousel-track home-loading-track" data-loading="true">
+          <!-- Cargado dinamicamente -->
+        </div>
+        <div class="carousel-dots" id="dots-premium">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </section>
+
+      <!-- PROMOS EXPRESS -->
+      <section class="section" style="padding-top: 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div>
+            <h2 class="section-title home-feature-title" style="margin-bottom: 0;"><span class="home-feature-icon"><i data-lucide="badge-percent"></i></span>Promos Express</h2>
+          </div>
+          <a href="promos_list.html"
+            style="font-size: 0.75rem; font-weight: 500; color: var(--primary-color); text-decoration: none; text-transform: uppercase;">Ver
+            todos &gt;</a>
+        </div>
+        <div id="carousel-express" class="carousel-track home-loading-track" data-loading="true">
+          <!-- Cargado dinamicamente con temporizador -->
+        </div>
+        <div class="carousel-dots" id="dots-express">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h2 style="font-family: 'Inter'; font-weight: 500; font-size: 1.1rem; color: #111;">Ultimas noticias en <span id="news-city-name"
+              style="color: var(--primary-color);">Lamas</span></h2>
+          <a href="news.html"
+            style="font-size: 0.75rem; font-weight: 500; color: var(--primary-color); text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;">Ver
+            todas</a>
+        </div>
+        <div id="carousel-news" class="carousel-track home-loading-track" data-loading="true">
+        </div>
+      </section>
+
+      <div class="cm-ad-slot cm-ad-slot--banner" data-citymart-ad="banner" data-ad-id="home-after-news">
+        <div class="cm-ad-inner"></div>
+      </div>
+
+      <section id="daily-survey-section" class="section" style="padding-top: 4px; padding-bottom: 4px;" data-survey-state="loading" aria-live="polite" aria-busy="true">
         <div class="survey-shell survey-loading-shell" aria-hidden="true">
           <div class="survey-loading-row">
             <div class="survey-loading-user">
@@ -2568,7 +2674,8 @@
           </a>
         </div>
       </section>
-<section class="section">
+
+      <section class="section">
         <div style="position: relative; overflow: hidden; border-radius: 20px; background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%); padding: 28px 24px; color: white;">
           <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(251, 191, 36, 0.15); border-radius: 50%;"></div>
           <div style="position: absolute; bottom: -20px; left: -20px; width: 80px; height: 80px; background: rgba(11, 89, 242, 0.1); border-radius: 50%;"></div>
@@ -2577,7 +2684,7 @@
               <i data-lucide="store" style="width: 22px; height: 22px; color: #fbbf24;"></i>
               <span style="font-size: 0.7rem; font-weight: 500; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.1em;">Para negocios</span>
             </div>
-            <h3 style="font-family: 'Inter'; font-size: 1.3rem; font-weight: 500; margin-bottom: 6px; line-height: 1.2;">ÃƒÂ¯Ã‚Â¿Ã‚Â½Tienes un negocio o servicio?</h3>
+            <h3 style="font-family: 'Inter'; font-size: 1.3rem; font-weight: 500; margin-bottom: 6px; line-height: 1.2;">�Tienes un negocio o servicio?</h3>
             <p style="font-size: 0.85rem; opacity: 0.75; margin-bottom: 16px; line-height: 1.4;">Registralo GRATIS y llega a cientos de clientes. Miles de personas buscan servicios en tu ciudad cada dia.</p>
             <div style="display: flex; gap: 10px;">
               <button onclick="window.location.href='register_business.html'" style="background: #fbbf24; color: #000; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 500; font-size: 0.8rem; cursor: pointer; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);">REGISTRAR GRATIS</button>
@@ -2587,9 +2694,11 @@
         </div>
       </section>
 
-      <!-- ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Adsterra: Native Banner ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ -->
-      <div class="adsterra-native-wrap" style="margin: 4px 0 8px; overflow: hidden; border-radius: 16px;">
-        <script async="async" data-cfasync="false" src="https://pl29227913.profitablecpmratenetwork.com/d57dd0ad6d3e272a52d7c9b734b4b618/invoke.js"></script>
+      <div class="cm-ad-slot cm-ad-slot--banner" data-citymart-ad="banner" data-ad-id="home-before-footer">
+        <div class="cm-ad-inner"></div>
+      </div>
+
+      <div class="cm-ad-slot cm-ad-slot--native" data-citymart-ad="native" data-ad-id="home-native-end">
         <div id="container-d57dd0ad6d3e272a52d7c9b734b4b618"></div>
       </div>
     </div>
@@ -2713,7 +2822,7 @@
     import { collection, query, orderBy, limit, getDocs, where, doc, updateDoc, getDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { buildCityCashBoard, fetchCurrentCityCashRanking, getCityCashCityLabel } from './assets/js/citycash.js';
     import { initSecretNumberGame } from './assets/js/secret-number.js?v=20260410-secret-1';
-    import { initGlobalChat } from './assets/js/global-chat.js?v=20260423-home-chat-ads-1';
+    import { initGlobalChat } from './assets/js/global-chat.js?v=20260424-chat-compact-1';
 
     lucide.createIcons();
     initSecretNumberGame();
@@ -2750,12 +2859,12 @@
       const normalizedCity = window.setStoredCity ? window.setStoredCity(city) : String(city || 'lamas').toLowerCase().trim();
       if (currentCity === normalizedCity) return;
       currentCity = normalizedCity;
-      
+
       // Actualizar filtro de negocios global
       if (rawBusinesses) {
         allBusinesses = rawBusinesses.map(transformBizDoc).filter(b => b.visible && b.ciudad === currentCity);
       }
-      
+
       updateCityUI();
       if (searchInput?.value?.trim()) {
         performSearch(searchInput.value);
@@ -2768,14 +2877,14 @@
       const cityCapitalized = currentCity.charAt(0).toUpperCase() + currentCity.slice(1);
       const subtitle = document.getElementById('city-subtitle');
       const newsCity = document.getElementById('news-city-name');
-      
+
       if (subtitle) subtitle.innerText = cityCapitalized;
       if (newsCity) newsCity.innerText = cityCapitalized;
-      
+
       if (searchInput) {
         searchInput.placeholder = `Encuentra lo que buscas en ${cityCapitalized}...`;
       }
-      
+
       // Update pills
       document.querySelectorAll('.city-pill').forEach(pill => {
         const pillText = pill.textContent.toLowerCase().trim();
@@ -2787,7 +2896,7 @@
       if (adTitle && adTitle.innerText.includes('negocio en')) {
         adTitle.innerText = `\u00BFTienes un negocio en ${cityCapitalized}?`;
       }
-      
+
       const adText = adTitle?.nextElementSibling;
       if (adText && adText.innerText.includes('servicios en')) {
         adText.innerText = `Reg\u00EDstralo GRATIS y llega a cientos de clientes. Miles de personas buscan servicios en ${cityCapitalized} cada d\u00EDa.`;
@@ -3010,18 +3119,18 @@
       const rankingContainer = document.getElementById('ranking-container-legacy');
       if (!rankingContainer) return;
 
-      // Calcular score real por negocio usando datos de reseÃƒÆ’Ã‚Â±as
+      // Calcular score real por negocio usando datos de reseñas
       const rankedData = allBusinesses.map(b => {
         const stats = reviewStats[b.id];
         const avgScore = stats ? (stats.total / stats.count) : 0;
         const reviewCount = stats ? stats.count : 0;
         // Score combinado: (avgScore * 1000) + reviewCount
-        // Esto garantiza que cada dÃƒÆ’Ã‚Â©cima de estrella pese mÃƒÆ’Ã‚Â¡s que muchÃƒÆ’Ã‚Â­simas reseÃƒÆ’Ã‚Â±as.
+        // Esto garantiza que cada décima de estrella pese más que muchísimas reseñas.
         const combinedScore = (avgScore * 1000) + reviewCount;
         return { ...b, avgScore, reviewCount, combinedScore };
       });
 
-      // Solo mostrar negocios que tienen al menos 1 reseÃƒÆ’Ã‚Â±a
+      // Solo mostrar negocios que tienen al menos 1 reseña
       const ranked = rankedData
         .filter(b => b.reviewCount > 0)
         .sort((a, b) => b.combinedScore - a.combinedScore)
@@ -3345,7 +3454,7 @@
     function renderExpressPromos(list, container) {
       if (list.length === 0) {
         container.dataset.loading = 'false';
-        container.innerHTML = `<p style="padding: 20px; opacity: 0.5; font-size: 0.8rem;">PrÃƒÆ’Ã‚Â³ximamente mÃƒÆ’Ã‚Â¡s ofertas en ${currentCity}.</p>`;
+        container.innerHTML = `<p style="padding: 20px; opacity: 0.5; font-size: 0.8rem;">Próximamente más ofertas en ${currentCity}.</p>`;
         return;
       }
 
@@ -3453,7 +3562,7 @@
     function renderPromoFallbacks() {
       const examples = [
         { id: 'ex1', titulo: "2x1 Almuerzos", negocio: "La Casona", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=400" },
-        { id: 'ex2', titulo: "20% en CafÃƒÆ’Ã‚Â©s", negocio: "Kawsay Coffee", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=400" }
+        { id: 'ex2', titulo: "20% en Cafés", negocio: "Kawsay Coffee", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=400" }
       ];
       expressTrack.innerHTML = examples.map(ex => `
         <div class="card" style="width: 260px; height: 160px;" onclick="window.location.href='promo_detail.html?id=${ex.id}'">
@@ -3548,7 +3657,7 @@
       searchDebounceId = setTimeout(() => performSearch(value), 120);
     };
 
-    // Al presionar Enter, tambiÃƒÆ’Ã‚Â©n buscar (por si acaso)
+    // Al presionar Enter, también buscar (por si acaso)
     searchInput.onkeypress = (e) => {
       if (e.key === 'Enter') performSearch(e.target.value);
     };
@@ -3600,7 +3709,7 @@
     function renderNewsFallback() {
       const fallback = [
         { titulo: "Feria Artesanal de Lamas este fin de semana", categoria: "Eventos", img: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=400" },
-        { titulo: "Nuevo mirador turÃƒÆ’Ã‚Â­stico inaugura en la provincia", categoria: "Turismo", img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=400" },
+        { titulo: "Nuevo mirador turístico inaugura en la provincia", categoria: "Turismo", img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=400" },
         { titulo: "CityMart supera los 100 negocios registrados", categoria: "Comunidad", img: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=400" }
       ];
       newsTrack.dataset.loading = 'false';
@@ -3615,11 +3724,11 @@
       `).join('');
     }
 
-    // --- ReciÃƒÆ’Ã‚Â©n Llegados (ÃƒÆ’Ã‚Âºltimos 4 negocios) ---
+    // --- Recién Llegados (últimos 4 negocios) ---
     function renderNewBusinesses() {
       if (!newBizContainer) return;
 
-      // Ordenar por fecha_registro (mÃƒÆ’Ã‚Â¡s reciente primero) y tomar los 5 mÃƒÆ’Ã‚Â¡s nuevos
+      // Ordenar por fecha_registro (más reciente primero) y tomar los 5 más nuevos
       const ordered = [...allBusinesses]
         .sort((a, b) => {
           const dateA = a.fecha_registro?.seconds || 0;
@@ -3642,7 +3751,7 @@
       newBizContainer.innerHTML = recent.map((b, index) => {
         const escape = window.escapeHtml || escapeHtml;
         const safePhoto = window.sanitizeUrl ? window.sanitizeUrl(b.foto, FALLBACK_BIZ_IMAGE) : b.foto;
-        // Calcular hace cuÃƒÆ’Ã‚Â¡nto se registrÃƒÆ’Ã‚Â³
+        // Calcular hace cuánto se registró
         let tiempoTexto = 'Nuevo';
         if (b.fecha_registro?.seconds) {
           const ahora = Date.now();
@@ -3653,11 +3762,11 @@
           else if (diffHoras < 48) tiempoTexto = 'Ayer';
           else {
             const diffDias = Math.floor(diffHoras / 24);
-            tiempoTexto = diffDias <= 30 ? `Hace ${diffDias} dÃƒÆ’Ã‚Â­as` : 'Nuevo';
+            tiempoTexto = diffDias <= 30 ? `Hace ${diffDias} días` : 'Nuevo';
           }
         }
         return `
-        <div onclick="window.location.href='business_detail.html?id=${b.id}'" 
+        <div onclick="window.location.href='business_detail.html?id=${b.id}'"
           style="display: flex; align-items: center; gap: 14px; background: #fff; padding: 12px; border-radius: 16px; border: 1px solid #f0f0f0; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
           <div style="width: 65px; height: 65px; border-radius: 14px; overflow: hidden; flex-shrink: 0;">
             <img src="${escape(safePhoto)}" alt="${escape(b.nombre)}" style="width: 100%; height: 100%; object-fit: cover;" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${index < 2 ? 'high' : 'low'}">
@@ -3898,7 +4007,7 @@
     }
 
     init();
-    
+
     auth.onAuthStateChanged((user) => {
       if (user) {
         localStorage.setItem('userLogedIn', 'true');
@@ -3946,7 +4055,7 @@
       `;
     }
 
-    function renderSurveyUnavailable(cityLabel = 'tu ciudad', message = 'Pronto aparecerÃƒÆ’Ã‚Â¡ un nuevo pulso del mercado local para que votes sin esperar recargas.') {
+    function renderSurveyUnavailable(cityLabel = 'tu ciudad', message = 'Pronto aparecerá un nuevo pulso del mercado local para que votes sin esperar recargas.') {
       return `
         <div class="survey-shell survey-empty-shell">
           <div class="survey-kicker" style="margin: 0 auto;">
@@ -4005,7 +4114,7 @@
       lucide.createIcons();
     }
 
-    // LÃƒÆ’Ã‚Â³gica para Estudio de Mercado dinÃƒÆ’Ã‚Â¡mica con Firebase (basado en encuestas)
+    // Lógica para Estudio de Mercado dinámica con Firebase (basado en encuestas)
     let selectedOptionIndex = null;
 
     async function loadDailySurvey() {
@@ -4082,7 +4191,7 @@
                                     ${checkIcon}
                                     <span>${escapeHtml(op.texto)}</span>
                                 </div>
-                                <span class="survey-result-meta">${votos} votos ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${pct}%</span>
+                                <span class="survey-result-meta">${votos} votos • ${pct}%</span>
                             </div>
                             <div class="survey-result-track">
                                 <div class="survey-result-fill" style="width: ${pct}%;"></div>
@@ -4105,20 +4214,20 @@
           footerHtml = `
                     <div class="survey-footer-note">
                         <span style="display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                            <i data-lucide="party-popper" style="width: 16px;"></i> Tu voto ya quedÃƒÆ’Ã‚Â³ registrado.
+                            <i data-lucide="party-popper" style="width: 16px;"></i> Tu voto ya quedó registrado.
                         </span>
                     </div>
                 `;
         } else {
           footerHtml = `
                     <div style="margin-top: 15px;">
-                        <button id="btn-vote-survey" 
+                        <button id="btn-vote-survey"
                                 onclick="window.confirmVote('${surveyId}')"
                                 class="survey-vote-button"
                                 ${selectedOptionIndex !== null ? '' : 'disabled'}>
-                            IMPULSAR ESTA OPCIÃƒÆ’Ã¢â‚¬Å“N
+                            IMPULSAR ESTA OPCIÓN
                         </button>
-                        <div class="survey-footer-note">Tu voto empuja el resultado y define quÃƒÆ’Ã‚Â© gana visibilidad primero.</div>
+                        <div class="survey-footer-note">Tu voto empuja el resultado y define qué gana visibilidad primero.</div>
                     </div>
                 `;
         }
@@ -4140,14 +4249,14 @@
                     </div>
 
                     <h3 class="survey-question">${escapeHtml(data.pregunta)}</h3>
-                    <p class="survey-subcopy">${hasVotedLocally ? `AsÃƒÆ’Ã‚Â­ va el pulso de la gente en ${currentCity}.` : `Elige una opciÃƒÆ’Ã‚Â³n y empuja tu favorita al frente en ${currentCity}.`}</p>
+                    <p class="survey-subcopy">${hasVotedLocally ? `Así va el pulso de la gente en ${currentCity}.` : `Elige una opción y empuja tu favorita al frente en ${currentCity}.`}</p>
 
                     <div style="display: flex; flex-direction: column; gap: 8px;">
                         ${optionsHtml}
                     </div>
 
                     ${footerHtml}
-                    
+
                     <div style="text-align: center; margin-top: 10px;">
                         <span style="font-size: 0.68rem; color: #9a3412; font-weight: 800; letter-spacing: 0.05em;">TOTAL DE PARTICIPANTES: ${totalVotos}</span>
                     </div>
@@ -4165,7 +4274,7 @@
 
     window.selectSurveyOption = function (idx) {
       selectedOptionIndex = idx;
-      loadDailySurvey(); // re-render para mostrar selecciÃƒÆ’Ã‚Â³n
+      loadDailySurvey(); // re-render para mostrar selección
     };
 
     window.confirmVote = async function (surveyId) {
@@ -4195,9 +4304,9 @@
         localStorage.setItem('encuesta_votada_' + surveyId, String(selectedOptionIndex));
         CityCache.invalidate('encuestas');
 
-        // Efecto visual de ÃƒÆ’Ã‚Â©xito
+        // Efecto visual de éxito
         btn.style.background = "#10b981";
-        btn.innerText = "Ãƒâ€šÃ‚Â¡VOTO REGISTRADO!";
+        btn.innerText = "¡VOTO REGISTRADO!";
 
         setTimeout(() => {
           loadDailySurvey(); // Mostrar resultados
@@ -4205,9 +4314,9 @@
 
       } catch (e) {
         console.error(e);
-        showToast('Error al votar. IntÃƒÆ’Ã‚Â©ntalo de nuevo.', 'error');
+        showToast('Error al votar. Inténtalo de nuevo.', 'error');
         btn.disabled = false;
-        btn.innerText = "IMPULSAR ESTA OPCIÃƒÆ’Ã¢â‚¬Å“N";
+        btn.innerText = "IMPULSAR ESTA OPCIÓN";
       }
     };
 
@@ -4235,7 +4344,7 @@
       const btn = document.getElementById('btn-submit-suggestion');
 
       if (!text || text.trim().length < 5) {
-        return showToast('Ãƒâ€šÃ‚Â¡CuÃƒÆ’Ã‚Â©ntanos un poco mÃƒÆ’Ã‚Â¡s sobre tu idea!', 'error');
+        return showToast('¡Cuéntanos un poco más sobre tu idea!', 'error');
       }
 
       try {
@@ -4253,7 +4362,7 @@
         });
 
         btn.style.background = '#10b981';
-        btn.innerText = "Ãƒâ€šÃ‚Â¡IDEA RECIBIDA!";
+        btn.innerText = "¡IDEA RECIBIDA!";
 
         setTimeout(() => {
           window.toggleSuggestionModal(false);
@@ -4271,7 +4380,7 @@
       }
     };
 
-    // Mostrar el FAB solo cuando el usuario estÃƒÆ’Ã‚Â¡ cargado
+    // Mostrar el FAB solo cuando el usuario está cargado
     auth.onAuthStateChanged((user) => {
       if (user) {
         const fab = document.getElementById('suggestions-fab-container');
@@ -4280,115 +4389,41 @@
       }
     });
   </script>
-  <script src="assets/js/pwa-init.js?v=20260423-home-chat-ads-1"></script>
+  <script src="assets/js/pwa-init.js?v=20260411-premium-fix-1"></script>
+  <script src="assets/js/adsterra.js?v=20260424-ads-2"></script>
   <script>
-    const NOTIFICATION_PROMPT_KEY = 'notification_prompt_shown';
-    const PUSH_TOKEN_REGISTERED_KEY = 'citymart_push_token_registered';
-
-    function hasRegisteredPushTokenMarker() {
-      try {
-        return localStorage.getItem(PUSH_TOKEN_REGISTERED_KEY) === 'true';
-      } catch (error) {
-        return false;
-      }
-    }
-
-    function markNotificationPromptAccepted() {
-      try {
-        localStorage.setItem(NOTIFICATION_PROMPT_KEY, 'true');
-      } catch (error) {
-        // Ignore storage failures.
-      }
-    }
-
-    function setNotificationModalBusy(isBusy) {
-      const button = document.getElementById('notification-accept-btn');
-      if (!button) return;
-      button.disabled = isBusy;
-      button.setAttribute('aria-busy', isBusy ? 'true' : 'false');
-      button.classList.toggle('is-loading', isBusy);
-    }
-
-    function showNotificationModal() {
-      const modal = document.getElementById('notification-modal');
-      if (!modal) return;
-      modal.style.display = 'flex';
-      setTimeout(() => { modal.style.opacity = '1'; }, 10);
-      if (window.lucide) window.lucide.createIcons();
-    }
-
-    window.closeNotificationModal = function (options = {}) {
+    window.closeNotificationModal = function () {
       const modal = document.getElementById('notification-modal');
       if (modal) {
         modal.style.opacity = '0';
         setTimeout(() => { modal.style.display = 'none'; }, 300);
       }
-      if (options.remember !== false) {
-        markNotificationPromptAccepted();
-      }
+      localStorage.setItem('notification_prompt_shown', 'true');
     };
 
-    function waitForNotificationPromptUser(auth, timeoutMs = 3500) {
-      if (auth.currentUser) return Promise.resolve(auth.currentUser);
-
-      return new Promise((resolve) => {
-        let settled = false;
-        let unsubscribe = () => {};
-        const finish = (user) => {
-          if (settled) return;
-          settled = true;
-          clearTimeout(timer);
-          unsubscribe();
-          resolve(user || auth.currentUser || null);
-        };
-        const timer = setTimeout(() => finish(auth.currentUser), timeoutMs);
-        unsubscribe = auth.onAuthStateChanged(finish, () => finish(null));
-      });
-    }
-
-    window.requestNotificationPermission = async function () {
-      setNotificationModalBusy(true);
-      try {
-        const { requestPushPermission } = await import('./assets/js/push.js');
-        const enabled = await requestPushPermission();
-        if (enabled) {
-          markNotificationPromptAccepted();
-          window.closeNotificationModal({ remember: false });
-        } else if (Notification.permission === 'denied') {
-          window.closeNotificationModal({ remember: true });
+    window.registerCityMartPWA().then(() => {
+      window.requestNotificationPermission = async function () {
+        try {
+          const { requestPushPermission } = await import('./assets/js/push.js');
+          window.closeNotificationModal();
+          await requestPushPermission();
+        } catch (err) {
+          console.error('[Notifications] Error:', err);
+          window.closeNotificationModal();
         }
-        return enabled;
-      } catch (err) {
-        console.error('[Notifications] Error:', err);
-        return false;
-      } finally {
-        setNotificationModalBusy(false);
-      }
-    };
+      };
 
-    window.registerCityMartPWA().then(async () => {
-      const { auth } = await import('./assets/js/firebase-init.js');
       setTimeout(() => {
-        if (!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)) return;
         const currentPermission = Notification.permission;
-        const alreadyPrompted = localStorage.getItem(NOTIFICATION_PROMPT_KEY);
-        const hasTokenMarker = hasRegisteredPushTokenMarker();
+        const alreadyPrompted = localStorage.getItem('notification_prompt_shown');
 
-        if (currentPermission === 'granted' && !hasTokenMarker) {
-          waitForNotificationPromptUser(auth).then((user) => {
-            if (!user || Notification.permission !== 'granted') return;
-            import('./assets/js/push.js')
-              .then(({ requestPushPermission }) => requestPushPermission({ silent: true }))
-              .catch((error) => console.warn('[Notifications] Silent token registration failed:', error));
-          });
-          return;
-        }
-
-        if (currentPermission === 'default' && (!alreadyPrompted || !hasTokenMarker)) {
-          waitForNotificationPromptUser(auth).then((user) => {
-            if (!user || Notification.permission !== 'default') return;
-            showNotificationModal();
-          });
+        if (currentPermission === 'default' && !alreadyPrompted) {
+          const modal = document.getElementById('notification-modal');
+          if (modal) {
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.style.opacity = '1'; }, 10);
+            if (window.lucide) window.lucide.createIcons();
+          }
         }
       }, 6000);
     }).catch(() => { });
@@ -4453,11 +4488,6 @@
       transform: scale(0.96);
     }
 
-    .btn-notif-primary:disabled {
-      opacity: 0.72;
-      cursor: progress;
-    }
-
     .btn-notif-secondary {
       width: 100%;
       padding: 12px;
@@ -4472,17 +4502,17 @@
     }
   </style>
 
-  <!-- MODAL DE NOTIFICACIONES -->
+  <!-- MODAL DE NOTIFICACIONES (ANUNCIO GRANDE) -->
   <div id="notification-modal">
     <div class="notif-modal-content">
 
-      <!-- CÃƒÆ’Ã‚Â­rculo animado superior -->
+      <!-- Círculo animado superior -->
       <div
         style="background: #eff6ff; width: 72px; height: 72px; border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 4px 12px rgba(11, 89, 242, 0.1);">
         <i data-lucide="bell-ring" style="color: var(--primary-color); width: 36px; height: 36px;"></i>
       </div>
 
-      <h2 style="font-family: 'Inter'; font-size: 1.5rem; color: #111; margin-bottom: 12px; font-weight: 500;">Ãƒâ€šÃ‚Â¿No te
+      <h2 style="font-family: 'Inter'; font-size: 1.5rem; color: #111; margin-bottom: 12px; font-weight: 500;">¿No te
         pierdas nada!</h2>
 
       <p style="font-size: 0.9rem; color: #4b5563; margin-bottom: 24px; line-height: 1.5; font-weight: 500;">
@@ -4491,12 +4521,12 @@
       </p>
 
       <div style="display: flex; flex-direction: column; gap: 10px;">
-        <button id="notification-accept-btn" onclick="window.requestNotificationPermission()" class="btn-notif-primary">
-          <i data-lucide="check" style="width: 20px;"></i> Ãƒâ€šÃ‚Â¡SÃƒÆ’Ã‚Â­, ACTIVAR!
+        <button onclick="window.requestNotificationPermission()" class="btn-notif-primary">
+          <i data-lucide="check" style="width: 20px;"></i> ¡Sí, ACTIVAR!
         </button>
 
         <button onclick="window.closeNotificationModal()" class="btn-notif-secondary">
-          TAL VEZ MÃƒÆ’Ã‚ÂS TARDE
+          TAL VEZ MÁS TARDE
         </button>
       </div>
 
@@ -4505,43 +4535,14 @@
 
     </div>
   </div>
-
-  <!-- Cookie Consent Banner -->
-  <div id="cookie-banner" class="cookie-banner">
-    <h3>Uso de cookies</h3>
-    <p>Utilizamos cookies propias y de terceros para mejorar tu experiencia, analizar el trÃƒÆ’Ã‚Â¡fico y mostrar anuncios personalizados. Al hacer clic en "Aceptar", consientes su uso.</p>
-    <div class="cookie-actions">
-      <button onclick="acceptCookies()" class="btn-cookie btn-cookie-accept">ACEPTAR TODO</button>
-      <button onclick="window.location.href='privacy-policy.html'" class="btn-cookie btn-cookie-settings">MÃƒÆ’Ã‚ÂS INFO</button>
-    </div>
-  </div>
-
-  <script>
-    function showCookieBanner() {
-      if (!localStorage.getItem('cookies-accepted')) {
-        setTimeout(() => {
-          document.getElementById('cookie-banner').style.display = 'flex';
-        }, 2000);
-      }
-    }
-
-    function acceptCookies() {
-      localStorage.setItem('cookies-accepted', 'true');
-      document.getElementById('cookie-banner').style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('cookie-banner').style.display = 'none';
-      }, 500);
-    }
-
-    document.addEventListener('DOMContentLoaded', showCookieBanner);
-  </script>
-
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script type="module">
-    import { auth, rtdb } from './assets/js/firebase-init.js';
-    import { initGlobalChat } from './assets/js/global-chat.js?v=20260423-home-chat-ads-1';
 
-    initGlobalChat(auth, rtdb);
+
+    // Legacy game script removed
+
+
   </script>
 </body>
+
 </html>

@@ -2,7 +2,7 @@
     if (window.__cityMartPwaInit) return;
     window.__cityMartPwaInit = true;
 
-    const CLIENT_ASSET_VERSION = '2026-04-23-home-chat-ads-1';
+    const CLIENT_ASSET_VERSION = '2026-04-23-rescue-1';
     let registrationPromise = null;
 
     function dispatch(name, detail) {

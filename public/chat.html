@@ -10,7 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css?v=20260423-colors">
-    <link rel="stylesheet" href="assets/css/global-chat.css?v=20260423-home-chat-ads-1">
+    <link rel="stylesheet" href="assets/css/global-chat.css?v=20260424-chat-compact-1">
+    <link rel="stylesheet" href="assets/css/ads.css?v=20260424-ads-2">
     <style>
         body {
             background:
@@ -49,10 +50,10 @@
         }
 
         .chat-header-standalone {
-            padding: 20px 24px;
+            padding: 12px 18px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             background:
                 linear-gradient(135deg, rgba(4, 120, 87, 0.72), var(--gc-city-accent, rgba(16, 185, 129, 0.72))),
                 rgba(255, 255, 255, 0.08);
@@ -62,8 +63,8 @@
         }
 
         .back-btn {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 12px;
             border: none;
             background: rgba(255, 255, 255, 0.18);
@@ -81,7 +82,7 @@
         }
 
         .header-info h1 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
             color: white;
             margin: 0;
@@ -89,7 +90,7 @@
         }
 
         .header-info p {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: rgba(255,255,255,0.9);
             font-weight: 700;
             margin: 0;
@@ -128,6 +129,11 @@
             -webkit-backdrop-filter: blur(12px);
         }
 
+        .chat-header-actions .gc-ttl-badge {
+            min-height: 28px;
+            padding: 5px 10px;
+        }
+
         @media (max-width: 600px) {
             .chat-full-container {
                 max-width: 100%;
@@ -135,13 +141,37 @@
             }
 
             .chat-header-standalone {
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
+                padding: 10px 12px;
+                gap: 9px;
             }
 
             .chat-header-actions {
-                width: 100%;
                 margin-left: 0 !important;
-                justify-content: space-between;
+                justify-content: flex-end;
+                gap: 6px !important;
+            }
+
+            .header-info {
+                min-width: 0;
+                flex: 1;
+            }
+
+            .header-info h1,
+            .header-info p {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .chat-header-actions .gc-ttl-badge span {
+                display: none;
+            }
+
+            .chat-header-actions .gc-city-switcher button {
+                min-width: 62px;
+                height: 30px;
+                padding: 0 8px;
             }
         }
     </style>
@@ -177,6 +207,10 @@
             </div>
         </header>
 
+        <div class="cm-ad-slot cm-ad-slot--banner" data-citymart-ad="banner" data-ad-id="chat-top">
+            <div class="cm-ad-inner"></div>
+        </div>
+
         <div id="gc-messages" class="gc-messages">
             <div class="gc-empty-state" id="gc-empty-state">
                 <div style="font-size: 3rem; margin-bottom: 10px;">&#x1F4AC;</div>
@@ -192,7 +226,7 @@
 
     <script type="module">
         import { auth, db, rtdb } from './assets/js/firebase-init.js';
-        import { initGlobalChat } from './assets/js/global-chat.js?v=20260423-home-chat-ads-1';
+        import { initGlobalChat } from './assets/js/global-chat.js?v=20260424-chat-compact-1';
 
         // Initialize in standalone mode
         initGlobalChat(auth, rtdb, {
@@ -201,6 +235,7 @@
             inputContainer: document.getElementById('gc-input-area')
         });
     </script>
+    <script src="assets/js/adsterra.js?v=20260424-ads-2"></script>
 </body>
 
 </html>

@@ -583,7 +583,7 @@ window.optimizeUploadImage = async function (file, preset = 'default') {
         if (!document.querySelector('link[href*="global-chat.css"]')) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = 'assets/css/global-chat.css?v=20260423-home-chat-ads-1';
+            link.href = 'assets/css/global-chat.css?v=20260424-chat-compact-1';
             document.head.appendChild(link);
         }
 
@@ -598,7 +598,7 @@ window.optimizeUploadImage = async function (file, preset = 'default') {
         if (!window.__citymartGlobalChatLoader) {
             window.__citymartGlobalChatLoader = Promise.all([
                 import('./firebase-init.js'),
-                import('./global-chat.js?v=20260423-home-chat-ads-1')
+                import('./global-chat.js?v=20260424-chat-compact-1')
             ]).then(([firebaseInit, globalChat]) => {
                 if (typeof globalChat.initGlobalChat === 'function') {
                     globalChat.initGlobalChat(firebaseInit.auth, firebaseInit.rtdb);
