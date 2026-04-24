@@ -3,1219 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CityCash | CityMart</title>
-    <meta name="description" content="Gana CityCash participando en CityMart y usa tu saldo para destacar tus negocios en el Ranking CityCash.">
+    <title>CityCash Wallet | CityMart</title>
+    <meta name="description" content="Aprende como ganar, usar y canjear CityCash dentro de CityMart.">
     <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#065f46">
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" href="assets/style.css?v=20260411-premium-fix-1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
     <script defer src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="assets/js/utils.js"></script>
+    <script defer src="assets/js/utils.js?v=20260424-wallet-fix-1"></script>
     <style>
-        :root {
-            --citycash-bg: #f5efe6;
-            --citycash-ink: #1f2a22;
-            --citycash-soft: #6b6d64;
-            --citycash-gold: #d8a93f;
-            --citycash-gold-deep: #946512;
-            --citycash-forest: #15543d;
-            --citycash-card: rgba(255, 252, 246, 0.88);
-            --citycash-line: rgba(31, 42, 34, 0.08);
-            --citycash-shadow: 0 22px 44px -28px rgba(24, 32, 27, 0.3);
-        }
-
-        body {
-            background:
-                radial-gradient(circle at top right, rgba(216, 169, 63, 0.2), transparent 28%),
-                radial-gradient(circle at bottom left, rgba(21, 84, 61, 0.14), transparent 30%),
-                linear-gradient(180deg, #f8f3ea 0%, var(--citycash-bg) 100%);
-            color: var(--citycash-ink);
-        }
-
-        .citycash-shell {
-            width: min(980px, calc(100% - 24px));
-            margin: 0 auto;
-            padding: 20px 0 120px;
-        }
-
-        .citycash-topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .citycash-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            border-radius: 999px;
-            border: 1px solid var(--citycash-line);
-            background: rgba(255, 255, 255, 0.78);
-            color: var(--citycash-ink);
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: var(--citycash-shadow);
-        }
-
-        .citycash-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 12px;
-            border-radius: 999px;
-            background: rgba(216, 169, 63, 0.16);
-            color: var(--citycash-gold-deep);
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .citycash-hero {
-            position: relative;
-            overflow: hidden;
-            border-radius: 32px;
-            padding: 26px;
-            margin-bottom: 18px;
-            background:
-                linear-gradient(145deg, rgba(255, 248, 232, 0.96), rgba(255, 255, 255, 0.84)),
-                linear-gradient(135deg, #fff, #f7efdf);
-            border: 1px solid rgba(255, 255, 255, 0.82);
-            box-shadow: var(--citycash-shadow);
-        }
-
-        .citycash-hero::before {
-            content: "";
-            position: absolute;
-            inset: auto -40px -50px auto;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(216, 169, 63, 0.25), transparent 72%);
-        }
-
-        .citycash-hero-grid {
-            position: relative;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-            gap: 14px;
-        }
-
-        .citycash-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(2rem, 4vw, 3.1rem);
-            line-height: 0.95;
-            letter-spacing: -0.05em;
-            margin: 12px 0 10px;
-        }
-
-        .citycash-copy {
-            max-width: 52ch;
-            color: var(--citycash-soft);
-            line-height: 1.55;
-            font-size: 0.95rem;
-            margin-bottom: 18px;
-        }
-
-        .citycash-balance-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 220px;
-            padding: 22px;
-            border-radius: 28px;
-            color: white;
-            background:
-                linear-gradient(155deg, rgba(10, 21, 17, 0.94), rgba(27, 76, 58, 0.92)),
-                linear-gradient(135deg, #1a5d44, #0f3326);
-            box-shadow: 0 24px 44px -30px rgba(13, 38, 29, 0.75);
-        }
-
-        .citycash-balance-card small {
-            color: rgba(255, 255, 255, 0.72);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 700;
-            font-size: 0.68rem;
-        }
-
-        .citycash-balance-amount {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(2.4rem, 6vw, 3.2rem);
-            line-height: 0.95;
-            letter-spacing: -0.05em;
-            margin: 8px 0 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #fff;
-        }
-
-        .citycash-coin {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #fff7ad 0%, #fbbf24 45%, #d97706 100%);
-            border-radius: 50%;
-            box-shadow: 
-                0 4px 8px rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(255,255,255,0.6);
-            position: relative;
-            flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.4);
-        }
-
-        .citycash-coin::after {
-            content: '';
-            position: absolute;
-            top: 20%;
-            left: 20%;
-            width: 15%;
-            height: 15%;
-            background: white;
-            border-radius: 50%;
-            filter: blur(1px);
-            opacity: 0.8;
-        }
-        
-        .citycash-coin.is-small {
-            width: 1.15em;
-            height: 1.15em;
-            border-width: 1px;
-        }
-
-        @keyframes citycash-pulse {
-            0%, 100% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.05); filter: brightness(1.1); }
-        }
-
-        .citycash-stat-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-        }
-
-        .citycash-stat-pill {
-            padding: 0;
-            background: none;
-            border: none;
-        }
-
-        .citycash-stat-pill span {
-            display: inline;
-            font-size: 0.68rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-right: 6px;
-        }
-
-        .citycash-stat-pill strong {
-            font-size: 1rem;
-            font-weight: 700;
-        }
-
-        .citycash-action-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 14px;
-        }
-
-        .citycash-primary-btn,
-        .citycash-secondary-btn,
-        .citycash-slot-btn,
-        .citycash-select-btn {
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-        }
-
-        .citycash-primary-btn:active,
-        .citycash-secondary-btn:active,
-        .citycash-slot-btn:active,
-        .citycash-select-btn:active {
-            transform: scale(0.98);
-        }
-
-        .citycash-primary-btn {
-            padding: 14px 18px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, var(--citycash-gold), #f1c56e);
-            color: #221a0a;
-            box-shadow: 0 18px 28px -22px rgba(148, 101, 18, 0.8);
-        }
-
-        .citycash-secondary-btn {
-            padding: 14px 18px;
-            border-radius: 18px;
-            background: rgba(21, 84, 61, 0.1);
-            color: var(--citycash-forest);
-            border: 1px solid rgba(21, 84, 61, 0.14);
-        }
-
-        .citycash-panel {
-            border-radius: 28px;
-            padding: 22px;
-            margin-bottom: 18px;
-            background: var(--citycash-card);
-            border: 1px solid rgba(255, 255, 255, 0.88);
-            box-shadow: var(--citycash-shadow);
-        }
-
-        .citycash-panel-head {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .citycash-panel-head h2 {
-            margin: 4px 0 6px;
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1.7rem;
-            line-height: 1;
-            letter-spacing: -0.04em;
-        }
-
-        .citycash-panel-head p {
-            margin: 0;
-            color: var(--citycash-soft);
-            font-size: 0.88rem;
-            line-height: 1.5;
-        }
-
-        .citycash-panel-label {
-            display: inline-block;
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--citycash-gold-deep);
-        }
-
-        .citycash-tab-row {
-            display: inline-flex;
-            gap: 8px;
-            padding: 6px;
-            border-radius: 999px;
-            background: rgba(31, 42, 34, 0.06);
-            margin-bottom: 18px;
-        }
-
-        .citycash-tab {
-            padding: 11px 18px;
-            border-radius: 999px;
-            border: none;
-            background: transparent;
-            color: var(--citycash-soft);
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .citycash-tab.active {
-            background: #17241c;
-            color: white;
-            box-shadow: 0 14px 24px -20px rgba(23, 36, 28, 0.85);
-        }
-
-        .citycash-action-list {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
-        }
-
-        .citycash-action-card,
-        .citycash-business-card,
-        .citycash-history-item,
-        .citycash-slot-card {
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.88);
-            border: 1px solid var(--citycash-line);
-        }
-
-        .citycash-action-card {
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .citycash-action-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .citycash-chip {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            padding: 7px 14px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            border: 1.5px solid rgba(255, 255, 255, 0.94);
-            box-shadow: 0 8px 16px -10px rgba(245, 158, 11, 0.5);
-            color: #000;
-            font-size: 0.85rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            transform: rotate(-3deg);
-            transform-origin: center;
-            animation: citycash-pulse 2.5s infinite ease-in-out;
-        }
-
-        .citycash-action-card h3,
-        .citycash-slot-card h3 {
-            margin: 0;
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1.2rem;
-        }
-
-        .citycash-action-card p,
-        .citycash-slot-card p,
-        .citycash-history-item p,
-        .citycash-empty p {
-            margin: 0;
-            color: var(--citycash-soft);
-            line-height: 1.45;
-            font-size: 0.84rem;
-        }
-
-        .citycash-use-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
-            gap: 12px;
-        }
-
-        .citycash-availability-grid,
-        .citycash-business-list,
-        .citycash-history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .citycash-slot-card {
-            padding: 18px;
-        }
-
-        .citycash-slot-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .citycash-slot-badge {
-            padding: 0;
-            border-radius: 0;
-            font-size: 0.68rem;
-            font-weight: 800;
-            background: none;
-            color: var(--citycash-soft);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .citycash-slot-btn,
-        .citycash-select-btn {
-            width: 100%;
-            padding: 13px 14px;
-            border-radius: 16px;
-            background: #162118;
-            color: white;
-        }
-
-        .citycash-slot-btn[disabled],
-        .citycash-primary-btn[disabled],
-        .citycash-select-btn[disabled] {
-            opacity: 0.5;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .citycash-slot-btn.is-active,
-        .citycash-select-btn.is-active {
-            background: linear-gradient(135deg, var(--citycash-gold), #f2c56d);
-            color: #241c0b;
-        }
-
-        .citycash-business-card {
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .citycash-business-card img {
-            width: 66px;
-            height: 66px;
-            border-radius: 18px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .citycash-business-card strong {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 0.95rem;
-        }
-
-        .citycash-note {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 0;
-            border-radius: 0;
-            background: none;
-            border: none;
-            margin-bottom: 10px;
-        }
-
-        .citycash-note strong {
-            display: inline;
-            margin: 0;
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 0.72rem;
-            line-height: 1;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--citycash-forest);
-        }
-
-        .citycash-note p {
-            margin: 0;
-            color: var(--citycash-soft);
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-align: right;
-        }
-
-        .citycash-empty {
-            padding: 22px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.68);
-            border: 1px dashed rgba(31, 42, 34, 0.14);
-            text-align: center;
-        }
-
-        .citycash-history-item {
-            padding: 8px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .citycash-history-item strong {
-            display: block;
-            margin-bottom: 2px;
-            font-size: 0.88rem;
-        }
-
-        .citycash-history-amount {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .citycash-history-amount.is-positive {
-            color: #15803d;
-        }
-
-        .citycash-history-amount.is-negative {
-            color: #b42318;
-        }
-
-        .citycash-login-box {
-            display: none;
-            padding: 20px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.82);
-            border: 1px dashed rgba(31, 42, 34, 0.14);
-        }
-
-        .citycash-login-box.is-visible {
-            display: block;
-        }
-
-        .citycash-login-box h3 {
-            margin: 0 0 6px;
-            font-family: "Space Grotesk", sans-serif;
-        }
-
-        .citycash-shell {
-            padding: 18px 0 118px;
-        }
-
-        .citycash-hero {
-            padding: 22px;
-            background:
-                radial-gradient(circle at top right, rgba(216, 169, 63, 0.28), transparent 30%),
-                radial-gradient(circle at bottom left, rgba(21, 84, 61, 0.12), transparent 34%),
-                linear-gradient(145deg, rgba(255, 248, 232, 0.98), rgba(255, 252, 246, 0.9));
-        }
-
-        .citycash-hero::after {
-            content: "";
-            position: absolute;
-            inset: 18px;
-            border-radius: 24px;
-            border: 1px solid rgba(148, 101, 18, 0.08);
-            pointer-events: none;
-        }
-
-        .citycash-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            line-height: 0.93;
-            margin: 12px 0 10px;
-        }
-
-        .citycash-copy {
-            max-width: 50ch;
-            font-size: 0.92rem;
-            line-height: 1.55;
-            margin-bottom: 0;
-        }
-
-        .citycash-inline-note {
-            margin: 2px 0 0;
-            font-size: 0.78rem;
-            color: var(--citycash-soft);
-            line-height: 1.45;
-            font-weight: 700;
-            max-width: 40ch;
-        }
-
-        .citycash-inline-note strong {
-            color: var(--citycash-gold-deep);
-        }
-
-        .citycash-action-row {
-            margin-top: 14px;
-            gap: 10px;
-        }
-
-        .citycash-primary-btn,
-        .citycash-secondary-btn {
-            min-height: 46px;
-            padding: 0 16px;
-            box-shadow: 0 22px 32px -24px rgba(31, 42, 34, 0.46);
-        }
-
-        .citycash-secondary-btn {
-            background: rgba(255, 255, 255, 0.66);
-        }
-
-        .citycash-balance-card {
-            position: relative;
-            overflow: hidden;
-            min-height: 210px;
-            background:
-                radial-gradient(circle at top right, rgba(250, 204, 21, 0.22), transparent 26%),
-                linear-gradient(155deg, rgba(10, 21, 17, 0.97), rgba(22, 78, 57, 0.94));
-        }
-
-        .citycash-balance-card::before {
-            content: "";
-            position: absolute;
-            inset: auto -36px -58px auto;
-            width: 170px;
-            height: 170px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 70%);
-        }
-
-        .citycash-balance-caption {
-            margin: 0;
-            color: rgba(255, 255, 255, 0.74);
-            line-height: 1.55;
-            max-width: 26ch;
-        }
-
-        .citycash-panel {
-            padding: 18px;
-        }
-
-        .citycash-panel-head {
-            margin-bottom: 12px;
-        }
-
-        .citycash-panel-head h2 {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1.35rem;
-            line-height: 0.96;
-            margin: 4px 0 6px;
-        }
-
-        .citycash-panel-head p {
-            max-width: 52ch;
-            font-size: 0.82rem;
-        }
-
-        .citycash-tab-row {
-            margin-bottom: 14px;
-        }
-
-        .citycash-action-list {
-            gap: 12px;
-        }
-
-        .citycash-action-card,
-        .citycash-slot-card,
-        .citycash-business-card,
-        .citycash-history-item {
-            box-shadow: 0 18px 36px -30px rgba(31, 42, 34, 0.2);
-        }
-
-        .citycash-action-card {
-            gap: 14px;
-            padding: 16px;
-        }
-
-        .citycash-action-top {
-            align-items: flex-start;
-        }
-
-        .citycash-action-badge {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .citycash-action-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 16px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(216, 169, 63, 0.16), rgba(21, 84, 61, 0.12));
-            color: var(--citycash-forest);
-            flex-shrink: 0;
-        }
-
-        .citycash-action-icon i {
-            width: 20px;
-            height: 20px;
-        }
-
-        .citycash-action-eyebrow {
-            margin-top: 8px;
-            color: var(--citycash-gold-deep);
-            font-size: 0.72rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .citycash-action-amount {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1.22rem;
-            color: var(--citycash-gold-deep);
-        }
-
-        .citycash-action-impact {
-            padding: 0;
-            border-radius: 0;
-            background: none;
-            color: var(--citycash-soft);
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-
-        .citycash-note {
-            margin-bottom: 10px;
-        }
-
-        .citycash-note strong {
-            font-size: 0.72rem;
-            margin: 0;
-        }
-
-        .citycash-slot-card {
-            padding: 16px;
-        }
-
-        .citycash-slot-copy {
-            margin-top: 4px;
-        }
-
-        .citycash-slot-proof {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
-        }
-
-        .citycash-slot-proof span {
-            padding: 7px 10px;
-            border-radius: 999px;
-            background: rgba(31, 42, 34, 0.06);
-            color: #39423a;
-            font-size: 0.72rem;
-            font-weight: 700;
-        }
-
-        .citycash-business-card {
-            padding: 16px;
-            border-radius: 24px;
-        }
-
-        .citycash-empty {
-            padding: 18px 16px;
-            background:
-                linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(250, 243, 234, 0.84));
-        }
-
-        .citycash-empty strong {
-            display: block;
-            margin-bottom: 6px;
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 1.1rem;
-            color: #132018;
-        }
-
-        .citycash-history-item {
-            padding: 7px 12px;
-            border-radius: 18px;
-        }
-
-        [data-citycash-view] {
-            display: none;
-        }
-
-        [data-citycash-view].is-visible {
-            display: block;
-        }
-
-        @media (max-width: 860px) {
-            .citycash-hero-grid,
-            .citycash-use-grid,
-            .citycash-action-list {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .citycash-shell {
-                width: min(100%, calc(100% - 14px));
-            }
-
-            .citycash-hero,
-            .citycash-panel {
-                padding: 16px 14px;
-                border-radius: 24px;
-            }
-
-            .citycash-title {
-                font-size: 1.9rem;
-            }
-        }
+        body { background: radial-gradient(circle at top right, rgba(251,191,36,.18), transparent 32%), linear-gradient(180deg,#f8fafc,#eef2f7); color:#0f172a; padding-bottom:110px; }
+        .wallet-shell { width:min(860px, calc(100% - 24px)); margin:0 auto; padding:14px 0 28px; }
+        .wallet-topbar { position:sticky; top:0; z-index:20; margin:0 -12px 12px; padding:12px; background:rgba(248,250,252,.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+        .wallet-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+        .back-link { width:42px; height:42px; border-radius:14px; display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#0f172a; text-decoration:none; box-shadow:0 12px 24px -20px rgba(15,23,42,.6); }
+        .wallet-title { margin:0; font-family:Inter,sans-serif; font-size:1.35rem; line-height:1.05; }
+        .wallet-subtitle { margin:4px 0 0; color:#64748b; font-size:.82rem; font-weight:700; }
+        .balance-card { border-radius:26px; padding:20px; color:#fff; background:linear-gradient(145deg,#10251c,#166534); box-shadow:0 24px 48px -30px rgba(15,23,42,.7); }
+        .balance-label { color:rgba(255,255,255,.68); font-size:.72rem; font-weight:900; text-transform:uppercase; letter-spacing:.08em; }
+        .balance-amount { margin:8px 0 8px; font-family:Inter,sans-serif; font-size:2.4rem; font-weight:800; line-height:1; }
+        .stat-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+        .stat-box { flex:1; min-width:120px; padding:12px; border-radius:18px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.14); }
+        .stat-box span { display:block; color:rgba(255,255,255,.65); font-size:.68rem; font-weight:800; text-transform:uppercase; }
+        .stat-box strong { display:block; margin-top:4px; font-size:1rem; }
+        .tab-row { display:flex; gap:8px; margin:14px 0; padding:5px; border-radius:18px; background:#e2e8f0; overflow-x:auto; }
+        .tab-btn { flex:1; min-width:110px; border:0; border-radius:14px; padding:11px 12px; background:transparent; color:#64748b; font-weight:900; cursor:pointer; }
+        .tab-btn.active { background:#0f172a; color:#fff; }
+        .panel { display:none; border-radius:24px; padding:16px; background:#fff; border:1px solid #e2e8f0; box-shadow:0 16px 30px -26px rgba(15,23,42,.5); margin-bottom:14px; }
+        .panel.is-visible { display:block; }
+        .panel h2 { margin:0 0 6px; font-family:Inter,sans-serif; font-size:1.2rem; }
+        .panel-copy { margin:0 0 14px; color:#64748b; font-size:.88rem; line-height:1.5; font-weight:700; }
+        .card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+        .action-card, .slot-card, .reward-card, .history-card { border-radius:20px; padding:14px; background:#f8fafc; border:1px solid #e2e8f0; }
+        .action-card h3, .slot-card h3, .reward-card h3 { margin:8px 0 6px; font-size:.98rem; }
+        .action-card p, .slot-card p, .reward-card p, .history-card p { margin:0; color:#64748b; font-size:.8rem; line-height:1.4; }
+        .coin-pill { display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border-radius:999px; background:#fef3c7; color:#92400e; font-size:.76rem; font-weight:900; }
+        .wallet-btn { width:100%; margin-top:12px; border:0; border-radius:14px; padding:12px; background:#059669; color:#fff; font-weight:900; cursor:pointer; }
+        .wallet-btn.secondary { background:#0f172a; }
+        .wallet-btn[disabled] { opacity:.5; cursor:not-allowed; }
+        .business-card { display:flex; align-items:center; gap:10px; padding:10px; border-radius:18px; background:#f8fafc; border:1px solid #e2e8f0; margin-bottom:10px; }
+        .business-card img { width:56px; height:56px; border-radius:15px; object-fit:cover; background:#e2e8f0; }
+        .select-btn { margin-left:auto; border:0; border-radius:12px; padding:9px 10px; background:#e2e8f0; color:#0f172a; font-weight:900; cursor:pointer; }
+        .select-btn.is-active { background:#fbbf24; }
+        .info-band { padding:14px; border-radius:20px; background:#ecfdf5; color:#166534; font-size:.84rem; line-height:1.45; font-weight:800; }
+        @media (max-width:620px) { .card-grid { grid-template-columns:1fr; } .balance-amount { font-size:2rem; } }
     </style>
-</main>
+</head>
+<body>
+    <main class="wallet-shell">
+        <header class="wallet-topbar">
+            <div class="wallet-head">
+                <a class="back-link" href="profile.html" aria-label="Volver al perfil"><i data-lucide="chevron-left"></i></a>
+                <div style="flex:1; min-width:0;">
+                    <h1 class="wallet-title">Wallet CityCash</h1>
+                    <p class="wallet-subtitle">Gana, usa y canjea dentro de CityMart</p>
+                </div>
+                <span class="coin-pill">CityCash</span>
+            </div>
+        </header>
+
+        <section class="balance-card">
+            <div class="balance-label">Saldo disponible</div>
+            <div id="citycash-balance-amount" class="balance-amount">0 CityCash</div>
+            <p style="margin:0; color:rgba(255,255,255,.74); line-height:1.45;">Usa tus CityCash para destacar tu negocio en el Home y participa en futuros canjes de premios.</p>
+            <div class="stat-row">
+                <div class="stat-box"><span>Ganado</span><strong id="citycash-earned-total">+0</strong></div>
+                <div class="stat-box"><span>Gastado</span><strong id="citycash-spent-total">0</strong></div>
+            </div>
+        </section>
+
+        <div class="tab-row" role="tablist">
+            <button id="citycash-tab-earn" class="tab-btn active" type="button">Ganar</button>
+            <button id="citycash-tab-use" class="tab-btn" type="button">Usar</button>
+            <button id="citycash-tab-rewards" class="tab-btn" type="button">Premios</button>
+            <button id="citycash-tab-history" class="tab-btn" type="button">Historial</button>
+        </div>
+
+        <section id="citycash-login-box" class="panel">
+            <h2>Inicia sesion para mover tu wallet</h2>
+            <p class="panel-copy">Puedes ver como funciona CityCash, pero para ganar, gastar o revisar historial necesitas tu cuenta.</p>
+            <button class="wallet-btn" onclick="window.location.href='login.html'">Iniciar sesion</button>
+        </section>
+
+        <section id="citycash-view-earn" class="panel is-visible" data-citycash-view>
+            <h2>Como ganar CityCash</h2>
+            <p class="panel-copy">Cada accion real dentro de la app puede sumar saldo. Estas son las formas principales.</p>
+            <div id="citycash-action-list" class="card-grid"></div>
+        </section>
+
+        <section id="citycash-view-use" class="panel" data-citycash-view>
+            <h2>Usar CityCash</h2>
+            <p class="panel-copy">El uso principal es comprar visibilidad semanal para tus negocios en el Ranking CityCash del Home.</p>
+            <div id="citycash-availability-copy" class="info-band">Cargando espacios disponibles...</div>
+            <div id="citycash-availability-grid" class="card-grid" style="margin-top:10px;"></div>
+            <h2 style="margin-top:16px;">Elige tu negocio</h2>
+            <div id="citycash-business-list"></div>
+            <button id="citycash-confirm-purchase" class="wallet-btn secondary" disabled>Confirmar y destacar mi negocio</button>
+        </section>
+
+        <section id="citycash-view-rewards" class="panel" data-citycash-view>
+            <h2>Premios y canjes</h2>
+            <p class="panel-copy">Los premios fisicos estan en preparacion. Mientras tanto, el canje activo es visibilidad para negocios dentro de CityMart.</p>
+            <div class="card-grid">
+                <article class="reward-card"><span class="coin-pill">Activo</span><h3>Ranking CityCash</h3><p>Canjea saldo por espacios grandes, medianos o pequenos en el Home.</p><button class="wallet-btn" id="citycash-go-use" type="button">Usar en ranking</button></article>
+                <article class="reward-card"><span class="coin-pill">Proximo</span><h3>Catalogo de premios</h3><p>Sandalias, audifonos, relojes, gift cards y otros beneficios se mostraran en Premios.</p><button class="wallet-btn secondary" onclick="window.location.href='premios.html'">Ver premios</button></article>
+                <article class="reward-card"><span class="coin-pill">Canje</span><h3>Ordenes de compra</h3><p>Los canjes futuros generaran una orden para validar entrega o beneficio con CityMart.</p></article>
+                <article class="reward-card"><span class="coin-pill">Regla</span><h3>Saldo util</h3><p>Tu historial mostrara lo ganado y gastado para que cada movimiento quede claro.</p></article>
+            </div>
+        </section>
+
+        <section id="citycash-view-history" class="panel" data-citycash-view>
+            <h2>Historial y ordenes</h2>
+            <p class="panel-copy">Aqui aparecen tus ganancias, gastos y canjes realizados.</p>
+            <div id="citycash-history-list"></div>
+        </section>
+    </main>
 
     <nav class="bottom-nav">
-        <a href="./" class="nav-item">
-            <i data-lucide="home" class="nav-icon"></i>
-            <span>Inicio</span>
-        </a>
-        <a href="directory.html" class="nav-item">
-            <i data-lucide="layout-grid" class="nav-icon"></i>
-            <span>Directorio</span>
-        </a>
-        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
-            <div style="background: linear-gradient(135deg, var(--jungle-green), #0a7e4b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0, 107, 60, 0.3);">
-                <i data-lucide="coins" style="width: 26px; height: 26px; color: white;"></i>
-            </div>
-            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">CityCash</span>
-        </a>
-        <a href="community.html" class="nav-item">
-            <i data-lucide="users" class="nav-icon"></i>
-            <span>Comunidad</span>
-        </a>
-        <a href="profile.html" class="nav-item active">
-            <i data-lucide="user-circle" class="nav-icon"></i>
-            <span>Perfil</span>
-        </a>
+        <a href="./" class="nav-item"><i data-lucide="home" class="nav-icon"></i><span>Inicio</span></a>
+        <a href="directory.html" class="nav-item"><i data-lucide="layout-grid" class="nav-icon"></i><span>Directorio</span></a>
+        <a href="citycash.html?view=use" class="nav-item active" style="position: relative; z-index: 10;"><div style="background:linear-gradient(135deg,#fbbf24,#f59e0b);width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-35px;border:4px solid white;box-shadow:0 4px 15px rgba(245,158,11,.4);"><i data-lucide="coins" style="width:28px;height:28px;color:white;"></i></div><span style="font-weight:700;color:#1f2937;margin-top:2px;">CityCash</span></a>
+        <a href="community.html" class="nav-item"><i data-lucide="users" class="nav-icon"></i><span>Comunidad</span></a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user-circle" class="nav-icon"></i><span>Perfil</span></a>
     </nav>
 
     <script type="module">
-        import { auth } from "./assets/js/firebase-init.js";
+        import { auth } from './assets/js/firebase-init.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import {
             CITYCASH_ACTIONS,
             CITYCASH_SLOT_CONFIG,
-            buildCityCashWeekWindow,
             fetchCurrentCityCashRanking,
             fetchUserBusinesses,
             fetchUserCityCash,
             formatCityCashAmount,
             formatCityCashBalance,
-            formatCityCashDate,
             getCityCashAvailability,
             getCityCashCityLabel,
             purchaseCityCashRanking,
             shareCityCashInvite,
             showCityCashRewardToast,
             showCityCashSpendToast
-        } from "./assets/js/citycash.js";
+        } from './assets/js/citycash.js';
 
-        lucide.createIcons();
-
-        const state = {
-            user: null,
-            city: window.getStoredCity ? window.getStoredCity() : "lamas",
-            businesses: [],
-            transactions: [],
-            rankingEntries: [],
-            selectedBusinessId: "",
-            selectedSlotType: "",
-            activeView: "earn"
+        const state = { user: null, city: window.getStoredCity ? window.getStoredCity() : 'lamas', businesses: [], rankingEntries: {}, selectedBusinessId: '', selectedSlotType: '', activeView: 'earn' };
+        const views = {
+            earn: document.getElementById('citycash-view-earn'),
+            use: document.getElementById('citycash-view-use'),
+            rewards: document.getElementById('citycash-view-rewards'),
+            history: document.getElementById('citycash-view-history')
         };
+        const tabs = {
+            earn: document.getElementById('citycash-tab-earn'),
+            use: document.getElementById('citycash-tab-use'),
+            rewards: document.getElementById('citycash-tab-rewards'),
+            history: document.getElementById('citycash-tab-history')
+        };
+        const actionList = document.getElementById('citycash-action-list');
+        const availabilityGrid = document.getElementById('citycash-availability-grid');
+        const businessList = document.getElementById('citycash-business-list');
+        const historyList = document.getElementById('citycash-history-list');
+        const confirmBtn = document.getElementById('citycash-confirm-purchase');
+        const loginBox = document.getElementById('citycash-login-box');
 
-        const actionListEl = document.getElementById("citycash-action-list");
-        const availabilityGridEl = document.getElementById("citycash-availability-grid");
-        const businessListEl = document.getElementById("citycash-business-list");
-        const historyListEl = document.getElementById("citycash-history-list");
-        const availabilityCopyEl = document.getElementById("citycash-availability-copy");
-        const confirmPurchaseBtn = document.getElementById("citycash-confirm-purchase");
-        const loginBoxEl = document.getElementById("citycash-login-box");
-        const earnViewEl = document.getElementById("citycash-view-earn");
-        const useViewEl = document.getElementById("citycash-view-use");
-        const tabEarnEl = document.getElementById("citycash-tab-earn");
-        const tabUseEl = document.getElementById("citycash-tab-use");
-
-        function setActiveView(view, pushState = true) {
-            state.activeView = view;
-            earnViewEl.classList.toggle("is-visible", view === "earn");
-            useViewEl.classList.toggle("is-visible", view === "use");
-            tabEarnEl.classList.toggle("active", view === "earn");
-            tabUseEl.classList.toggle("active", view === "use");
-
-            if (pushState) {
+        function setActiveView(view, push = true) {
+            const next = views[view] ? view : 'earn';
+            state.activeView = next;
+            Object.entries(views).forEach(([key, el]) => el.classList.toggle('is-visible', key === next));
+            Object.entries(tabs).forEach(([key, el]) => el.classList.toggle('active', key === next));
+            if (push) {
                 const url = new URL(window.location.href);
-                url.searchParams.set("view", view);
-                window.history.replaceState({}, "", url.toString());
+                url.searchParams.set('view', next);
+                window.history.replaceState({}, '', url.toString());
             }
         }
 
         function applyViewFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            setActiveView(params.get("view") === "use" ? "use" : "earn", false);
+            const requested = new URLSearchParams(window.location.search).get('view');
+            setActiveView(['earn', 'use', 'rewards', 'history'].includes(requested) ? requested : 'earn', false);
         }
 
-        function renderActionList() {
-            actionListEl.innerHTML = CITYCASH_ACTIONS.map((action) => {
-                const isInvite = action.key === "invite_friend";
-                const actionButton = isInvite
-                    ? `<button class="citycash-primary-btn" style="width: 100%;" onclick="window.handleCityCashInvite()">Invitar ahora</button>`
-                    : `<button class="citycash-secondary-btn" style="width: 100%;" onclick="window.location.href='${action.href}'">${action.ctaLabel}</button>`;
-
-                return `
-                    <article id="${isInvite ? "invite" : ""}" class="citycash-action-card">
-                        <div class="citycash-action-top">
-                            <div class="citycash-action-badge">
-                                <div class="citycash-action-icon">
-                                    <i data-lucide="${action.icon || "coins"}"></i>
-                                </div>
-                                <div>
-                                    <div class="citycash-chip"><span class="citycash-coin is-small" style="margin-right: 6px;"></span>+${action.amount}</div>
-                                    <div class="citycash-action-eyebrow">${action.eyebrow || "Accion real"}</div>
-                                    <h3 style="margin-top: 6px;">${action.title}</h3>
-                                </div>
-                            </div>
-                            <div class="citycash-action-amount">+${action.amount}</div>
-                        </div>
-                        <p>${action.copy}</p>
-                        <div class="citycash-action-impact">${action.impact || "Convierte actividad en visibilidad."}</div>
-                        ${actionButton}
-                    </article>
-                `;
-            }).join("");
-            if (window.lucide?.createIcons) window.lucide.createIcons();
+        function renderWallet(payload = {}) {
+            document.getElementById('citycash-balance-amount').textContent = formatCityCashBalance(payload.balance || 0);
+            document.getElementById('citycash-earned-total').textContent = formatCityCashAmount(payload.stats?.totalEarned || 0);
+            document.getElementById('citycash-spent-total').textContent = String(payload.stats?.totalSpent || 0);
+            renderHistory(payload.recent || []);
         }
 
-        function renderWallet(balance = 0, stats = { totalEarned: 0, totalSpent: 0 }) {
-            document.getElementById("citycash-balance-amount").innerHTML = `<span class="citycash-coin"></span> ${Number(balance || 0)}`;
-            document.getElementById("citycash-earned-total").textContent = `+${Number(stats.totalEarned || 0)}`;
-            document.getElementById("citycash-spent-total").textContent = `${Number(stats.totalSpent || 0)}`;
-        }
-
-        function renderHistory() {
-            if (!state.user) {
-                historyListEl.innerHTML = `<div class="citycash-empty"><p>Inicia sesion para ver tu historial de ganancias y gastos CityCash.</p></div>`;
-                return;
-            }
-
-            if (!state.transactions.length) {
-                historyListEl.innerHTML = `<div class="citycash-empty"><strong>Tu wallet todavia no se mueve.</strong><p>Empieza ganando CityCash con una accion real dentro de la app y luego vuelve para ver tu ritmo de crecimiento.</p></div>`;
-                return;
-            }
-
-            historyListEl.innerHTML = state.transactions.slice(0, 6).map((item) => {
-                const escape = window.escapeHtml || ((value) => String(value ?? ""));
-                return `
-                <div class="citycash-history-item">
-                    <div>
-                        <strong>${escape(item.label || "Movimiento CityCash")}</strong>
-                        <p>${formatCityCashDate(item.createdAt)} Â· ${item.type === "earn" ? "Ganancia" : "Gasto"}</p>
-                    </div>
-                    <div class="citycash-history-amount ${Number(item.amount || 0) >= 0 ? "is-positive" : "is-negative"}">${formatCityCashAmount(item.amount || 0)}</div>
-                </div>
-            `}).join("");
-        }
-
-        function renderBusinesses() {
-            if (!state.user) {
-                businessListEl.innerHTML = "";
-                return;
-            }
-
-            if (!state.businesses.length) {
-                businessListEl.innerHTML = `
-                    <div class="citycash-empty">
-                        <strong>Necesitas un negocio para entrar al ranking.</strong>
-                        <p>Registra tu negocio primero y luego podras convertir tu saldo en visibilidad semanal dentro del Home.</p>
-                        <button class="citycash-primary-btn" style="margin-top: 14px;" onclick="window.location.href='register_business.html'">Registrar negocio</button>
-                    </div>
-                `;
-                return;
-            }
-
-            businessListEl.innerHTML = state.businesses.map((business) => {
-                const escape = window.escapeHtml || ((value) => String(value ?? ""));
-                const safeImage = window.sanitizeUrl ? window.sanitizeUrl(business.image, "assets/placeholder.svg") : business.image;
-                business = { ...business, categoria: escape(business.categoria) };
-                return `
-                <article class="citycash-business-card">
-                    <img src="${escape(safeImage)}" alt="${escape(business.nombre)}" loading="lazy" decoding="async">
-                    <div style="flex: 1;">
-                        <strong>${escape(business.nombre)}</strong>
-                        <p>${business.categoria} Â· ${getCityCashCityLabel(business.ciudad)}</p>
-                    </div>
-                    <button class="citycash-select-btn ${state.selectedBusinessId === business.id ? "is-active" : ""}" onclick="window.selectCityCashBusiness('${business.id}')">
-                        ${state.selectedBusinessId === business.id ? "Seleccionado" : "Elegir"}
-                    </button>
-                </article>
-            `}).join("");
+        function renderActions() {
+            const escape = window.escapeHtml || ((value) => String(value ?? ''));
+            actionList.innerHTML = CITYCASH_ACTIONS.map((action) => {
+                const isInvite = action.key === 'invite_friend';
+                const button = isInvite
+                    ? `<button class="wallet-btn" onclick="window.handleCityCashInvite()">Invitar ahora</button>`
+                    : `<button class="wallet-btn secondary" onclick="window.location.href='${escape(action.href)}'">${escape(action.ctaLabel)}</button>`;
+                return `<article class="action-card"><span class="coin-pill">+${Number(action.amount || 0)}</span><h3>${escape(action.title)}</h3><p>${escape(action.copy)}</p>${button}</article>`;
+            }).join('');
         }
 
         function renderAvailability() {
             const availability = getCityCashAvailability(state.rankingEntries, state.city);
-            const weekWindow = buildCityCashWeekWindow();
-            availabilityCopyEl.textContent = `Espacios limitados. Compra primero, asegura tu posicion y espera reinicio ${formatCityCashDate(weekWindow.endAt)}.`;
-
-            availabilityGridEl.innerHTML = Object.entries(CITYCASH_SLOT_CONFIG).map(([slotKey, config]) => {
-                const slot = availability[slotKey];
-                const slotCopy = slotKey === "large"
-                    ? "Un solo espacio protagonista para dominar la atencion de la semana."
-                    : slotKey === "medium"
-                        ? "Dos espacios de alto impacto para aparecer fuerte sin pagar el formato mayor."
-                        : "Hasta diez espacios tacticos para seguir visible y no salir del radar.";
-                const slotProof = slotKey === "large"
-                    ? ["1 lugar premium", "Impacto maximo", "Primera impresion"]
-                    : slotKey === "medium"
-                        ? ["2 cupos", "Presencia fuerte", "Buen equilibrio"]
-                        : ["10 cupos", "Entrada rapida", "Presencia constante"];
-                return `
-                    <article class="citycash-slot-card">
-                        <div class="citycash-slot-meta">
-                            <div>
-                                <div class="citycash-chip"><span class="citycash-coin is-small" style="margin-right: 6px;"></span>${config.price}</div>
-                                <h3 style="margin-top: 10px;">${config.label}</h3>
-                            </div>
-                            <span class="citycash-slot-badge">${slot.available}/${slot.total} libres</span>
-                        </div>
-                        <p class="citycash-slot-copy">${slotCopy}</p>
-                        <div class="citycash-slot-proof">
-                            ${slotProof.map((item) => `<span>${item}</span>`).join("")}
-                        </div>
-                        <button class="citycash-slot-btn ${state.selectedSlotType === slotKey ? "is-active" : ""}" style="margin-top: 14px;" onclick="window.selectCityCashSlot('${slotKey}')" ${slot.available <= 0 ? "disabled" : ""}>
-                            ${slot.available <= 0 ? "Sin espacios" : state.selectedSlotType === slotKey ? "Seleccionado" : "Elegir posicion"}
-                        </button>
-                    </article>
-                `;
-            }).join("");
-
-            confirmPurchaseBtn.disabled = !(state.selectedBusinessId && state.selectedSlotType && state.user);
+            document.getElementById('citycash-availability-copy').textContent = `Espacios para ${getCityCashCityLabel(state.city)}. Compra un lugar para destacar tu negocio en el Home.`;
+            availabilityGrid.innerHTML = Object.entries(CITYCASH_SLOT_CONFIG).map(([key, config]) => {
+                const slot = availability[key] || { available: 0, total: config.limit };
+                return `<article class="slot-card"><span class="coin-pill">${config.price} CityCash</span><h3>${config.label}</h3><p>${slot.available}/${slot.total} espacios libres esta semana.</p><button class="wallet-btn ${state.selectedSlotType === key ? '' : 'secondary'}" onclick="window.selectCityCashSlot('${key}')" ${slot.available <= 0 ? 'disabled' : ''}>${slot.available <= 0 ? 'Sin espacios' : state.selectedSlotType === key ? 'Seleccionado' : 'Elegir'}</button></article>`;
+            }).join('');
+            confirmBtn.disabled = !(state.user && state.selectedBusinessId && state.selectedSlotType);
         }
 
-        function applyWalletState(payload = {}) {
-            renderWallet(payload.balance || 0, payload.stats || { totalEarned: 0, totalSpent: 0 });
-            state.transactions = Array.isArray(payload.recent) ? payload.recent.slice(0, 6) : [];
-            renderHistory();
-        }
-
-        async function refreshWalletState(force = false) {
+        function renderBusinesses() {
+            const escape = window.escapeHtml || ((value) => String(value ?? ''));
             if (!state.user) {
-                applyWalletState();
+                businessList.innerHTML = '<div class="history-card"><p>Inicia sesion para elegir un negocio y comprar visibilidad.</p></div>';
                 return;
             }
-
-            const summary = await fetchUserCityCash(state.user.uid, { force });
-            applyWalletState(summary);
-        }
-
-        async function refreshRankingState(force = false) {
-            const ranking = await fetchCurrentCityCashRanking({ force });
-            state.rankingEntries = ranking.rankings || {};
-            renderAvailability();
-        }
-
-        async function refreshBusinesses(force = false) {
-            if (!state.user) {
-                state.businesses = [];
-                renderBusinesses();
+            if (!state.businesses.length) {
+                businessList.innerHTML = `<div class="history-card"><p>No tienes negocios registrados todavia.</p><button class="wallet-btn" onclick="window.location.href='register_business.html'">Registrar negocio</button></div>`;
                 return;
             }
-
-            state.businesses = await fetchUserBusinesses(state.user.uid, { force });
-            if (!state.selectedBusinessId && state.businesses[0]) {
-                state.selectedBusinessId = state.businesses[0].id;
-                state.city = state.businesses[0].ciudad || state.city;
-            }
-            renderBusinesses();
-            renderAvailability();
+            businessList.innerHTML = state.businesses.map((business) => {
+                const image = window.sanitizeUrl ? window.sanitizeUrl(business.image, 'assets/placeholder.svg') : (business.image || 'assets/placeholder.svg');
+                return `<article class="business-card"><img src="${escape(image)}" alt="${escape(business.nombre)}" loading="lazy" decoding="async"><div style="min-width:0;"><strong>${escape(business.nombre)}</strong><p style="margin:3px 0 0;color:#64748b;font-size:.78rem;">${escape(business.categoria || 'Negocio')} - ${escape(getCityCashCityLabel(business.ciudad))}</p></div><button class="select-btn ${state.selectedBusinessId === business.id ? 'is-active' : ''}" onclick="window.selectCityCashBusiness('${escape(business.id)}')">${state.selectedBusinessId === business.id ? 'Listo' : 'Elegir'}</button></article>`;
+            }).join('');
         }
 
-        function syncLoginState() {
-            loginBoxEl.classList.toggle("is-visible", !state.user);
-            renderHistory();
-            renderBusinesses();
-            renderAvailability();
+        function renderHistory(items = []) {
+            const escape = window.escapeHtml || ((value) => String(value ?? ''));
+            if (!state.user) {
+                historyList.innerHTML = '<div class="history-card"><p>Inicia sesion para ver tu historial CityCash.</p></div>';
+                return;
+            }
+            if (!items.length) {
+                historyList.innerHTML = '<div class="history-card"><p>Aun no tienes movimientos. Cuando ganes o uses CityCash apareceran aqui.</p></div>';
+                return;
+            }
+            historyList.innerHTML = items.slice(0, 8).map((item) => `<div class="history-card" style="display:flex;justify-content:space-between;gap:10px;"><div><strong>${escape(item.label || 'Movimiento CityCash')}</strong><p>${escape(item.type === 'earn' ? 'Ganancia' : 'Gasto')}</p></div><strong>${escape(formatCityCashAmount(item.amount || 0))}</strong></div>`).join('');
         }
 
-        window.selectCityCashBusiness = (businessId) => {
-            state.selectedBusinessId = businessId;
-            const selectedBusiness = state.businesses.find((business) => business.id === businessId);
-            if (selectedBusiness?.ciudad) {
-                state.city = selectedBusiness.ciudad;
-            }
+        window.selectCityCashBusiness = (id) => {
+            state.selectedBusinessId = id;
+            const selected = state.businesses.find((item) => item.id === id);
+            if (selected?.ciudad) state.city = selected.ciudad;
             renderBusinesses();
             renderAvailability();
         };
 
-        window.selectCityCashSlot = (slotType) => {
-            state.selectedSlotType = slotType;
+        window.selectCityCashSlot = (type) => {
+            state.selectedSlotType = type;
             renderAvailability();
         };
 
         window.handleCityCashInvite = async () => {
             if (!state.user) {
-                window.location.href = "login.html";
+                window.location.href = 'login.html';
                 return;
             }
-
             try {
                 const result = await shareCityCashInvite(state.user, state.city);
                 if (result.reward?.awarded) {
                     showCityCashRewardToast(result.reward);
-                    applyWalletState(result.reward);
-                } else if (result.confirmedShare === false && window.showToast) {
-                    window.showToast("Invitacion lista para compartir. El CityCash solo se entrega cuando confirmas el envio real.", "info");
-                } else if (window.showToast) {
-                    window.showToast("Invitacion compartida correctamente.", "success");
+                    renderWallet(result.reward);
                 }
             } catch (error) {
-                if (error?.message === "already-claimed") {
-                    window.showToast("Invitacion compartida. Este premio ya habia sido reclamado.", "info");
-                    return;
-                }
-                if (error?.name === "AbortError") return;
-                window.showToast("No pudimos compartir tu invitacion ahora.", "error");
+                if (error?.name !== 'AbortError' && window.showToast) window.showToast('No pudimos compartir tu invitacion ahora.', 'error');
             }
         };
 
-        confirmPurchaseBtn.addEventListener("click", async () => {
+        confirmBtn.addEventListener('click', async () => {
             if (!state.user || !state.selectedBusinessId || !state.selectedSlotType) return;
-
-            confirmPurchaseBtn.disabled = true;
-            confirmPurchaseBtn.textContent = "Procesando compra...";
-
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Procesando...';
             try {
-                const result = await purchaseCityCashRanking({
-                    businessId: state.selectedBusinessId,
-                    slotType: state.selectedSlotType,
-                    city: state.city
-                });
-
+                const result = await purchaseCityCashRanking({ businessId: state.selectedBusinessId, slotType: state.selectedSlotType, city: state.city });
                 showCityCashSpendToast(result);
-                applyWalletState(result);
-                state.selectedSlotType = "";
-                await refreshRankingState(true);
-                setActiveView("use");
+                renderWallet(result);
+                state.selectedSlotType = '';
+                const ranking = await fetchCurrentCityCashRanking({ force: true });
+                state.rankingEntries = ranking.rankings || {};
             } catch (error) {
-                const message = String(error?.message || "");
-                if (message === "citycash-insufficient-balance") {
-                    window.showToast("No tienes suficiente CityCash para esa posicion.", "error");
-                } else if (message === "citycash-slot-unavailable") {
-                    window.showToast("Ese espacio ya se ocupo. Elige otra posicion.", "error");
-                } else {
-                    window.showToast("No pudimos completar la compra ahora.", "error");
-                }
+                if (window.showToast) window.showToast('No pudimos completar el canje ahora.', 'error');
             } finally {
-                confirmPurchaseBtn.textContent = "Confirmar y destacar mi negocio";
+                confirmBtn.textContent = 'Confirmar y destacar mi negocio';
                 renderAvailability();
             }
         });
 
-        document.getElementById("citycash-go-earn").addEventListener("click", () => setActiveView("earn"));
-        document.getElementById("citycash-go-use").addEventListener("click", () => setActiveView("use"));
-        tabEarnEl.addEventListener("click", () => setActiveView("earn"));
-        tabUseEl.addEventListener("click", () => setActiveView("use"));
+        Object.entries(tabs).forEach(([key, el]) => el.addEventListener('click', () => setActiveView(key)));
+        document.getElementById('citycash-go-use').addEventListener('click', () => setActiveView('use'));
 
-        renderActionList();
+        renderActions();
         renderWallet();
-        renderHistory();
         renderAvailability();
+        renderBusinesses();
         applyViewFromUrl();
-        refreshRankingState().catch((error) => {
-            console.error("CityCash ranking load error:", error);
-        });
+        if (window.lucide?.createIcons) window.lucide.createIcons();
+
+        fetchCurrentCityCashRanking().then((ranking) => {
+            state.rankingEntries = ranking.rankings || {};
+            renderAvailability();
+        }).catch((error) => console.error('CityCash ranking load error:', error));
 
         onAuthStateChanged(auth, async (user) => {
             state.user = user;
-
-            if (user) {
-                await Promise.all([
-                    refreshWalletState(),
-                    refreshBusinesses()
-                ]);
-            } else {
-                state.transactions = [];
+            loginBox.classList.toggle('is-visible', !user);
+            if (!user) {
                 state.businesses = [];
-                state.selectedBusinessId = "";
-                state.selectedSlotType = "";
-                applyWalletState();
+                state.selectedBusinessId = '';
+                renderWallet();
                 renderBusinesses();
+                renderAvailability();
+                return;
             }
-
-            syncLoginState();
+            const [wallet, businesses] = await Promise.all([
+                fetchUserCityCash(user.uid).catch(() => ({})),
+                fetchUserBusinesses(user.uid).catch(() => [])
+            ]);
+            state.businesses = businesses;
+            if (!state.selectedBusinessId && businesses[0]) {
+                state.selectedBusinessId = businesses[0].id;
+                state.city = businesses[0].ciudad || state.city;
+            }
+            renderWallet(wallet);
+            renderBusinesses();
+            renderAvailability();
         });
     </script>
+    <script src="assets/js/pwa-init.js?v=20260424-wallet-fix-1"></script>
 </body>
 </html>
-

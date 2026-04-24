@@ -1,176 +1,146 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Noticias Locales | CityMart</title>
-    <meta name="description" content="Noticias locales, avisos y novedades de Lamas y Tarapoto en CityMart.">
+    <meta name="description" content="Todas las noticias locales, avisos y novedades de Lamas y Tarapoto en CityMart.">
     <link rel="canonical" href="https://citymart.vip/news">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="CityMart">
-    <meta property="og:title" content="Noticias Locales | CityMart">
-    <meta property="og:description" content="Noticias locales, avisos y novedades de Lamas y Tarapoto en CityMart.">
-    <meta property="og:url" content="https://citymart.vip/news">
-    <meta property="og:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Noticias Locales | CityMart">
-    <meta name="twitter:description" content="Noticias locales, avisos y novedades de Lamas y Tarapoto en CityMart.">
-    <meta name="twitter:image" content="https://citymart.vip/assets/icons/app-icon-512-v4.png">
-    <meta name="application-name" content="CityMart">
-    <meta name="apple-mobile-web-app-title" content="CityMart">
     <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script defer src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="assets/js/utils.js?v=20260423-home-chat-ads-1"></script>
-    <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
-
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#065f46">
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-</main>
+    <link rel="stylesheet" href="assets/style.css?v=20260411-premium-fix-1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="assets/js/utils.js?v=20260424-list-fix-1"></script>
+    <script defer src="assets/js/cache.js?v=20260424-list-fix-1"></script>
+    <style>
+        body { background: #f8fafc; color: #0f172a; padding-bottom: 110px; }
+        .list-shell { width: min(760px, calc(100% - 24px)); margin: 0 auto; padding: 14px 0 28px; }
+        .list-topbar { position: sticky; top: 0; z-index: 20; margin: 0 -12px 12px; padding: 12px; background: rgba(248, 250, 252, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .back-link { width: 42px; height: 42px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; background: #fff; color: #0f172a; text-decoration: none; box-shadow: 0 12px 24px -20px rgba(15,23,42,.6); }
+        .list-title { margin: 0; font-family: Inter, sans-serif; font-size: 1.35rem; line-height: 1.05; letter-spacing: 0; }
+        .list-subtitle { margin: 4px 0 0; color: #64748b; font-size: .82rem; font-weight: 700; }
+        .city-chip { flex-shrink: 0; border: 0; border-radius: 999px; padding: 8px 12px; background: #dcfce7; color: #166534; font-size: .72rem; font-weight: 900; text-transform: uppercase; }
+        .list-stack { display: flex; flex-direction: column; gap: 12px; }
+        .news-card { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; min-height: 112px; padding: 10px; border-radius: 20px; background: #fff; border: 1px solid #e2e8f0; box-shadow: 0 14px 28px -24px rgba(15,23,42,.5); cursor: pointer; }
+        .news-card img { width: 92px; height: 92px; border-radius: 16px; object-fit: cover; background: #e2e8f0; }
+        .news-card h2 { margin: 0; font-family: Inter, sans-serif; font-size: 1rem; line-height: 1.25; color: #0f172a; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-card p { margin: 7px 0 0; color: #64748b; font-size: .82rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; color: #059669; font-size: .72rem; font-weight: 900; }
+        .state-box { padding: 44px 18px; border-radius: 22px; background: #fff; border: 1px dashed #cbd5e1; text-align: center; color: #64748b; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <main class="list-shell">
+        <header class="list-topbar">
+            <div class="list-head">
+                <a class="back-link" href="./" aria-label="Volver al inicio"><i data-lucide="chevron-left"></i></a>
+                <div style="flex:1; min-width:0;">
+                    <h1 class="list-title">Noticias</h1>
+                    <p id="city-subtitle" class="list-subtitle">Actualidad local</p>
+                </div>
+                <span id="city-chip" class="city-chip">Lamas</span>
+            </div>
+        </header>
+        <section id="news-list" class="list-stack" aria-live="polite">
+            <div class="state-box">Cargando noticias...</div>
+        </section>
+    </main>
 
     <nav class="bottom-nav">
-        <a href="./" class="nav-item">
-            <i data-lucide="home" class="nav-icon"></i>
-            <span>Inicio</span>
-        </a>
-        <a href="turismo.html" class="nav-item">
-            <i data-lucide="compass" class="nav-icon"></i>
-            <span>Turismo</span>
-        </a>
-        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
-            <div style="background: linear-gradient(135deg, #10b981, #059669); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);">
-                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
-            </div>
-            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
-        </a>
-        <a href="community.html" class="nav-item">
-            <i data-lucide="users" class="nav-icon"></i>
-            <span>Comunidad</span>
-        </a>
-        <a href="profile.html" class="nav-item">
-            <i data-lucide="user-circle" class="nav-icon"></i>
-            <span>Perfil</span>
-        </a>
+        <a href="./" class="nav-item"><i data-lucide="home" class="nav-icon"></i><span>Inicio</span></a>
+        <a href="turismo.html" class="nav-item"><i data-lucide="compass" class="nav-icon"></i><span>Turismo</span></a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;"><div style="background: linear-gradient(135deg, #10b981, #059669); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(5,150,105,.4);"><i data-lucide="plus" style="width:32px;height:32px;color:white;"></i></div><span style="font-weight:700;color:#1f2937;margin-top:2px;">Publicar</span></a>
+        <a href="community.html" class="nav-item"><i data-lucide="users" class="nav-icon"></i><span>Comunidad</span></a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user-circle" class="nav-icon"></i><span>Perfil</span></a>
     </nav>
 
     <script type="module">
         import { db } from './assets/js/firebase-init.js';
         import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        lucide.createIcons();
-
         const currentCity = window.getStoredCity ? window.getStoredCity() : 'lamas';
+        const cityLabel = currentCity.charAt(0).toUpperCase() + currentCity.slice(1);
         const newsContainer = document.getElementById('news-list');
-        const subtitle = document.getElementById('city-subtitle');
-        if (subtitle) subtitle.innerText = `Cerca de ti en ${currentCity.charAt(0).toUpperCase() + currentCity.slice(1)}`;
+        document.getElementById('city-subtitle').textContent = `Todas las noticias de ${cityLabel}`;
+        document.getElementById('city-chip').textContent = cityLabel;
 
-        function getNewsTimestamp(newsItem) {
-            const raw = newsItem.fecha || newsItem.fecha_creacion || newsItem.timestamp || null;
+        function getTimestamp(item) {
+            const raw = item.fecha_creacion || item.fecha || item.createdAt || item.timestamp || null;
             if (!raw) return 0;
+            if (typeof raw?.toDate === 'function') return raw.toDate().getTime();
+            if (typeof raw?.seconds === 'number') return raw.seconds * 1000;
             if (typeof raw === 'number') return raw;
-            if (raw.seconds) return raw.seconds * 1000;
             const parsed = new Date(raw).getTime();
             return Number.isNaN(parsed) ? 0 : parsed;
         }
 
-        function loadNews() {
-            newsContainer.innerHTML = `<p style="text-align:center; padding:60px; opacity:0.6; font-weight:600;">Cargando noticias...</p>`;
-
-            CityCache.loadWithCache('noticias',
-                async () => {
-                    const snap = await getDocs(collection(db, "noticias"));
-                    return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                },
-                (allItems) => {
-                const items = allItems
-                    .filter(n => n.estado === 'aprobado' && (window.normalizeCityValue
-                        ? window.normalizeCityValue(n.ciudad || n.provincia || n.ubicacion || 'lamas')
-                        : (n.ciudad || n.provincia || n.ubicacion || 'lamas').toLowerCase().trim()) === currentCity)
-                    .sort((a, b) => getNewsTimestamp(b) - getNewsTimestamp(a));
-
-                if (items.length === 0) {
-                    newsContainer.innerHTML = `<p style="text-align:center; padding:60px; opacity:0.6; font-weight:600;">No hay noticias recientes en ${currentCity}.</p>`;
-                    return;
-                }
-
-                newsContainer.innerHTML = items.map(n => {
-                    const escape = window.escapeHtml || ((value) => String(value ?? ''));
-                    const timestamp = getNewsTimestamp(n);
-                    const date = timestamp ? new Date(timestamp).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Reciente';
-                    const rawNewsImage = window.pickDisplayImage
-                        ? window.pickDisplayImage([n.imagen_thumb, n.imagen], 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?auto=format&fit=crop&q=80&w=800', { width: 960 })
-                        : (n.imagen_thumb || n.imagen || 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?auto=format&fit=crop&q=80&w=800');
-                    const newsImage = window.sanitizeUrl ? window.sanitizeUrl(rawNewsImage, 'assets/placeholder.svg') : rawNewsImage;
-
-                    return `
-                        <div style="display: flex; flex-direction: column; gap: 12px; cursor: pointer;" onclick="window.location.href='news_detail.html?id=${n.id}'">
-                        <div style="width: 100%; height: 220px; border-radius: 28px; overflow: hidden; position: relative; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05);">
-                            <img src="${escape(newsImage)}" alt="${escape(n.titulo)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async" fetchpriority="low">
-                            <div style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); padding: 5px 12px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; color: #111;">
-                                ${date}
-                            </div>
-                        </div>
-                        <div style="padding: 0 8px;">
-                            <h3 style="font-size: 1.15rem; font-weight: 600; line-height: 1.35; color: #111; margin: 0; letter-spacing: -0.01em;">${escape(n.titulo)}</h3>
-                            <p style="font-size: 0.85rem; color: #64748b; margin: 8px 0 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; font-weight: 500;">
-                                ${escape(n.resumen || n.contenido || '')}
-                            </p>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px;">
-                                <div style="background: rgba(16, 185, 129, 0.1); color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 600;">
-                                    PROVINCIA ${escape((n.ciudad || n.provincia || 'local').toUpperCase())}
-                                </div>
-                                <span style="font-size: 0.75rem; color: var(--primary-color); font-weight: 600; margin-left: auto;">Leer mas Ã¢â€ â€™</span>
-                            </div>
-                        </div>
-                    </div>`;
-                }).join('');
-
-                lucide.createIcons();
-            }).catch((error) => {
-                console.error("Error loading news:", error);
-                newsContainer.innerHTML = `<p style="text-align:center; padding:40px; color:#ef4444;">Error al cargar las noticias.</p>`;
-            });
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Reciente';
+            return new Date(timestamp).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' });
         }
 
+        function cityOf(item) {
+            const raw = item.ciudad || item.provincia || item.ubicacion || 'lamas';
+            return window.normalizeCityValue ? window.normalizeCityValue(raw) : String(raw).toLowerCase().trim();
+        }
+
+        function render(items) {
+            const escape = window.escapeHtml || ((value) => String(value ?? ''));
+            const filtered = (items || [])
+                .filter((item) => item.estado === 'aprobado' && cityOf(item) === currentCity)
+                .sort((a, b) => getTimestamp(b) - getTimestamp(a));
+
+            if (!filtered.length) {
+                newsContainer.innerHTML = `<div class="state-box">No hay noticias publicadas en ${escape(cityLabel)} por ahora.</div>`;
+                return;
+            }
+
+            newsContainer.innerHTML = filtered.map((item) => {
+                const imageRaw = window.pickDisplayImage
+                    ? window.pickDisplayImage([item.imagen_thumb, item.imagen], 'assets/placeholder.svg', { width: 420 })
+                    : (item.imagen_thumb || item.imagen || 'assets/placeholder.svg');
+                const image = window.sanitizeUrl ? window.sanitizeUrl(imageRaw, 'assets/placeholder.svg') : imageRaw;
+                const summary = item.resumen || item.contenido || item.texto || '';
+                return `
+                    <article class="news-card" onclick="window.location.href='news_detail.html?id=${encodeURIComponent(item.id)}'">
+                        <img src="${escape(image)}" alt="${escape(item.titulo || 'Noticia')}" loading="lazy" decoding="async">
+                        <div style="min-width:0;">
+                            <h2>${escape(item.titulo || 'Noticia sin titulo')}</h2>
+                            <p>${escape(summary)}</p>
+                            <div class="card-meta"><span>${escape(formatDate(getTimestamp(item)))}</span><span>Leer mas</span></div>
+                        </div>
+                    </article>`;
+            }).join('');
+            if (window.lucide?.createIcons) window.lucide.createIcons();
+        }
+
+        async function loadNews() {
+            try {
+                await window.CityCache.loadWithCache('noticias',
+                    async () => {
+                        const snap = await getDocs(collection(db, 'noticias'));
+                        return snap.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+                    },
+                    render
+                );
+            } catch (error) {
+                console.error('Error loading news:', error);
+                newsContainer.innerHTML = '<div class="state-box">No se pudieron cargar las noticias. Intenta nuevamente.</div>';
+            }
+        }
+
+        if (window.lucide?.createIcons) window.lucide.createIcons();
         loadNews();
     </script>
-
-        <script src="assets/js/pwa-init.js?v=20260423-home-chat-ads-1"></script>
-
-  <footer class="site-footer">
-    <div class="site-footer__main">
-      <div>
-        <div class="site-footer__brand">
-          <img src="assets/logo.png" alt="CityMart">
-          <div>
-            <span class="site-footer__eyebrow">Directorio y turismo local</span>
-            <h3>CityMart</h3>
-          </div>
-        </div>
-        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
-      </div>
-      <div class="site-footer__aside">
-        <span class="site-footer__label">Enlaces institucionales</span>
-        <div class="site-footer__links">
-          <a href="about.html">Sobre nosotros</a>
-          <a href="contact.html">Contacto</a>
-          <a href="privacy-policy.html">Privacidad</a>
-          <a href="terms.html">Terminos</a>
-          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
-        </div>
-        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
-      </div>
-    </div>
-  </footer>
+    <script src="assets/js/pwa-init.js?v=20260424-list-fix-1"></script>
 </body>
 </html>
-
-
-

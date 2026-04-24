@@ -3415,6 +3415,23 @@
       return 0;
     }
 
+    function getNewsTimestampSeconds(news) {
+      return getTimestampSeconds(news.fecha_creacion || news.fecha || news.createdAt || news.timestamp);
+    }
+
+    function formatRelativeTime(seconds) {
+      if (!seconds) return '';
+      const diff = Math.max(0, Math.floor(Date.now() / 1000) - seconds);
+      if (diff < 60) return 'Hace un minuto';
+      const minutes = Math.floor(diff / 60);
+      if (minutes < 60) return `Hace ${minutes} min`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return hours === 1 ? 'Hace 1 hora' : `Hace ${hours} horas`;
+      const days = Math.floor(hours / 24);
+      if (days < 30) return days === 1 ? 'Hace 1 dia' : `Hace ${days} dias`;
+      return new Date(seconds * 1000).toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
+    }
+
     function getPromoExpireSeconds(promo) {
       const directExpire = getTimestampSeconds(promo.fechaExpiracion || promo.fecha_expiracion || promo.expira_en);
       if (directExpire) return directExpire;
@@ -3685,18 +3702,24 @@
         if (newsTrack.dataset.lastHash === newHash) return;
         newsTrack.dataset.lastHash = newHash;
 
-        const shuffledNews = shuffle(approvedNews).slice(0, 6);
+        const latestNews = [...approvedNews]
+          .sort((a, b) => getNewsTimestampSeconds(b) - getNewsTimestampSeconds(a))
+          .slice(0, 6);
         newsTrack.dataset.loading = 'false';
-        newsTrack.innerHTML = shuffledNews.map((n, index) => {
+        newsTrack.innerHTML = latestNews.map((n, index) => {
           const escape = window.escapeHtml || escapeHtml;
           const rawImage = window.pickDisplayImage ? window.pickDisplayImage([n.imagen_thumb, n.imagen], FALLBACK_NEWS_IMAGE, { width: 480 }) : (n.imagen_thumb || n.imagen || FALLBACK_NEWS_IMAGE);
           const newsImage = window.sanitizeUrl ? window.sanitizeUrl(rawImage, FALLBACK_NEWS_IMAGE) : rawImage;
+          const summary = n.resumen || n.contenido || n.texto || '';
+          const timeLabel = formatRelativeTime(getNewsTimestampSeconds(n));
           return `
-          <div class="modern-glass" style="min-width: 160px; height: 220px; border-radius: 24px; overflow: hidden; position: relative; scroll-snap-align: center;" onclick="window.location.href='news_detail.html?id=${n.id}'">
+          <div class="modern-glass" style="min-width: 220px; height: 210px; border-radius: 24px; overflow: hidden; position: relative; scroll-snap-align: center;" onclick="window.location.href='news_detail.html?id=${n.id}'">
             <img src="${escape(newsImage)}" alt="${escape(n.titulo)}" style="width: 100%; height: 100%; object-fit: cover;" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${index < 2 ? 'high' : 'low'}">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.4) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 12px;">
-              <h3 style="color: white; font-size: 0.85rem; font-weight: 500; margin: 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${escape(n.titulo)}</h3>
-              <p style="color: rgba(255,255,255,0.7); font-size: 0.65rem; margin-top: 4px; font-weight: 500;">Hace un momento</p>
+              ${timeLabel ? `<p style="color: rgba(255,255,255,0.72); font-size: 0.64rem; margin: 0 0 5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;">${escape(timeLabel)}</p>` : ''}
+              <h3 style="color: white; font-size: 0.9rem; font-weight: 700; margin: 0; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${escape(n.titulo)}</h3>
+              <p style="color: rgba(255,255,255,0.78); font-size: 0.72rem; line-height: 1.35; margin: 6px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${escape(summary)}</p>
+              <span style="color: #bbf7d0; font-size: 0.72rem; margin-top: 8px; font-weight: 800;">Leer noticia</span>
             </div>
           </div>
         `}).join('');

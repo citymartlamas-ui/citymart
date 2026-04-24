@@ -59,7 +59,7 @@ self.addEventListener('notificationclick', (event) => {
 });
 
 // ========== PWA CACHE ==========
-const CACHE_NAME = 'citymart-v72';
+const CACHE_NAME = 'citymart-v73';
 const PRE_CACHE_ASSETS = [
   '/index.html',
   '/manifest.json',

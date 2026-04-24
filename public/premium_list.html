@@ -1,167 +1,141 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Negocios o Servicios Premium | CityMart</title>
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
-    <script defer src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="assets/js/utils.js?v=20260423-home-chat-ads-1"></script>
-    <script defer src="assets/js/cache.js?v=20260401-homefix-2"></script>
-
+    <title>Negocios Premium | CityMart</title>
+    <meta name="description" content="Listado completo de negocios premium activos en CityMart.">
+    <link rel="canonical" href="https://citymart.vip/premium_list">
+    <link rel="icon" type="image/png" href="assets/icons/app-icon-192-v4.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#065f46">
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-v4.png">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-</main>
+    <link rel="stylesheet" href="assets/style.css?v=20260411-premium-fix-1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="assets/js/utils.js?v=20260424-list-fix-1"></script>
+    <script defer src="assets/js/cache.js?v=20260424-list-fix-1"></script>
+    <style>
+        body { background:#f8fafc; color:#0f172a; padding-bottom:110px; }
+        .list-shell { width:min(760px, calc(100% - 24px)); margin:0 auto; padding:14px 0 28px; }
+        .list-topbar { position:sticky; top:0; z-index:20; margin:0 -12px 12px; padding:12px; background:rgba(248,250,252,.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+        .list-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+        .back-link { width:42px; height:42px; border-radius:14px; display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#0f172a; text-decoration:none; box-shadow:0 12px 24px -20px rgba(15,23,42,.6); }
+        .list-title { margin:0; font-family:Inter,sans-serif; font-size:1.35rem; line-height:1.05; }
+        .list-subtitle { margin:4px 0 0; color:#64748b; font-size:.82rem; font-weight:700; }
+        .city-chip { flex-shrink:0; border-radius:999px; padding:8px 12px; background:#fef3c7; color:#92400e; font-size:.72rem; font-weight:900; text-transform:uppercase; }
+        .premium-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+        .premium-card { overflow:hidden; border-radius:22px; background:#fff; border:1px solid #e2e8f0; box-shadow:0 14px 28px -24px rgba(15,23,42,.5); cursor:pointer; }
+        .premium-card img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:#e2e8f0; }
+        .premium-body { padding:12px; }
+        .premium-body h2 { margin:0; font-family:Inter,sans-serif; font-size:.98rem; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .premium-body p { margin:6px 0 0; color:#64748b; font-size:.78rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .premium-badge-line { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:10px; color:#92400e; font-size:.72rem; font-weight:900; }
+        .state-box { grid-column:1/-1; padding:44px 18px; border-radius:22px; background:#fff; border:1px dashed #cbd5e1; text-align:center; color:#64748b; font-weight:700; }
+        @media (max-width:420px) { .premium-grid { grid-template-columns:1fr; } .premium-card { display:grid; grid-template-columns:96px minmax(0,1fr); } .premium-card img { width:96px; height:100%; aspect-ratio:auto; } }
+    </style>
+</head>
+<body>
+    <main class="list-shell">
+        <header class="list-topbar">
+            <div class="list-head">
+                <a class="back-link" href="./" aria-label="Volver al inicio"><i data-lucide="chevron-left"></i></a>
+                <div style="flex:1; min-width:0;">
+                    <h1 class="list-title">Negocios Premium</h1>
+                    <p id="city-subtitle" class="list-subtitle">Destacados activos</p>
+                </div>
+                <span id="city-chip" class="city-chip">Lamas</span>
+            </div>
+        </header>
+        <section id="premium-list" class="premium-grid" aria-live="polite">
+            <div class="state-box">Cargando negocios premium...</div>
+        </section>
+    </main>
 
     <nav class="bottom-nav">
-        <a href="./" class="nav-item">
-            <i data-lucide="home" class="nav-icon"></i>
-            <span>Inicio</span>
-        </a>
-        <a href="turismo.html" class="nav-item">
-            <i data-lucide="compass" class="nav-icon"></i>
-            <span>Turismo</span>
-        </a>
-        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;">
-            <div style="background: linear-gradient(135deg, #fbbf24, #f59e0b); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -35px; border: 4px solid white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
-                <i data-lucide="plus" style="width: 32px; height: 32px; color: white;"></i>
-            </div>
-            <span style="font-weight: 700; color: #1f2937; margin-top: 2px;">Publicar</span>
-        </a>
-        <a href="community.html" class="nav-item">
-            <i data-lucide="users" class="nav-icon"></i>
-            <span>Comunidad</span>
-        </a>
-        <a href="profile.html" class="nav-item">
-            <i data-lucide="user-circle" class="nav-icon"></i>
-            <span>Perfil</span>
-        </a>
+        <a href="./" class="nav-item"><i data-lucide="home" class="nav-icon"></i><span>Inicio</span></a>
+        <a href="turismo.html" class="nav-item"><i data-lucide="compass" class="nav-icon"></i><span>Turismo</span></a>
+        <a href="profile.html" class="nav-item" style="position: relative; z-index: 10;"><div style="background:linear-gradient(135deg,#fbbf24,#f59e0b);width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-35px;border:4px solid white;box-shadow:0 4px 15px rgba(245,158,11,.4);"><i data-lucide="plus" style="width:32px;height:32px;color:white;"></i></div><span style="font-weight:700;color:#1f2937;margin-top:2px;">Publicar</span></a>
+        <a href="community.html" class="nav-item"><i data-lucide="users" class="nav-icon"></i><span>Comunidad</span></a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user-circle" class="nav-icon"></i><span>Perfil</span></a>
     </nav>
 
     <script type="module">
         import { db } from './assets/js/firebase-init.js';
         import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        lucide.createIcons();
         const currentCity = window.getStoredCity ? window.getStoredCity() : 'lamas';
+        const cityLabel = currentCity.charAt(0).toUpperCase() + currentCity.slice(1);
+        const list = document.getElementById('premium-list');
+        document.getElementById('city-subtitle').textContent = `Premium en ${cityLabel}`;
+        document.getElementById('city-chip').textContent = cityLabel;
 
-        function transformBizDoc(docSnap) {
-            const data = docSnap.data();
-            return {
-                id: docSnap.id,
-                nombre: data.nombre || "Sin nombre",
-                categoria: data.categoria || "Servicio Premium",
-                foto: window.pickEntityImage
-                    ? window.pickEntityImage(data, "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600", { width: 420 })
-                    : (data.foto_thumb || data.imagen_thumb || data.foto || data.logo || data.imagen || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600"),
-                premium: data.promocionanuncio === true,
-                visible: data.negociovisible !== false,
-                ciudad: window.normalizeCityValue
-                    ? window.normalizeCityValue(data.ciudad || data.provincia || data.ubicacion || 'lamas')
-                    : (data.ciudad || data.provincia || data.ubicacion || 'lamas').toLowerCase().trim(),
-                rating: Number(data.promedio_puntuacion || 0)
-            };
+        function cityOf(item) {
+            const raw = item.ciudad || item.provincia || item.ubicacion || 'lamas';
+            return window.normalizeCityValue ? window.normalizeCityValue(raw) : String(raw).toLowerCase().trim();
         }
 
-        function loadPremium() {
-            const listContainer = document.getElementById('premium-list');
-            listContainer.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px;"><div class="loader"></div></div>`;
+        function getTimestamp(item) {
+            const raw = item.fecha_creacion || item.createdAt || item.timestamp || 0;
+            if (typeof raw?.toDate === 'function') return raw.toDate().getTime();
+            if (typeof raw?.seconds === 'number') return raw.seconds * 1000;
+            if (typeof raw === 'number') return raw;
+            const parsed = new Date(raw).getTime();
+            return Number.isNaN(parsed) ? 0 : parsed;
+        }
 
-            CityCache.loadWithCache('negocios_raw',
-                async () => {
-                    const snap = await getDocs(collection(db, "negocio"));
-                    return snap.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
-                },
-                (rows) => {
-                listContainer.innerHTML = '';
-                const items = rows
-                                .map(row => transformBizDoc({ id: row.id, data: () => row }))
-                                .filter(n => n.visible && n.premium && n.ciudad === currentCity);
+        function render(rows) {
+            const escape = window.escapeHtml || ((value) => String(value ?? ''));
+            const items = (rows || [])
+                .filter((item) => item.negociovisible !== false && item.promocionanuncio === true && cityOf(item) === currentCity)
+                .sort((a, b) => Number(b.promedio_puntuacion || 0) - Number(a.promedio_puntuacion || 0) || getTimestamp(b) - getTimestamp(a));
 
-                if (items.length === 0) {
-                    listContainer.innerHTML = `<p style="text-align:center; padding:40px; opacity:0.6;">No hay negocios premium destacados en ${currentCity}.</p>`;
-                    return;
-                }
+            if (!items.length) {
+                list.innerHTML = `<div class="state-box">No hay negocios premium activos en ${escape(cityLabel)} por ahora.</div>`;
+                return;
+            }
 
-                listContainer.innerHTML = items.map(data => {
-                    const escape = window.escapeHtml || ((value) => String(value ?? ''));
-                    const rating = data.rating || 0;
-                    const rawImg = window.pickDisplayImage
-                        ? window.pickDisplayImage(data.foto, 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=600', { width: 420 })
-                        : data.foto;
-                    const img = window.sanitizeUrl ? window.sanitizeUrl(rawImg, 'assets/placeholder.svg') : rawImg;
-
-                    return `
-                        <div class="modern-dir-card" onclick="window.location.href='business_detail.html?id=${data.id}'">
-                            <img src="${escape(img)}" alt="${escape(data.nombre)}" loading="lazy" decoding="async" fetchpriority="low">
-                            <div class="modern-dir-card-content">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
-                                    <h3 style="flex: 1;">${escape(data.nombre)}</h3>
-                                    <div class="premium-badge">
-                                        <i data-lucide="star"></i>
-                                        <span style="font-size: 0.75rem; font-weight: 600; color: #92400e;">${Number(rating).toFixed(1)}</span>
-                                    </div>
-                                </div>
-                                <p class="category">${escape(data.categoria || 'Servicio Premium')}</p>
-                                
-                                <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
-                                    <button class="glass-pill active" style="font-size: 0.65rem; padding: 6px 14px; background: var(--primary-color); color: white; border: none; font-weight: 600;">EXPLORAR</button>
-                                    <div style="width: 32px; height: 32px; border-radius: 50%; background: #f8fafc; display: flex; align-items: center; justify-content: center; color: #64748b; border: 1px solid #f1f5f9;">
-                                        <i data-lucide="arrow-right" style="width: 16px;"></i>
-                                    </div>
-                                </div>
-                            </div>
+            list.innerHTML = items.map((biz) => {
+                const imageRaw = window.pickEntityImage
+                    ? window.pickEntityImage(biz, 'assets/placeholder.svg', { width: 420 })
+                    : (biz.foto_thumb || biz.imagen_thumb || biz.logo || biz.foto || biz.imagen || 'assets/placeholder.svg');
+                const image = window.sanitizeUrl ? window.sanitizeUrl(imageRaw, 'assets/placeholder.svg') : imageRaw;
+                const rating = Number(biz.promedio_puntuacion || 0);
+                return `
+                    <article class="premium-card" onclick="window.location.href='business_detail.html?id=${encodeURIComponent(biz.id)}'">
+                        <img src="${escape(image)}" alt="${escape(biz.nombre || 'Negocio premium')}" loading="lazy" decoding="async">
+                        <div class="premium-body">
+                            <h2>${escape(biz.nombre || 'Negocio sin nombre')}</h2>
+                            <p>${escape(biz.categoria || 'Servicio Premium')}</p>
+                            <div class="premium-badge-line"><span>Premium</span><span>${rating ? rating.toFixed(1) : 'Nuevo'}</span></div>
                         </div>
-                    `;
-                }).join('');
-                lucide.createIcons();
-            }).catch((error) => {
-                console.error("Error cargando premium:", error);
-                listContainer.innerHTML = `<p style="text-align:center; padding:40px; color:#ef4444;">Error de conexiÃƒÂ³n con la red.</p>`;
-            });
+                    </article>`;
+            }).join('');
+            if (window.lucide?.createIcons) window.lucide.createIcons();
         }
 
+        async function loadPremium() {
+            try {
+                await window.CityCache.loadWithCache('negocios_raw',
+                    async () => {
+                        const snap = await getDocs(collection(db, 'negocio'));
+                        return snap.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+                    },
+                    render
+                );
+            } catch (error) {
+                console.error('Error loading premium businesses:', error);
+                list.innerHTML = '<div class="state-box">No se pudieron cargar los negocios premium. Intenta nuevamente.</div>';
+            }
+        }
+
+        if (window.lucide?.createIcons) window.lucide.createIcons();
         loadPremium();
     </script>
-
-        <script src="assets/js/pwa-init.js?v=20260423-home-chat-ads-1"></script>
-  <footer class="site-footer">
-    <div class="site-footer__main">
-      <div>
-        <div class="site-footer__brand">
-          <img src="assets/logo.png" alt="CityMart">
-          <div>
-            <span class="site-footer__eyebrow">Directorio y turismo local</span>
-            <h3>CityMart</h3>
-          </div>
-        </div>
-        <p>Conectando Lamas y Tarapoto con negocios, rutas y experiencias locales en una presentacion mas clara, util y consistente en toda la app.</p>
-      </div>
-      <div class="site-footer__aside">
-        <span class="site-footer__label">Enlaces institucionales</span>
-        <div class="site-footer__links">
-          <a href="about.html">Sobre nosotros</a>
-          <a href="contact.html">Contacto</a>
-          <a href="privacy-policy.html">Privacidad</a>
-          <a href="terms.html">Terminos</a>
-          <a href="https://web.facebook.com/profile.php?id=61550708342516" target="_blank" rel="noopener noreferrer">Facebook oficial</a>
-        </div>
-        <div class="site-footer__meta">CityMart 2026. Todos los derechos reservados.</div>
-      </div>
-    </div>
-  </footer></body>
-
+    <script src="assets/js/pwa-init.js?v=20260424-list-fix-1"></script>
+</body>
 </html>
-
-
-
-
